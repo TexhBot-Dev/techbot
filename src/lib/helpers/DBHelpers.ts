@@ -2,7 +2,7 @@ import { Inventory } from '../entities/economy/inventory';
 import { Item } from '../entities/economy/item';
 import { User as DBUser } from '../entities/economy/user';
 import { Guild as DBGuild } from '../entities/guild';
-import type {Guild as DiscordGuild, User as DiscordUser} from 'discord.js';
+import type { Guild as DiscordGuild, User as DiscordUser} from 'discord.js';
 import { isSafeInteger } from './numberHelpers';
 
 /**

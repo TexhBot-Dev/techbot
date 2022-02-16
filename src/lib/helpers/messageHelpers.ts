@@ -1,5 +1,5 @@
 import { send } from "@sapphire/plugin-editable-commands";
-import {Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import { pickRandom } from "./arrayHelpers";
 import { RandomLoadingMessage } from '../constants';
 
