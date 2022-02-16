@@ -10,7 +10,7 @@
     "@sapphire/discord-utilities": "^2.8.0",
     "@sapphire/discord.js-utilities": "^4.8.0",
     "@sapphire/fetch": "^2.1.0",
-    "@sapphire/framework": "^3.0.0-next.87b9b5b.0",
+    "@sapphire/framework": "^3.0.0-next.1d89b7f.0",
     "@sapphire/plugin-api": "^3.1.4",
     "@sapphire/plugin-editable-commands": "^1.1.3",
     "@sapphire/plugin-logger": "^2.1.3",
@@ -24,8 +24,8 @@
     "dotenv-cra": "^3.0.2",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.41",
-    "vm2": "^3.9.7"
+    "typeorm": "^0.2.42",
+    "vm2": "^3.9.8"
   },
   "devDependencies": {
     "@sapphire/prettier-config": "^1.3.0",
