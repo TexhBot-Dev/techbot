@@ -1,12 +1,12 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import {fetchUser} from "../../lib/utils";
+import { fetchUser } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'balance',
 	aliases: ['bal', 'money', 'balance', 'cash'],
-	description: "Returns a user's current balance.",
+	description: 'Returns a user\'s current balance.',
 	detailedDescription: 'balance [user]'
 })
 export default class BalanceCommand extends Command {

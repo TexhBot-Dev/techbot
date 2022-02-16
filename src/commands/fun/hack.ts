@@ -35,7 +35,7 @@ const realNames = [
 	'Harry Cox',
 	'Lipin Jection',
 	'Pat Myaz',
-	"Nick O' Teen"
+	'Nick O\' Teen'
 ];
 
 @ApplyOptions<CommandOptions>({

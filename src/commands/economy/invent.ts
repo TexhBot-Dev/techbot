@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import {fetchUser} from "../../lib/utils";
+import { fetchUser } from '../../lib/utils';
 
 // List of inventions
 const inventions = [

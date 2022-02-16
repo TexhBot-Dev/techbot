@@ -2,7 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchGuild, fetchUser, parseAmount} from "../../lib/utils";
+import { fetchGuild, fetchUser, parseAmount } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'slots',

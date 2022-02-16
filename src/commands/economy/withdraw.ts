@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchUser, generateErrorEmbed, isSafeInteger, parseAmount} from "../../lib/utils";
+import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'withdraw',
@@ -22,7 +22,7 @@ export default class WithdrawCommand extends Command {
 		if (amountToWithdraw > user.bank)
 			return interaction.reply({
 				embeds: [
-					generateErrorEmbed("You don't have enough money in your bank to withdraw that much")
+					generateErrorEmbed('You don\'t have enough money in your bank to withdraw that much')
 				],
 				ephemeral: true
 			});

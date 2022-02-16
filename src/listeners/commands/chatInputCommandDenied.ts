@@ -1,28 +1,8 @@
 import type { ChatInputCommandDeniedPayload, Events } from '@sapphire/framework';
 import { Listener, UserError } from '@sapphire/framework';
-import {generateErrorEmbed} from "../../lib/utils";
+import { generateErrorEmbed } from '../../lib/utils';
 
 export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
-	public async run({ context, message: content, identifier }: UserError, { interaction }: ChatInputCommandDeniedPayload) {
-		// `context: { silent: true }` should make UserError silent:
-		// Use cases for this are for example permissions error when running the `eval` command.
-		if (Reflect.get(Object(context), 'silent')) return;
-
-		if (identifier === 'preconditionCooldown') {
-			const { remaining } = context as { remaining: number }
-			const humanizedRemaining = UserEvent.humanizeTime(remaining);
-
-			const cooldownEmbed = generateErrorEmbed(
-				`You can only use this command every ${humanizedRemaining}`,
-				identifier
-			);
-
-			return interaction.reply({embeds: [cooldownEmbed]});
-		}
-
-		return interaction.reply({ content, allowedMentions: { users: [interaction.user.id], roles: [] } });
-	}
-
 	private static humanizeTime(duration: number): string {
 		const portions: string[] = [];
 
@@ -46,5 +26,29 @@ export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
 		}
 
 		return portions.join(' ');
+	}
+
+	public async run({
+						 context,
+						 message: content,
+						 identifier
+					 }: UserError, { interaction }: ChatInputCommandDeniedPayload) {
+		// `context: { silent: true }` should make UserError silent:
+		// Use cases for this are for example permissions error when running the `eval` command.
+		if (Reflect.get(Object(context), 'silent')) return;
+
+		if (identifier === 'preconditionCooldown') {
+			const { remaining } = context as { remaining: number };
+			const humanizedRemaining = UserEvent.humanizeTime(remaining);
+
+			const cooldownEmbed = generateErrorEmbed(
+				`You can only use this command every ${humanizedRemaining}`,
+				identifier
+			);
+
+			return interaction.reply({ embeds: [cooldownEmbed] });
+		}
+
+		return interaction.reply({ content, allowedMentions: { users: [interaction.user.id], roles: [] } });
 	}
 }

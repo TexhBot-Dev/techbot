@@ -1,6 +1,6 @@
 import { Precondition } from '@sapphire/framework';
 import { envParseArray } from '../lib/env-parser';
-import type { CommandInteraction } from "discord.js";
+import type { CommandInteraction } from 'discord.js';
 
 const OWNERS = envParseArray('OWNERS');
 

@@ -1,7 +1,7 @@
-import {ApplicationCommandRegistry, Command, CommandOptions} from '@sapphire/framework';
-import type {CommandInteraction} from 'discord.js';
-import {ApplyOptions} from '@sapphire/decorators';
-import {fetch, FetchResultTypes} from "@sapphire/fetch";
+import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
+import type { CommandInteraction } from 'discord.js';
+import { ApplyOptions } from '@sapphire/decorators';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
 
 
 @ApplyOptions<CommandOptions>({
@@ -11,7 +11,7 @@ import {fetch, FetchResultTypes} from "@sapphire/fetch";
 })
 export default class JokeCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const joke = (await fetch<{joke: string}>('https://api.popcat.xyz/joke', FetchResultTypes.JSON)).joke;
+		const joke = (await fetch<{ joke: string }>('https://api.popcat.xyz/joke', FetchResultTypes.JSON)).joke;
 		return interaction.reply(joke);
 	}
 

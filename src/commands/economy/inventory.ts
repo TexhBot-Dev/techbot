@@ -1,12 +1,12 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {User} from "../../lib/entities/economy/user";
-import type {Item} from "../../lib/entities/economy/item";
+import { User } from '../../lib/entities/economy/user';
+import type { Item } from '../../lib/entities/economy/item';
 
 @ApplyOptions<CommandOptions>({
 	name: 'inventory',
-	description: "Shows a user's item inventory.",
+	description: 'Shows a user\'s item inventory.',
 	aliases: ['inv', 'bag', 'stuff'],
 	detailedDescription: 'inventory [user]'
 })

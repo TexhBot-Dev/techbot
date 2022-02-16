@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchInventory, fetchItemByName, fetchUser, generateErrorEmbed} from "../../lib/utils";
+import { fetchInventory, fetchItemByName, fetchUser, generateErrorEmbed } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'buy',

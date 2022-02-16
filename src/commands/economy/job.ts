@@ -1,8 +1,8 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchGuild, fetchUser} from "../../lib/utils";
-import {Jobs} from "../../lib/entities/economy/jobs";
+import { fetchGuild, fetchUser } from '../../lib/utils';
+import { Jobs } from '../../lib/entities/economy/jobs';
 
 @ApplyOptions<CommandOptions>({
 	name: 'job',

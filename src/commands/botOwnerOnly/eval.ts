@@ -6,7 +6,7 @@ import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { send } from '@sapphire/plugin-editable-commands';
 import { VM } from 'vm2';
-import { envParseArray } from "../../lib/env-parser";
+import { envParseArray } from '../../lib/env-parser';
 
 const OWNERS = envParseArray('OWNERS');
 
@@ -68,7 +68,8 @@ export default class EvalCommand extends Command {
 						showHidden: flags.showHidden
 					});
 				}
-			} catch (error) {}
+			} catch (error) {
+			}
 		} catch (error) {
 			if (error && error instanceof Error && error.stack) {
 				this.container.client.logger.error(error);

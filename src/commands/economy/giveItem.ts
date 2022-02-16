@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, User, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchInventory, fetchItemByName, generateErrorEmbed} from "../../lib/utils";
+import { fetchInventory, fetchItemByName, generateErrorEmbed } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'giveItem',

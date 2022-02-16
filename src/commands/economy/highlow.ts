@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import {fetchUser} from "../../lib/utils";
+import { fetchUser } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'highlow',

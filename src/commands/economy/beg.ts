@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchUser} from "../../lib/utils";
+import { fetchUser } from '../../lib/utils';
 
 const people = [
 	'Alistair Douglas',

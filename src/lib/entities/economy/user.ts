@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, /* OneToMany, */ PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+
 /*
 import { Advertisement } from './advertisement';
 import { Inventory } from './inventory';

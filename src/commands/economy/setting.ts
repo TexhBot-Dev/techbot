@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandInteraction } from 'discord.js';
-import {fetchUser, generateErrorEmbed} from "../../lib/utils";
+import { fetchUser, generateErrorEmbed } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'setting',

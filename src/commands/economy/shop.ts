@@ -1,8 +1,8 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {Item} from "../../lib/entities/economy/item";
-import {generateErrorEmbed} from "../../lib/utils";
+import { Item } from '../../lib/entities/economy/item';
+import { generateErrorEmbed } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'shop',

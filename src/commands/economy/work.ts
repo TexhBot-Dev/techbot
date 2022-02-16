@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchUser, generateErrorEmbed} from "../../lib/utils";
+import { fetchUser, generateErrorEmbed } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'work',
@@ -18,7 +18,7 @@ export default class WorkCommand extends Command {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
-						"You don't have a job! Do `job select janitor` to get started!",
+						'You don\'t have a job! Do `job select janitor` to get started!',
 						'No Job'
 					)
 				]

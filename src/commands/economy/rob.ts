@@ -1,11 +1,11 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {fetchUser, generateErrorEmbed} from "../../lib/utils";
+import { fetchUser, generateErrorEmbed } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'rob',
-	description: "Lets you rob another user's bank account.",
+	description: 'Lets you rob another user\'s bank account.',
 	detailedDescription: 'rob <user>'
 })
 export default class RobCommand extends Command {
@@ -19,12 +19,12 @@ export default class RobCommand extends Command {
 
 		if (interaction.user.id === userToRob.id)
 			return interaction.reply({
-				embeds: [generateErrorEmbed("You can't rob yourself.", 'Invalid User')],
+				embeds: [generateErrorEmbed('You can\'t rob yourself.', 'Invalid User')],
 				ephemeral: true
 			});
 		if (userToRob.bot)
 			return interaction.reply({
-				embeds: [generateErrorEmbed("You can't rob bots!", 'Invalid User')],
+				embeds: [generateErrorEmbed('You can\'t rob bots!', 'Invalid User')],
 				ephemeral: true
 			});
 
@@ -43,7 +43,7 @@ export default class RobCommand extends Command {
 			});
 		if (robber.passiveMode)
 			return interaction.reply({
-				embeds: [generateErrorEmbed("You can't rob while in passive mode!", 'Passive Mode Enabled')],
+				embeds: [generateErrorEmbed('You can\'t rob while in passive mode!', 'Passive Mode Enabled')],
 				ephemeral: true
 			});
 

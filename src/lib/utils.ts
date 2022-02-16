@@ -1,11 +1,11 @@
 import { send } from '@sapphire/plugin-editable-commands';
-import {Message, MessageEmbed, Guild as DiscordGuild, User as DiscordUser, ColorResolvable} from 'discord.js';
+import { ColorResolvable, Guild as DiscordGuild, Message, MessageEmbed, User as DiscordUser } from 'discord.js';
 import { RandomLoadingMessage } from './constants';
 import { Inventory } from './entities/economy/inventory';
 import { Item } from './entities/economy/item';
 import { User as DBUser } from './entities/economy/user';
 import { Guild as DBGuild } from './entities/guild';
-import type {SapphireClient} from "@sapphire/framework";
+import type { SapphireClient } from '@sapphire/framework';
 
 /**
  * Picks a random item from an array
@@ -13,18 +13,18 @@ import type {SapphireClient} from "@sapphire/framework";
  * @example
  * const randomEntry = pickRandom([1, 2, 3, 4]) // 1
  */
-export const pickRandom = <T>(array: readonly T[]): T =>{
+export const pickRandom = <T>(array: readonly T[]): T => {
 	const { length } = array;
 	return array[Math.floor(Math.random() * length)];
-}
+};
 
 /**
  * Sends a loading message to the current channel
  * @param message The message data for which to send the loading message
  */
-export const sendLoadingMessage = (message: Message): Promise<typeof message>  => {
+export const sendLoadingMessage = (message: Message): Promise<typeof message> => {
 	return send(message, { embeds: [new MessageEmbed().setDescription(pickRandom(RandomLoadingMessage)).setColor('#FF0000')] });
-}
+};
 
 /**
  * Determines if a provided integer is safe
@@ -46,7 +46,7 @@ export const isSafeInteger = (value: number): boolean => {
 		return false;
 	}
 	return value <= 1000000000000;
-}
+};
 
 /**
  * Parses Strings/Numbers for use with DBUser

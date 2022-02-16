@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import {User} from "../../lib/entities/economy/user";
+import { User } from '../../lib/entities/economy/user';
 
 @ApplyOptions<CommandOptions>({
 	name: 'leaderboard',
