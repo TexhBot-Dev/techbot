@@ -28,3 +28,8 @@ package-lock.json
 .env.development
 .env.test
 .env.production
+
+# Database
+economy
+economy-shm
+economy-wal
