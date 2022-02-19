@@ -6,38 +6,38 @@ export class Advertisement extends BaseEntity {
 	id!: number;
 
 	@Column()
-	userID: string | undefined;
+	userID!: string;
 
 	@Column()
-	messageID: string | undefined;
+	messageID!: string;
 
 	@Column()
-	channelID: string | undefined;
+	channelID!: string;
 
 	@Column()
-	guildID: string | undefined;
+	guildID!: string;
 
 	@Column()
-	title: string | undefined;
+	title!: string;
 
 	@Column()
-	description: string | undefined;
+	description!: string;
 
 	@Column()
-	price: number | undefined;
+	price!: number;
 
 	@Column()
-	duration: number | undefined;
+	duration!: number;
 
 	@Column()
-	type: string | undefined;
+	type!: string;
 
 	@Column()
-	image: string | undefined;
+	image!: string;
 
 	@Column()
-	thumbnail: string | undefined;
+	thumbnail!: string;
 
 	@Column()
-	color: string | undefined;
+	color!: string;
 }

@@ -99,7 +99,7 @@ export default class SettingCommand extends Command {
 							['dark', 'dark']
 						])
 						.setRequired(true)
-				)
+				), {idHints:['944645805313257482']}
 		);
 	}
 }

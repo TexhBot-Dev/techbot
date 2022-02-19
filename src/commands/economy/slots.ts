@@ -101,7 +101,7 @@ export default class SlotsCommand extends Command {
 						.setName('amount')
 						.setDescription('The amount of money you want to gamble')
 						.setRequired(true)
-				)
+				), {idHints:['944645806814793779']}
 		);
 	}
 }

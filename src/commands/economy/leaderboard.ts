@@ -98,7 +98,7 @@ export default class LeaderboardCommand extends Command {
 							['Only show banks', '--bankOnly'],
 							['Show overall money', '--overallMoney']
 						])
-				)
+				), {idHints:['944645719409713183']}
 		);
 	}
 

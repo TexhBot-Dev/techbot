@@ -56,7 +56,7 @@ export default class ShopCommand extends Command {
 				.setDescription(this.description)
 				.addStringOption((option) =>
 					option.setName('item').setDescription('The item to get information on.')
-				)
+				), {idHints:['944645805766238229']}
 		);
 	}
 }

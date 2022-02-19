@@ -114,7 +114,7 @@ export default class RobCommand extends Command {
 				.setDescription(this.description)
 				.addUserOption((option) =>
 					option.setName('user').setRequired(true).setDescription('The user to rob.')
-				)
+				), {idHints:['944645803815866488']}
 		);
 	}
 }

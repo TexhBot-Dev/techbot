@@ -46,7 +46,7 @@ export class SellCommand extends Command {
 				)
 				.addStringOption((option) =>
 					option.setName('amount').setRequired(true).setDescription('The amount to sell.')
-				)
+				), {idHints:['944645804331794542']}
 		);
 	}
 }

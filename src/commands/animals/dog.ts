@@ -2,6 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { isNullOrUndefined } from '@sapphire/utilities';
 
 @ApplyOptions<CommandOptions>({
 	name: 'dog',
@@ -15,7 +16,7 @@ export default class DogCommand extends Command {
 
 		dogEmbed.setImage(dog.url);
 
-		if (dog.breeds !== null && dog.breeds !== undefined) {
+		if (!isNullOrUndefined(dog.breeds)) {
 			dogEmbed.setFooter({
 				text: `Breed: ${dog.breeds[0].name} | life-span: ${dog.breeds[0].life_span} | Temperament: ${dog.breeds[0].temperament}`
 			});
@@ -25,7 +26,7 @@ export default class DogCommand extends Command {
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description)
+			builder.setName(this.name).setDescription(this.description), {idHints:['944645460860223510']}
 		);
 	}
 }

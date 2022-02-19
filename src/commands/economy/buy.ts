@@ -50,7 +50,7 @@ export default class BuyCommand extends Command {
 				.setDescription(this.description)
 				.addStringOption((option) =>
 					option.setName('item').setDescription('The item you want to buy.').setRequired(true)
-				)
+				), {idHints:['944645546122051614']}
 		);
 	}
 }

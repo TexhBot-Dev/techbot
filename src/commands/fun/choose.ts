@@ -25,7 +25,7 @@ export class ChooseCommand extends Command {
 						.setName('choices')
 						.setRequired(true)
 						.setDescription('The choices separated by ", "')
-				)
+				), {idHints:['944645895163633714']}
 		);
 	}
 }

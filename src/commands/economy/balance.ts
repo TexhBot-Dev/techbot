@@ -30,7 +30,7 @@ export default class BalanceCommand extends Command {
 				.setDescription(this.description)
 				.addUserOption((options) =>
 					options.setName('user').setDescription('The user to check the balance of.')
-				)
+				), {idHints:['944645544230420521']}
 		);
 	}
 }

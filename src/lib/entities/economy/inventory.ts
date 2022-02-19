@@ -6,10 +6,10 @@ export class Inventory extends BaseEntity {
 	id!: number;
 
 	@Column()
-	userId: string | undefined;
+	userId!: string;
 
 	@Column()
-	itemID: number | undefined;
+	itemID!: number;
 
 	@Column({
 		default: 0

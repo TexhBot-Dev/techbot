@@ -2,6 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { isNullOrUndefined } from '@sapphire/utilities';
 
 @ApplyOptions<CommandOptions>({
 	name: 'cat',
@@ -15,7 +16,7 @@ export default class CatCommand extends Command {
 
 		catEmbed.setImage(cat.url).setTitle('Cat').setURL(cat.url).setColor('BLUE');
 
-		if (cat.breeds !== null && cat.breeds !== undefined) {
+		if (!isNullOrUndefined(cat.breeds)) {
 			catEmbed.setDescription(
 				`Breed: ${cat.breeds[0].name}\nLife Span: ${cat.breeds[0].life_span}\nTemperament: ${cat.breeds[0].temperament}`
 			);
@@ -26,7 +27,7 @@ export default class CatCommand extends Command {
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description)
+			builder.setName(this.name).setDescription(this.description), {idHints:['944645460482723881']}
 		);
 	}
 }

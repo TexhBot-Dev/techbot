@@ -79,7 +79,7 @@ export default class GiveItemCommand extends Command {
 				)
 				.addStringOption((option) =>
 					option.setName('item').setDescription('The item to transfer.').setRequired(true)
-				)
+				), {idHints:['944645631857799198']}
 		);
 	}
 }

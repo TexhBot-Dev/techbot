@@ -32,7 +32,7 @@ export class FishCommand extends Command {
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description)
+			builder.setName(this.name).setDescription(this.description), {idHints:['944645631291572244']}
 		);
 	}
 }

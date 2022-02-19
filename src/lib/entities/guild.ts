@@ -6,7 +6,7 @@ export class Guild extends BaseEntity {
 	id!: string;
 
 	@Column()
-	prefix: string | undefined;
+	prefix!: string;
 
 	@Column({
 		default: 0

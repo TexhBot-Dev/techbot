@@ -71,7 +71,7 @@ export default class HelpCommand extends Command {
 				.setDescription(this.description)
 				.addStringOption((option) =>
 					option.setName('specific_command').setDescription('The command to get help for.')
-				)
+				), {idHints: ['944645456951128085']}
 		);
 	}
 }

@@ -21,7 +21,7 @@ export class OwOCommand extends Command {
 				.setDescription(this.description)
 				.addStringOption((option) =>
 					option.setName('text_to_owoify').setDescription('The text to owoify.').setRequired(true)
-				)
+				), {idHints:['944646065439801374']}
 		);
 	}
 }

@@ -32,7 +32,7 @@ export default class TogglePassiveModeCommand extends Command {
 						.setName('new_mode')
 						.setDescription('The new value of passive mode')
 						.setRequired(true)
-				)
+				), {idHints:['944645891107737730']}
 		);
 	}
 }

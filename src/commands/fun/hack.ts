@@ -113,7 +113,7 @@ export class ReverseCommand extends Command {
 				.setDescription(this.description)
 				.addUserOption((option) =>
 					option.setName('user').setDescription('The user to hack.').setRequired(true)
-				)
+				), {idHints:['944645979905331251']}
 		);
 	}
 

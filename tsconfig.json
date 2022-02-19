@@ -5,7 +5,8 @@
 		"outDir": "dist",
 		"tsBuildInfoFile": "dist/.tsbuildinfo",
 		"target": "ESNext",
-		"removeComments": true
+		"removeComments": true,
+
 	},
 	"include": ["src"]
 }

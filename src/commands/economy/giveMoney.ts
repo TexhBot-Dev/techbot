@@ -86,7 +86,7 @@ export default class GiveMoneyCommand extends Command {
 						.setName('amount')
 						.setDescription('The amount of money to give to the user.')
 						.setRequired(true)
-				)
+				), {idHints:['944645632411435049']}
 		);
 	}
 }

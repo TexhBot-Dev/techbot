@@ -110,7 +110,7 @@ export default class JobCommand extends Command {
 						.setName('value')
 						.setDescription('A value to pass in to the command. Only use if needed.')
 						.setRequired(false)
-				)
+				), {idHints:['944645718889619456']}
 		);
 	}
 }

@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Advertisement } from './advertisement';
+import { Inventory } from './inventory';
 
 /*
 import { Advertisement } from './advertisement';
@@ -20,11 +22,9 @@ export class User extends BaseEntity {
 	})
 	bank!: number;
 
-	/*
+	// @ts-ignore
 	@OneToMany((type) => Inventory, (inventory) => inventory.userId)
 	inventory!: Inventory[];
-
-	 */
 
 	@Column({
 		default: false
@@ -36,10 +36,9 @@ export class User extends BaseEntity {
 	})
 	preferredEmojiColor!: string;
 
-	/*
+	// @ts-ignore
 	@OneToMany((type) => Advertisement, (advertisement) => advertisement.userID)
 	ads?: Advertisement[];
-	 */
 
 	@Column({
 		default: 'jobless'

@@ -29,7 +29,7 @@ export default class DailyCommand extends Command {
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description)
+			builder.setName(this.name).setDescription(this.description), {idHints:['944645546642128987']}
 		);
 	}
 }

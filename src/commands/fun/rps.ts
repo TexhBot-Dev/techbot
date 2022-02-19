@@ -56,7 +56,7 @@ export default class rpsCommand extends Command {
 							['Paper', 'paper'],
 							['Scissors', 'scissors']
 						])
-				)
+				), {idHints:['944646067243331714']}
 		);
 	}
 }
