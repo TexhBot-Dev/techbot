@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, User, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser, generateErrorEmbed, parseAmount, pluralize } from '../../lib/utils';
+import { fetchUser, generateErrorEmbed, parseAmount, pluralize } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'giveMoney',

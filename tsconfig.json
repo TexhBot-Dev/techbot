@@ -4,9 +4,8 @@
 		"rootDir": "src",
 		"outDir": "dist",
 		"tsBuildInfoFile": "dist/.tsbuildinfo",
-		"target": "ESNext",
+		"target": "ES2021",
 		"removeComments": true,
-
 	},
-	"include": ["src"]
+	"include": ["src"],
 }

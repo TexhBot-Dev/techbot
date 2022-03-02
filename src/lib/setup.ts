@@ -4,7 +4,6 @@ process.env.NODE_ENV ??= 'development';
 import 'reflect-metadata';
 import '@sapphire/plugin-logger/register';
 import '@sapphire/plugin-api/register';
-import '@sapphire/plugin-editable-commands/register';
 import * as colorette from 'colorette';
 import { config } from 'dotenv-cra';
 import { join } from 'path';
@@ -22,19 +21,6 @@ inspect.defaultOptions.depth = 1;
 // Enable colorette
 colorette.createColors({ useColor: true });
 
-/*
-	type: process.env.DB_TYPE as 'better-sqlite3' | 'mariadb',
-	host: process.env.DB_HOST,
-	port: process.env.DB_PORT as unknown as number,
-	username: process.env.DB_USER,
-	password: process.env.DB_PASS,
-	database: process.env.DB_NAME,
-	synchronize: true,
- */
-//	entities: [
-//		path.join(__dirname + '/entities_die/**/*.{ts,js}'),
-//path.join(__dirname + '/entities_die/*.{ts,js}')
-//]
 export const connection = createConnection({
 	type: process.env.DB_TYPE as any,
 	host: process.env.DB_HOST,

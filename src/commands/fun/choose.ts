@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { clean } from '../../lib/utils';
+import { clean } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'choose',

@@ -2,7 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Item } from '../../lib/entities/economy/item';
-import { generateErrorEmbed } from '../../lib/utils';
+import { generateErrorEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'shop',

@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../../lib/utils';
+import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'withdraw',

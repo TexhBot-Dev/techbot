@@ -4,7 +4,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { inspect } from 'util';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
-import { send } from '@sapphire/plugin-editable-commands';
 import { VM } from 'vm2';
 import { envParseArray } from '../../lib/env-parser';
 
@@ -34,13 +33,13 @@ export default class EvalCommand extends Command {
 		const typeFooter = `**Type**: ${codeBlock('typescript', type)}`;
 
 		if (output.length > 2000) {
-			return send(message, {
+			return message.reply({
 				content: `Output was too long... sent the result as a file.\n\n${typeFooter}`,
 				files: [{ attachment: Buffer.from(output), name: 'output.js' }]
 			});
 		}
 
-		return send(message, `${output}\n${typeFooter}`);
+		return message.reply(`${output}\n${typeFooter}`);
 	}
 
 	private async eval(

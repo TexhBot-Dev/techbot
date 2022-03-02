@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser, replacer } from '../../lib/utils';
+import { fetchUser, replacer } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'clapify',

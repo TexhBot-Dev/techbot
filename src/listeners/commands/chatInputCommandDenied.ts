@@ -1,6 +1,6 @@
 import type { ChatInputCommandDeniedPayload, Events } from '@sapphire/framework';
 import { Listener, UserError } from '@sapphire/framework';
-import { generateErrorEmbed } from '../../lib/utils';
+import { generateErrorEmbed } from '../../lib/helpers';
 
 export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
 	private static humanizeTime(duration: number): string {

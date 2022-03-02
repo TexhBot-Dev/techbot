@@ -19,7 +19,7 @@ const client = new SapphireClient({
 	]
 });
 
-const main = async () => {
+(async () => {
 	try {
 		client.logger.info('Logging in');
 		await client.login();
@@ -29,6 +29,4 @@ const main = async () => {
 		client.destroy();
 		process.exit(1);
 	}
-};
-
-main();
+})()
