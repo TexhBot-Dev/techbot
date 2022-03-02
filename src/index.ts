@@ -1,5 +1,8 @@
 import './lib/setup';
 import { LogLevel, SapphireClient } from '@sapphire/framework';
+import { tokensRegex } from '@sapphire/time-utilities/dist/lib/constants';
+
+if (!tokensRegex.test(process.env.DISCORD_TOKEN as string)) throw new Error('Invalid Discord token');
 
 const client = new SapphireClient({
 	defaultPrefix: 'dr!',
