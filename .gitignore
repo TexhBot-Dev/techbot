@@ -24,12 +24,12 @@ config.ts
 package-lock.json
 
 # Environment variables
-.env
-.env.development
-.env.test
-.env.production
+!.env.project
+.env*
 
 # Database
 economy
 economy-shm
 economy-wal
+.env*
+!.env.project
