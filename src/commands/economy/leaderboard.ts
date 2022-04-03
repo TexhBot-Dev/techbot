@@ -1,7 +1,6 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { User } from '../../lib/entities/economy/user';
 
 @ApplyOptions<CommandOptions>({
 	name: 'leaderboard',
@@ -21,10 +20,10 @@ export default class LeaderboardCommand extends Command {
 			return interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
 		}
 
-		const topUsers = await User.createQueryBuilder('user')
-			.orderBy('user.wallet', 'DESC')
-			.limit(10)
-			.getMany();
+		const topUsers = (await this.container.prisma.user.findMany({
+			take: 10
+		})).sort((a, b) => b.wallet - a.wallet);
+
 		const leaderboardEmbed = new MessageEmbed();
 		const leaderboardData: string[] = [];
 
@@ -32,8 +31,8 @@ export default class LeaderboardCommand extends Command {
 
 		const validUsers = topUsers.filter((user) => {
 			if (user.wallet + user.bank < 0) return false;
-			if (!guildOnly) return false;
-			return true;
+			return guildOnly;
+
 		});
 
 		for (const user of validUsers) {

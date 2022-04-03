@@ -1,3 +1,4 @@
+/*
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -41,3 +42,6 @@ export class Advertisement extends BaseEntity {
 	@Column()
 	color!: string;
 }
+
+
+ */

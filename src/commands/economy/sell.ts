@@ -16,17 +16,28 @@ export class SellCommand extends Command {
 
 		await fetchInventory(interaction.user, await fetchItemByName(item)).then(async (inventory) => {
 			const userItem = await fetchItemByName(item);
+			if (userItem === null || inventory === null || user === null) return;
 			if (!userItem.sellable) return interaction.reply('Item is not sellable!');
 			if (inventory === undefined) return interaction.reply('You do not have that item');
-			if (inventory.amount < amount)
+			if (inventory.amount < amount) {
 				return interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!')]
 				});
-			inventory.amount -= amount;
-			await inventory.save();
+			}
 
-			user.wallet += Math.trunc(userItem.price / 2);
-			await user.save();
+			await this.container.prisma.inventory.update({
+				where: inventory,
+				data: {
+					amount: inventory.amount -= amount
+				}
+			});
+
+			await this.container.prisma.user.update({
+				where: user,
+				data: {
+					wallet: user.wallet += Math.trunc(userItem.price / 2)
+				}
+			});
 
 			return interaction.reply(
 				`Sold **${amount}** of **${item}** for **$${Math.trunc(

@@ -1,8 +1,6 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { User } from '../../lib/entities/economy/user';
-import type { Item } from '../../lib/entities/economy/item';
 
 @ApplyOptions<CommandOptions>({
 	name: 'inventory',
@@ -14,25 +12,35 @@ export default class InventoryCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userToCheck = interaction.options.getUser('user') || interaction.user;
 
-		const items: ItemDataWithAmount[] = await User.getRepository().manager.query(`
-			SELECT item.*, inventory.amount FROM item
-			JOIN inventory ON inventory.itemID = item.id
-			WHERE inventory.userId = ${userToCheck.id}
-			`);
+		const userToCheckData = await this.container.prisma.user.findFirst({
+			where: {
+				id: userToCheck.id
+			},
+			include: {
+				inventory: true
+			}
+		});
+		if (userToCheckData === null) return;
 		const inventoryEmbed = new MessageEmbed();
 
-		if (items.length === 0) {
+		if (userToCheckData.inventory.length === 0) {
 			inventoryEmbed.setDescription('You have no items in your inventory!');
 			return interaction.reply({ embeds: [inventoryEmbed] });
 		}
 
 		let itemNumber = 1;
-		for (const item of items) {
+		for (const inventory of userToCheckData.inventory) {
+			const itemData = await this.container.prisma.item.findFirst({
+				where: {
+					id: inventory.itemID
+				}
+			});
+			if (itemData === null) return;
 			inventoryEmbed.addField(
-				`${itemNumber}: ${item.name}`,
-				`Price: ${item.price.toLocaleString()}\nRarity: ${
-					item.rarity
-				}\nAmount: ${item.amount.toLocaleString()}`
+				`${itemNumber}: ${itemData.name}`,
+				`Price: ${itemData.price.toLocaleString()}\nRarity: ${
+					itemData.rarity
+				}\nAmount: ${inventory.amount.toLocaleString()}`
 			);
 			itemNumber++;
 		}
@@ -50,8 +58,4 @@ export default class InventoryCommand extends Command {
 				), {idHints:['944645718331752558']}
 		);
 	}
-}
-
-interface ItemDataWithAmount extends Item {
-	amount: number;
 }

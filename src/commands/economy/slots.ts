@@ -12,6 +12,7 @@ import { fetchGuild, fetchUser, parseAmount } from '../../lib/helpers';
 export default class SlotsCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
+		if (user === null) return;
 		const amount = parseAmount(interaction.options.getString('amount') as string, user, true);
 
 		if (amount < 20) return interaction.reply('Please gamble a proper amount, a.k.a above 20');
@@ -72,19 +73,39 @@ export default class SlotsCommand extends Command {
 		if (firstRoll === secondRoll && firstRoll === thirdRoll) {
 			setTimeout(async () => {
 				const moneyEarned = guild.slotsMoneyPool;
-				user.wallet += moneyEarned;
-				await user.save();
+				await this.container.prisma.user.update({
+					where: {
+						id: interaction.user.id
+					},
+					data: {
+						wallet: user.wallet += moneyEarned
+					}
+				});
 
-				guild.slotsMoneyPool = 0;
-				guild.slotsWinMultiplier = 0;
-				await guild.save();
+				await this.container.prisma.guild.update({
+					where: {
+						id: interaction.guild?.id
+					},
+					data: {
+						slotsWinMultiplier: 0,
+						slotsMoneyPool: 0
+					}
+				});
+
 				return interaction.followUp({ content: `CONGRATS! You won **$${moneyEarned}**` });
 			}, 2000);
 		} else {
 			setTimeout(async () => {
-				guild.slotsWinMultiplier++;
-				guild.slotsMoneyPool += amount;
-				await guild.save();
+				await this.container.prisma.guild.update({
+					where: {
+						id: interaction.guild?.id
+					},
+					data: {
+						slotsWinMultiplier: guild.slotsWinMultiplier++,
+						slotsMoneyPool: guild.slotsMoneyPool += amount
+					}
+				});
+
 				return interaction.followUp({ content: 'Sorry, you lost your money!' });
 			}, 2000);
 		}

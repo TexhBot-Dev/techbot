@@ -30,6 +30,7 @@ export default class RobCommand extends Command {
 
 		const robbedUser = await fetchUser(userToRob);
 		const robber = await fetchUser(interaction.user);
+		if (robbedUser === null || robber === null) return;
 
 		if (robbedUser.passiveMode)
 			return interaction.reply({
@@ -51,11 +52,19 @@ export default class RobCommand extends Command {
 		const lossAmount = Math.floor(robber.wallet * (Math.random() / 0.75));
 
 		if (Math.random() > 0.6) {
-			robber.wallet -= lossAmount;
-			await robber.save();
+			await this.container.prisma.user.update({
+				where: robber,
+				data: {
+					wallet: robber.wallet -= lossAmount
+				}
+			});
 
-			robbedUser.wallet += lossAmount;
-			await robbedUser.save();
+			await this.container.prisma.user.update({
+				where: robbedUser,
+				data: {
+					wallet: robber.wallet += lossAmount
+				}
+			});
 
 			const failedResponse = new MessageEmbed()
 				.setDescription(`You failed to rob <@${userToRob.id}>, and lost **$${lossAmount}**!`)
@@ -78,11 +87,19 @@ export default class RobCommand extends Command {
 
 			return interaction.reply({ embeds: [failedResponse] });
 		} else {
-			robber.wallet += winAmount;
-			await robber.save();
+			await this.container.prisma.user.update({
+				where: robber,
+				data: {
+					wallet: robber.wallet += lossAmount
+				}
+			});
 
-			robbedUser.wallet -= winAmount;
-			await robbedUser.save();
+			await this.container.prisma.user.update({
+				where: robbedUser,
+				data: {
+					wallet: robber.wallet -= lossAmount
+				}
+			});
 
 			const successResponse = new MessageEmbed()
 				.setDescription(`You successfully robbed <@${userToRob.id}>, and gained **$${winAmount}**!`)

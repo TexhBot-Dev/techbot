@@ -1,7 +1,20 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandInteraction } from 'discord.js';
-import { fetchUser, generateErrorEmbed } from '../../lib/helpers';
+import { generateErrorEmbed } from '../../lib/helpers';
+import type { User } from 'discord.js';
+import type { PrismaClient } from '@prisma/client';
+
+const updatePerferedEmojuColor = async (user: User, color: string, prisma: PrismaClient) => {
+	return await prisma.user.update({
+		where: {
+			id: user.id
+		},
+		data: {
+			preferredEmojiColor: color
+		}
+	});
+}
 
 @ApplyOptions<CommandOptions>({
 	name: 'setting',
@@ -11,7 +24,6 @@ import { fetchUser, generateErrorEmbed } from '../../lib/helpers';
 export default class SettingCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const option = interaction.options.getString('string', true);
-		const user = await fetchUser(interaction.user);
 
 		switch (option.toLowerCase()) {
 			case 'emojicolor':
@@ -21,30 +33,30 @@ export default class SettingCommand extends Command {
 				switch (toggle) {
 					case 'default':
 					case 'yellow':
-						user.preferredEmojiColor = 'default';
+						await updatePerferedEmojuColor(interaction.user, 'default', this.container.prisma);
 						colorName = 'default';
 						break;
 					case 'pale':
 					case 'white':
-						user.preferredEmojiColor = 'pale';
+						await updatePerferedEmojuColor(interaction.user, 'pale', this.container.prisma);
 						colorName = 'pale';
 						break;
 					case 'cream':
 					case 'cream white':
-						user.preferredEmojiColor = 'cream_white';
+						await updatePerferedEmojuColor(interaction.user, 'cream_white', this.container.prisma);
 						colorName = 'cream_white';
 						break;
 					case 'brown':
-						user.preferredEmojiColor = 'brown';
+						await updatePerferedEmojuColor(interaction.user, 'brown', this.container.prisma);
 						colorName = 'brown';
 						break;
 					case 'dark brown':
-						user.preferredEmojiColor = 'dark_brown';
+						await updatePerferedEmojuColor(interaction.user, 'dark_brown', this.container.prisma);
 						colorName = 'dark_brown';
 						break;
 					case 'black':
 					case 'dark':
-						user.preferredEmojiColor = 'black';
+						await updatePerferedEmojuColor(interaction.user, 'black', this.container.prisma);
 						colorName = 'black';
 						break;
 					default:
@@ -59,7 +71,6 @@ export default class SettingCommand extends Command {
 						]
 					});
 
-				await user.save();
 				await interaction.reply(
 					`Changed your preferred emoji color to **${colorName.toProperCase()}**.`
 				);

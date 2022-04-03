@@ -59,8 +59,13 @@ export default class BegCommand extends Command {
 		);
 
 		fetchUser(interaction.user).then((user) => {
-			user.wallet += moneyEarned;
-			user.save();
+			if (user === null) return;
+			this.container.prisma.user.update({
+				where: user,
+				data: {
+					wallet: user.wallet += moneyEarned
+				}
+			});
 		});
 
 		BegEmbed.setTitle(`You begged ${people[Math.floor(Math.random() * people.length)]} for money`)

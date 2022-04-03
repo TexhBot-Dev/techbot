@@ -11,6 +11,7 @@ import { fetchUser, generateErrorEmbed } from '../../lib/helpers';
 export default class WorkCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
+		if (user === null) return;
 		const workEmbed = new MessageEmbed();
 		const job = user.currentJob;
 
@@ -33,8 +34,12 @@ export default class WorkCommand extends Command {
 		} as const;
 
 		let moneyEarned = jobs[job.toLowerCase()];
-		user.wallet += moneyEarned;
-		await user.save();
+		await this.container.prisma.user.update({
+			where: user,
+			data: {
+				wallet: user.wallet += moneyEarned
+			}
+		});
 
 		workEmbed
 			.setTitle(`You worked as a ${job.toProperCase()}`)

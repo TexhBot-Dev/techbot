@@ -1,3 +1,4 @@
+/*
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -14,3 +15,6 @@ export class Jobs extends BaseEntity {
 	@Column()
 	minimumXP!: number;
 }
+
+
+ */

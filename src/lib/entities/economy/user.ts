@@ -1,11 +1,7 @@
+/*
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { Advertisement } from './advertisement';
 import { Inventory } from './inventory';
-
-/*
-import { Advertisement } from './advertisement';
-import { Inventory } from './inventory';
- */
 
 @Entity()
 export class User extends BaseEntity {
@@ -55,3 +51,5 @@ export class User extends BaseEntity {
 	})
 	passiveMode!: boolean;
 }
+
+ */

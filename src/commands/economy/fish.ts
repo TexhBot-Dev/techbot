@@ -16,15 +16,22 @@ export class FishCommand extends Command {
 			await fetchItemByName('fishing_pole')
 		);
 
-		if (doesUserHaveFishingPole.amount === 0) return interaction.reply('You do not have a fishing pole!');
+		if (doesUserHaveFishingPole === null || doesUserHaveFishingPole.amount === 0) return interaction.reply('You do not have a fishing pole!');
 		const fishing_success = !!Math.random();
 
 		if (fishing_success) {
 			const fish = await fetchItemByName('fish');
+			if (fish === null) return;
 			fetchInventory(interaction.user, fish).then(async (inventory) => {
+				if (inventory === null) return;
 				const fish_amount = Math.round(Math.random() * (10 - 1) + 1);
-				inventory.amount += fish_amount;
-				await inventory.save();
+
+				this.container.prisma.inventory.update({
+					where: inventory,
+					data: {
+						amount: inventory.amount += fish_amount
+					}
+				})
 			});
 			return interaction.reply(`You caught a ${fish.name}!`);
 		} else return interaction.reply('You failed to catch anything!');

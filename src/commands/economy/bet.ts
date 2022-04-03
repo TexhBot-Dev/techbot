@@ -11,6 +11,7 @@ import { fetchUser, generateEmbed, parseAmount } from '../../lib/helpers';
 export default class BetCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userDetails = await fetchUser(interaction.user);
+		if (userDetails === null) return;
 		const betAmount = parseAmount(interaction.options.getString('amount') as string, userDetails);
 
 		if (betAmount < 10 || isNaN(betAmount))
@@ -21,8 +22,12 @@ export default class BetCommand extends Command {
 		const chance = Math.random() < 0.5;
 
 		if (chance) {
-			userDetails.wallet += betAmount;
-			await userDetails.save();
+			await this.container.prisma.user.update({
+				where: userDetails,
+				data: {
+					wallet: userDetails.wallet += betAmount
+				}
+			});
 			return interaction.reply({
 				embeds: [
 					generateEmbed(
@@ -33,8 +38,12 @@ export default class BetCommand extends Command {
 				]
 			});
 		} else {
-			userDetails.wallet -= betAmount;
-			await userDetails.save();
+			await this.container.prisma.user.update({
+				where: userDetails,
+				data: {
+					wallet: userDetails.wallet -= betAmount
+				}
+			});
 			return interaction.reply({
 				embeds: [
 					generateEmbed(

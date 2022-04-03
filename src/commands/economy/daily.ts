@@ -14,9 +14,14 @@ export default class DailyCommand extends Command {
 		const embed = new MessageEmbed();
 		const moneyEarned = Math.round(Math.random() * (3000 - 750) + 750);
 
-		fetchUser(interaction.user).then((user) => {
-			user.wallet += moneyEarned;
-			user.save();
+		fetchUser(interaction.user).then(async (user) => {
+			if (user === null) return;
+			await this.container.prisma.user.update({
+				where: user,
+				data: {
+					wallet: user.wallet += moneyEarned
+				}
+			});
 		});
 
 		embed

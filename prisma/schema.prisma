@@ -24,16 +24,16 @@ model User {
   currentJob  String      @default("jobless")
   jobEXP      Int         @default(0)
   passiveMode Boolean     @default(false)
+  preferredEmojiColor String @default("yellow")
+  premium Boolean @default(false)
 }
 
 model Inventory {
   id     Int    @id @default(autoincrement())
   user   User   @relation("Inventory", fields: [userID], references: [id])
   userID String
-  item   Item   @relation(fields: [itemId], references: [id])
   itemID Int
   amount Int    @default(0)
-  itemId Int
 }
 
 model Item {
@@ -46,7 +46,6 @@ model Item {
   sellable    Boolean     @default(false)
   tradeable   Boolean     @default(false)
   collectable Boolean     @default(false)
-  Inventory   Inventory[]
 }
 
 model Job {

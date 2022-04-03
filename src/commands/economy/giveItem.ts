@@ -28,19 +28,30 @@ export default class GiveItemCommand extends Command {
 			}); // return message.reply('Please specify a valid amount of money to withdraw');
 		// Senders Inventory
 		fetchInventory(interaction.user, await fetchItemByName(itemToGive)).then((inventory) => {
-			if (inventory === undefined) return interaction.reply('You do not have that item');
-			if (inventory.amount < amount)
+			if (inventory === null) return interaction.reply('You do not have that item');
+			if (inventory.amount < amount) {
 				return interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!')]
 				});
-			inventory.amount -= amount;
-			inventory.save();
-			return null;
+			}
+
+			this.container.prisma.inventory.update({
+				where: inventory,
+				data: {
+					amount: inventory.amount -= amount
+				}
+			});
+			return;
 		});
 		// Receivers Inventory
 		fetchInventory(userToGiveTo, await fetchItemByName(itemToGive)).then((inventory) => {
-			inventory.amount += amount;
-			inventory.save();
+			if (inventory === null) return;
+			this.container.prisma.inventory.update({
+				where: inventory,
+				data: {
+					amount: inventory.amount += amount
+				}
+			});
 		});
 
 		// Send Message to Webhook

@@ -12,6 +12,7 @@ import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../..
 export default class DepositCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
+		if (user === null) return;
 		const arg = interaction.options.getString('amount') as string;
 		const amountToDeposit = parseAmount(arg, user, true);
 
@@ -46,9 +47,13 @@ export default class DepositCommand extends Command {
 				ephemeral: true
 			});
 
-		user.wallet -= amountToDeposit;
-		user.bank += amountToDeposit;
-		await user.save();
+		this.container.prisma.user.update({
+			where: user,
+			data: {
+				wallet: user.wallet -= amountToDeposit,
+				bank: user.bank += amountToDeposit
+			}
+		});
 
 		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi
 		const webhook = new WebhookClient({
