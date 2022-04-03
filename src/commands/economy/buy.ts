@@ -16,10 +16,11 @@ export default class BuyCommand extends Command {
 		const user = await fetchUser(interaction.user);
 
 		if (user === null) return;
-		if (item === null)
+		if (item === null) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed(`Invalid item \'${itemToBuy}\' specified!`, 'Invalid Item Name')]
 			});
+		}
 
 		if (user.wallet < item.price!) {
 			return interaction.reply({
@@ -45,8 +46,10 @@ export default class BuyCommand extends Command {
 
 		fetchInventory(interaction.user, item).then((inventory) => {
 			if (inventory === null) return;
-			this.container.prisma.inventory.update({
-				where: inventory,
+			await this.container.prisma.inventory.update({
+				where: {
+					id: inventory.id
+				},
 				data: {
 					amount: inventory.amount++
 				}

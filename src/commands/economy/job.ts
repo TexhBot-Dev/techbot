@@ -15,10 +15,10 @@ export default class JobCommand extends Command {
 		const value = interaction.options.getString('value');
 		const user = await fetchUser(interaction.user);
 		const jobs = await this.container.prisma.job.findMany();
-
 		if (user === null || jobs === null) return;
 
-		switch (toDo) {
+		console.log(toDo)
+		switch (toDo?.toLowerCase()) {
 			case 'list':
 				let i = 0;
 				const fields: { name: string; value: any }[] = [];
@@ -44,13 +44,16 @@ export default class JobCommand extends Command {
 				}
 
 				const job = jobs.filter(a => a.name === value.replaceAll(' ', '_'))[0];
+				console.log(job)
 
 				if (job === undefined) {
 					return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
 				}
 
 				await this.container.prisma.user.update({
-					where: user,
+					where: {
+						id: user.id
+					},
 					data: {
 						currentJob: job.name
 					}

@@ -32,7 +32,8 @@ const client = new SapphireClient({
 		container.prisma = new PrismaClient();
 	} catch (error) {
 		client.logger.fatal(error);
-		client.destroy();
+		await client.destroy();
+		await container.prisma.$disconnect();
 		process.exit(1);
 	}
 })();

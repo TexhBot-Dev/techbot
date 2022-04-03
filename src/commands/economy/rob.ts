@@ -17,22 +17,25 @@ export default class RobCommand extends Command {
 				ephemeral: true
 			});
 
-		if (interaction.user.id === userToRob.id)
+		if (interaction.user.id === userToRob.id) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed('You can\'t rob yourself.', 'Invalid User')],
 				ephemeral: true
 			});
-		if (userToRob.bot)
+		}
+
+		if (userToRob.bot) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed('You can\'t rob bots!', 'Invalid User')],
 				ephemeral: true
 			});
+		}
 
 		const robbedUser = await fetchUser(userToRob);
 		const robber = await fetchUser(interaction.user);
 		if (robbedUser === null || robber === null) return;
 
-		if (robbedUser.passiveMode)
+		if (robbedUser.passiveMode) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -42,25 +45,32 @@ export default class RobCommand extends Command {
 				],
 				ephemeral: true
 			});
-		if (robber.passiveMode)
+		}
+
+		if (robber.passiveMode) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed('You can\'t rob while in passive mode!', 'Passive Mode Enabled')],
 				ephemeral: true
 			});
+		}
 
 		const winAmount = Math.floor(robbedUser.wallet * (Math.random() / 0.75));
 		const lossAmount = Math.floor(robber.wallet * (Math.random() / 0.75));
 
 		if (Math.random() > 0.6) {
 			await this.container.prisma.user.update({
-				where: robber,
+				where: {
+					id: robber.id
+				},
 				data: {
 					wallet: robber.wallet -= lossAmount
 				}
 			});
 
 			await this.container.prisma.user.update({
-				where: robbedUser,
+				where: {
+					id: robbedUser.id
+				},
 				data: {
 					wallet: robber.wallet += lossAmount
 				}
@@ -88,14 +98,18 @@ export default class RobCommand extends Command {
 			return interaction.reply({ embeds: [failedResponse] });
 		} else {
 			await this.container.prisma.user.update({
-				where: robber,
+				where: {
+					id: robber.id
+				},
 				data: {
 					wallet: robber.wallet += lossAmount
 				}
 			});
 
 			await this.container.prisma.user.update({
-				where: robbedUser,
+				where: {
+					id: robbedUser.id
+				},
 				data: {
 					wallet: robber.wallet -= lossAmount
 				}

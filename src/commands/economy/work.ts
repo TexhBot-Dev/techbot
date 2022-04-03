@@ -15,7 +15,7 @@ export default class WorkCommand extends Command {
 		const workEmbed = new MessageEmbed();
 		const job = user.currentJob;
 
-		if (job === 'jobless')
+		if (job === 'jobless') {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -24,6 +24,7 @@ export default class WorkCommand extends Command {
 					)
 				]
 			});
+		}
 
 		const jobs: Record<string, number> = {
 			jobless: 0,
@@ -35,7 +36,9 @@ export default class WorkCommand extends Command {
 
 		let moneyEarned = jobs[job.toLowerCase()];
 		await this.container.prisma.user.update({
-			where: user,
+			where: {
+				id: user.id
+			},
 			data: {
 				wallet: user.wallet += moneyEarned
 			}

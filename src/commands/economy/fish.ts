@@ -26,8 +26,10 @@ export class FishCommand extends Command {
 				if (inventory === null) return;
 				const fish_amount = Math.round(Math.random() * (10 - 1) + 1);
 
-				this.container.prisma.inventory.update({
-					where: inventory,
+				await this.container.prisma.inventory.update({
+					where: {
+						id: inventory.id
+					},
 					data: {
 						amount: inventory.amount += fish_amount
 					}

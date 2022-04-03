@@ -11,7 +11,7 @@ import { srcDir } from './constants';
 // Setup TypeORM
 
 // Read env var
-config({ path: join(srcDir, '.env') });
+config({ path: join(srcDir, '.env.development') });
 
 // Set default inspection depth
 inspect.defaultOptions.depth = 1;

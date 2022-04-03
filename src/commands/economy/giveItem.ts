@@ -15,17 +15,25 @@ export default class GiveItemCommand extends Command {
 		const itemToGive = interaction.options.getString('item') as string;
 		const amount = Number(interaction.options.getString('amount')) as number;
 
-		if (userToGiveTo.id === interaction.user.id)
+		if (userToGiveTo.id === interaction.user.id) {
 			return interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!')] });
+		}
 
-		if (userToGiveTo.bot)
+
+		if (userToGiveTo.bot) {
 			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!')] });
-		if (itemToGive === null)
+		}
+
+		if (itemToGive === null) {
 			return interaction.reply({ embeds: [generateErrorEmbed('Invalid Item Specified!')] });
-		if (amount < 0)
+		}
+
+		if (amount < 0) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw')]
 			}); // return message.reply('Please specify a valid amount of money to withdraw');
+		}
+
 		// Senders Inventory
 		fetchInventory(interaction.user, await fetchItemByName(itemToGive)).then((inventory) => {
 			if (inventory === null) return interaction.reply('You do not have that item');
@@ -35,8 +43,10 @@ export default class GiveItemCommand extends Command {
 				});
 			}
 
-			this.container.prisma.inventory.update({
-				where: inventory,
+			await this.container.prisma.inventory.update({
+				where: {
+					id: inventory.id
+				},
 				data: {
 					amount: inventory.amount -= amount
 				}
@@ -46,8 +56,10 @@ export default class GiveItemCommand extends Command {
 		// Receivers Inventory
 		fetchInventory(userToGiveTo, await fetchItemByName(itemToGive)).then((inventory) => {
 			if (inventory === null) return;
-			this.container.prisma.inventory.update({
-				where: inventory,
+			await this.container.prisma.inventory.update({
+				where: {
+					id: inventory.id
+				},
 				data: {
 					amount: inventory.amount += amount
 				}

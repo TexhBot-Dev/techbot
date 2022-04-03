@@ -18,7 +18,9 @@ export default class TogglePassiveModeCommand extends Command {
 			if (user === null) return;
 
 			await this.container.prisma.user.update({
-				where: user,
+				where: {
+					id: user.id
+				},
 				data: {
 					passiveMode: newValue
 				}

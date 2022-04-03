@@ -23,7 +23,9 @@ export default class BetCommand extends Command {
 
 		if (chance) {
 			await this.container.prisma.user.update({
-				where: userDetails,
+				where: {
+					id: userDetails.id
+				},
 				data: {
 					wallet: userDetails.wallet += betAmount
 				}
@@ -39,7 +41,9 @@ export default class BetCommand extends Command {
 			});
 		} else {
 			await this.container.prisma.user.update({
-				where: userDetails,
+				where: {
+					id: userDetails.id
+				},
 				data: {
 					wallet: userDetails.wallet -= betAmount
 				}

@@ -45,7 +45,9 @@ export default class WithdrawCommand extends Command {
 		}
 
 		await this.container.prisma.user.update({
-			where: user,
+			where: {
+				id: user.id
+			},
 			data: {
 				wallet: user.wallet += amountToWithdraw,
 				bank: user.bank -= amountToWithdraw

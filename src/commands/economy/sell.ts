@@ -26,7 +26,9 @@ export class SellCommand extends Command {
 			}
 
 			await this.container.prisma.inventory.update({
-				where: inventory,
+				where: {
+					id: inventory.id
+				},
 				data: {
 					amount: inventory.amount -= amount
 				}

@@ -30,8 +30,10 @@ export default class GiveMoneyCommand extends Command {
 			return interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!')] });
 		}
 
-		this.container.prisma.user.update({
-			where: author,
+		await this.container.prisma.user.update({
+			where: {
+				id: author.id
+			},
 			data: {
 				wallet: author.wallet -= amount
 			}
@@ -39,8 +41,10 @@ export default class GiveMoneyCommand extends Command {
 
 		const user = await fetchUser(receiver);
 		if (user === null) return;
-		this.container.prisma.user.update({
-			where: user,
+		await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
 			data: {
 				wallet: user.wallet += amount
 			}

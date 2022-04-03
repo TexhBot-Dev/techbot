@@ -47,8 +47,10 @@ export default class DepositCommand extends Command {
 				ephemeral: true
 			});
 
-		this.container.prisma.user.update({
-			where: user,
+		await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
 			data: {
 				wallet: user.wallet -= amountToDeposit,
 				bank: user.bank += amountToDeposit

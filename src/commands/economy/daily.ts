@@ -17,7 +17,9 @@ export default class DailyCommand extends Command {
 		fetchUser(interaction.user).then(async (user) => {
 			if (user === null) return;
 			await this.container.prisma.user.update({
-				where: user,
+				where: {
+					id: user.id
+				},
 				data: {
 					wallet: user.wallet += moneyEarned
 				}
