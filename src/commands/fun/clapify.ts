@@ -13,6 +13,7 @@ export default class clapifyCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const text = interaction.options.getString('text') as string;
 		const user = await fetchUser(interaction.user);
+
 		const emoji = replacer(
 			user.preferredEmojiColor,
 			{

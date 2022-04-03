@@ -13,11 +13,13 @@ export default class BuyCommand extends Command {
 		const itemToBuy = interaction.options.getString('item') as string;
 
 		const item = await fetchItemByName(itemToBuy.replaceAll(' ', '_'));
-		if (item === undefined)
+		const user = await fetchUser(interaction.user);
+
+		if (item === null) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed(`Invalid item \'${itemToBuy}\' specified!`, 'Invalid Item Name')]
 			});
-		const user = await fetchUser(interaction.user);
+		}
 
 		if (user.wallet < item.price!) {
 			return interaction.reply({
@@ -32,12 +34,24 @@ export default class BuyCommand extends Command {
 			});
 		}
 
-		user.wallet -= item.price;
-		await user.save();
+		await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				wallet: user.wallet - item.price
+			}
+		});
 
-		fetchInventory(interaction.user, item).then((inventory) => {
-			inventory.amount++;
-			inventory.save();
+		fetchInventory(interaction.user, item).then(async (inventory) => {
+			await this.container.prisma.inventory.update({
+				where: {
+					id: inventory.id
+				},
+				data: {
+					amount: inventory.amount++
+				}
+			});
 		});
 
 		return interaction.reply(`You bought **${item.name}** for **$${item.price.toLocaleString()}**`);

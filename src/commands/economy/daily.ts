@@ -14,14 +14,20 @@ export default class DailyCommand extends Command {
 		const embed = new MessageEmbed();
 		const moneyEarned = Math.round(Math.random() * (3000 - 750) + 750);
 
-		fetchUser(interaction.user).then((user) => {
-			user.wallet += moneyEarned;
-			user.save();
+		fetchUser(interaction.user).then(async (user) => {
+			await this.container.prisma.user.update({
+				where: {
+					id: user.id
+				},
+				data: {
+					wallet: user.wallet + moneyEarned
+				}
+			});
 		});
 
 		embed
 			.setTitle('Daily Coins :D')
-			.setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tommorow.`)
+			.setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tomorrow.`)
 			.setColor('BLUE');
 
 		return interaction.reply({ embeds: [embed] });

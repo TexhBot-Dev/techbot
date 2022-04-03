@@ -1,3 +1,4 @@
+/*
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -16,3 +17,6 @@ export class Inventory extends BaseEntity {
 	})
 	amount!: number;
 }
+
+
+ */

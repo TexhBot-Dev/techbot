@@ -1,8 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchGuild, fetchUser } from '../../lib/helpers';
-import { Jobs } from '../../lib/entities/economy/jobs';
+import { fetchUser } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'job',
@@ -14,13 +13,11 @@ export default class JobCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const toDo = interaction.options.getString('option');
 		const value = interaction.options.getString('value');
-		const guild = await fetchGuild(interaction.guild!);
 		const user = await fetchUser(interaction.user);
+		const jobs = await this.container.prisma.job.findMany();
 
-		switch (toDo) {
+		switch (toDo?.toLowerCase()) {
 			case 'list':
-				const jobs = await Jobs.createQueryBuilder('job').getMany();
-
 				let i = 0;
 				const fields: { name: string; value: any }[] = [];
 				for (const job of jobs) {
@@ -34,22 +31,30 @@ export default class JobCommand extends Command {
 				const listEmbed = new MessageEmbed()
 					.setTitle('Available Jobs')
 					.setDescription(fields.map((f) => `**${f.name}:** ${f.value}`).join('\n'))
-					.setFooter({ text: `To get a job run ${guild.prefix}jobs select <job name>!` })
+					.setFooter({ text: `To get a job run jobs select <job name>!` })
 					.setColor(0x00ff00);
 
 				await interaction.reply({ embeds: [listEmbed] });
 				break;
 			case 'select':
-				if (value === null)
+				if (value === null) {
 					return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
+				}
 
-				const job = await Jobs.findOne({ where: { name: value.replaceAll(' ', '_') } });
+				const job = jobs.filter(a => a.name === value.replaceAll(' ', '_'))[0];
 
-				if (job === undefined)
+				if (job === undefined) {
 					return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
+				}
 
-				user.currentJob = job.name;
-				await user.save();
+				await this.container.prisma.user.update({
+					where: {
+						id: user.id
+					},
+					data: {
+						currentJob: job.name
+					}
+				});
 
 				await interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
 				break;

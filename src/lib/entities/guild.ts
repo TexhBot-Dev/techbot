@@ -1,3 +1,4 @@
+/*
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
@@ -18,3 +19,6 @@ export class Guild extends BaseEntity {
 	})
 	slotsMoneyPool!: number;
 }
+
+
+ */

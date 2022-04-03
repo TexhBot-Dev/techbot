@@ -58,9 +58,15 @@ export default class BegCommand extends Command {
 			Math.random() * (600 - people.length) + (people.length - 1)
 		);
 
-		fetchUser(interaction.user).then((user) => {
-			user.wallet += moneyEarned;
-			user.save();
+		fetchUser(interaction.user).then(async (user) => {
+			await this.container.prisma.user.update({
+				where: {
+					id: user.id
+				},
+				data: {
+					wallet: user.wallet + moneyEarned
+				}
+			});
 		});
 
 		BegEmbed.setTitle(`You begged ${people[Math.floor(Math.random() * people.length)]} for money`)

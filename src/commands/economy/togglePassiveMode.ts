@@ -14,9 +14,17 @@ export default class TogglePassiveModeCommand extends Command {
 
 		if (newValue === null) return interaction.reply('You need to specify a boolean!');
 
-		fetchUser(interaction.user).then((user) => {
-			user.passiveMode = newValue;
-			user.save();
+		fetchUser(interaction.user).then(async (user) => {
+			if (user === null) return;
+
+			await this.container.prisma.user.update({
+				where: {
+					id: user.id
+				},
+				data: {
+					passiveMode: newValue
+				}
+			});
 		});
 
 		return interaction.reply(`Your passive mode has been set to **${newValue}**!`);

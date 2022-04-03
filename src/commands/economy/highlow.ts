@@ -40,7 +40,7 @@ export default class HighlowCommand extends Command {
 			interaction.customId === 'higher' ||
 			interaction.customId === 'jackpot' ||
 			(interaction.customId === 'lower' && interaction.user.id === interaction.user.id);
-		msg?.awaitMessageComponent({ filter, time: 30_000 }).then((interaction) => {
+		msg?.awaitMessageComponent({ filter, time: 30_000 }).then(async (interaction) => {
 			const bet = interaction.customId;
 			const testNum = Math.floor(Math.random() * 100) + 1;
 
@@ -63,6 +63,15 @@ export default class HighlowCommand extends Command {
 			} else {
 				user.wallet -= amount;
 			}
+
+			await this.container.prisma.user.update({
+				where: {
+					id: user.id
+				},
+				data: {
+					wallet: user.wallet
+				}
+			});
 
 			const newEmbed = new MessageEmbed()
 				.setTitle('Highlow')

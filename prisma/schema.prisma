@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Guild {
+  id                 String @id
+  slotsWinMultiplier Int    @default(0)
+  slotsMoneyPool     Int    @default(0)
+}
+
+model User {
+  id                  String      @id
+  wallet              Int         @default(0)
+  bank                Int         @default(0)
+  currentJob          String      @default("jobless")
+  jobEXP              Int         @default(0)
+  passiveMode         Boolean     @default(false)
+  preferredEmojiColor String      @default("yellow")
+  premium             Boolean     @default(false)
+  inventory           Inventory[] @relation("Inventory")
+}
+
+model Inventory {
+  id     Int    @id @default(autoincrement())
+  userID String
+  itemID Int
+  amount Int    @default(0)
+  user   User   @relation("Inventory", fields: [userID], references: [id])
+}
+
+model Item {
+  id          Int     @id @default(autoincrement())
+  name        String
+  price       Int
+  rarity      String
+  emoji       String?
+  description String  @default("I was forgotten about by the devs ;(")
+  sellable    Boolean @default(false)
+  tradeable   Boolean @default(false)
+  collectable Boolean @default(false)
+}
+
+model Job {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String @default("I was forgotten about by the devs ;(")
+  minimumXP   Int    @default(0)
+}

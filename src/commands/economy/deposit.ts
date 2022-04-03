@@ -15,7 +15,7 @@ export default class DepositCommand extends Command {
 		const arg = interaction.options.getString('amount') as string;
 		const amountToDeposit = parseAmount(arg, user, true);
 
-		if (isNaN(amountToDeposit))
+		if (isNaN(amountToDeposit)) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -25,7 +25,9 @@ export default class DepositCommand extends Command {
 				],
 				ephemeral: true
 			});
-		if (amountToDeposit > user.wallet)
+		}
+
+		if (amountToDeposit > user.wallet) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -35,7 +37,9 @@ export default class DepositCommand extends Command {
 				],
 				ephemeral: true
 			});
-		if (!isSafeInteger(amountToDeposit))
+		}
+
+		if (!isSafeInteger(amountToDeposit)) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -45,10 +49,17 @@ export default class DepositCommand extends Command {
 				],
 				ephemeral: true
 			});
+		}
 
-		user.wallet -= amountToDeposit;
-		user.bank += amountToDeposit;
-		await user.save();
+		await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				wallet: user.wallet - amountToDeposit,
+				bank: user.bank + amountToDeposit
+			}
+		});
 
 		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi
 		const webhook = new WebhookClient({

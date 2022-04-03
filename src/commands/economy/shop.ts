@@ -1,8 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Item } from '../../lib/entities/economy/item';
-import { generateErrorEmbed } from '../../lib/helpers';
+import { fetchItemByName, generateErrorEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'shop',
@@ -13,8 +12,8 @@ export default class ShopCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const specificItem = interaction.options.getString('item') || '';
 		if (specificItem.length > 0) {
-			const item = await Item.findOne({ where: { name: specificItem.toProperCase() } });
-			if (item !== undefined) {
+			const item = await fetchItemByName(specificItem.toProperCase());
+			if (item !== null) {
 				const embed = new MessageEmbed()
 					.setTitle(item.name.toProperCase())
 					.setDescription(`> ${item.description}\nPrice: $${item.price.toLocaleString()}`)
@@ -32,7 +31,8 @@ export default class ShopCommand extends Command {
 				});
 			}
 		}
-		const items = await Item.createQueryBuilder('item').orderBy('item.price', 'ASC').getMany();
+
+		const items = await this.container.prisma.item.findMany().then(items => items.sort((a,b) => a.name.normalize().localeCompare(b.name.normalize())));
 
 		const embed = new MessageEmbed()
 			.setTitle('Items For Sale')

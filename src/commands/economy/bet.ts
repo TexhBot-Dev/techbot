@@ -13,16 +13,25 @@ export default class BetCommand extends Command {
 		const userDetails = await fetchUser(interaction.user);
 		const betAmount = parseAmount(interaction.options.getString('amount') as string, userDetails);
 
-		if (betAmount < 10 || isNaN(betAmount))
+		if (betAmount < 10 || isNaN(betAmount)) {
 			return interaction.reply('Please bet a valid amount above 10!');
-		if (userDetails.wallet < betAmount)
+		}
+
+		if (userDetails.wallet < betAmount) {
 			return interaction.reply(`Sorry ${interaction.user.username}, you don't have enough money!`);
+		}
 
 		const chance = Math.random() < 0.5;
 
 		if (chance) {
-			userDetails.wallet += betAmount;
-			await userDetails.save();
+			await this.container.prisma.user.update({
+				where: {
+					id: userDetails.id
+				},
+				data: {
+					wallet: userDetails.wallet + betAmount
+				}
+			});
 			return interaction.reply({
 				embeds: [
 					generateEmbed(
@@ -33,8 +42,14 @@ export default class BetCommand extends Command {
 				]
 			});
 		} else {
-			userDetails.wallet -= betAmount;
-			await userDetails.save();
+			await this.container.prisma.user.update({
+				where: {
+					id: userDetails.id
+				},
+				data: {
+					wallet: userDetails.wallet - betAmount
+				}
+			});
 			return interaction.reply({
 				embeds: [
 					generateEmbed(

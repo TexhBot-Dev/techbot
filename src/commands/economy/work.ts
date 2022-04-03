@@ -14,7 +14,7 @@ export default class WorkCommand extends Command {
 		const workEmbed = new MessageEmbed();
 		const job = user.currentJob;
 
-		if (job === 'jobless')
+		if (job === 'jobless') {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -23,6 +23,7 @@ export default class WorkCommand extends Command {
 					)
 				]
 			});
+		}
 
 		const jobs: Record<string, number> = {
 			jobless: 0,
@@ -33,8 +34,14 @@ export default class WorkCommand extends Command {
 		} as const;
 
 		let moneyEarned = jobs[job.toLowerCase()];
-		user.wallet += moneyEarned;
-		await user.save();
+		await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				wallet: user.wallet + moneyEarned
+			}
+		});
 
 		workEmbed
 			.setTitle(`You worked as a ${job.toProperCase()}`)

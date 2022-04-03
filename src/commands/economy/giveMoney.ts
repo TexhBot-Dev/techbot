@@ -15,21 +15,38 @@ export default class GiveMoneyCommand extends Command {
 		const author = await fetchUser(interaction.user);
 		const amount = parseAmount(interaction.options.getString('amount') as string, author);
 
-		if (receiver.bot || receiver.id === interaction.user.id)
+		if (receiver.bot || receiver.id === interaction.user.id) {
 			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!')] });
-		if (isNaN(amount) || amount < 0)
+		}
+
+		if (isNaN(amount) || amount < 0) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw')]
 			});
+		}
 
-		if (author.wallet < amount)
+		if (author.wallet < amount) {
 			return interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!')] });
-		author.wallet -= amount;
-		await author.save();
+		}
+
+		await this.container.prisma.user.update({
+			where: {
+				id: author.id
+			},
+			data: {
+				wallet: author.wallet - amount
+			}
+		});
 
 		const user = await fetchUser(receiver);
-		user.wallet += amount;
-		await user.save();
+		await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				wallet: user.wallet + amount
+			}
+		});
 
 		// Send Message to Webhook
 		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi

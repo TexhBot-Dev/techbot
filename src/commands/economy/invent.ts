@@ -37,8 +37,15 @@ export class InventCommand extends Command {
 		// Choose random amount of money less than 500
 		const money = Math.floor(Math.random() * 500);
 		fetchUser(interaction.user).then(async (user) => {
-			user.wallet += money;
-			await user.save();
+			if (user === null) return;
+			await this.container.prisma.user.update({
+				where: {
+					id: user.id
+				},
+				data: {
+					wallet: user.wallet + money
+				}
+			});
 		});
 
 		return interaction.reply(`You invented ${invention} and earned ${money}$`);

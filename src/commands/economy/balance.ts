@@ -13,12 +13,13 @@ export default class BalanceCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const balanceEmbed = new MessageEmbed();
 		const user = interaction.options.getUser('user', false) ?? interaction.user;
-		const balance = await fetchUser(user);
+		const dBUserData = await fetchUser(user);
+
 		balanceEmbed
 			.setTitle(`${user.username}, this is your balance!`)
-			.addField('Wallet:', balance.wallet.toLocaleString())
-			.addField('Bank:', balance.bank.toLocaleString())
-			.addField('Total:', (balance.wallet + balance.bank).toLocaleString())
+			.addField('Wallet:', dBUserData.wallet.toLocaleString())
+			.addField('Bank:', dBUserData.bank.toLocaleString())
+			.addField('Total:', (dBUserData.wallet + dBUserData.bank).toLocaleString())
 			.setColor('#4EAFF6');
 		return interaction.reply({ embeds: [balanceEmbed] });
 	}

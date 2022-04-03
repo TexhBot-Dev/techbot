@@ -1,9 +1,7 @@
-import { Inventory } from '../entities/economy/inventory';
-import { Item } from '../entities/economy/item';
-import { User as DBUser } from '../entities/economy/user';
-import { Guild as DBGuild } from '../entities/guild';
-import type { Guild as DiscordGuild, User as DiscordUser} from 'discord.js';
+import type { Guild as DBGuild, Inventory, Item, User as DBUser } from '@prisma/client';
+import type { Guild as DiscordGuild, User as DiscordUser } from 'discord.js';
 import { isSafeInteger } from './numberHelpers';
+import { container } from '@sapphire/framework';
 
 /**
  * Parses Strings/Numbers for use with DBUser
@@ -42,12 +40,13 @@ export const parseAmount = (amount: string | number, user: DBUser, useWallet: bo
  * @example
  * const item = await fetchItem('apple');
  */
-export const fetchItemByName = (name: string): Promise<Item> => {
-    const item = Item.findOne({ where: { name: name } });
-    if (item === undefined) {
+export const fetchItemByName = async (name: string): Promise<Item | null> => {
+    const item = await container.prisma.item.findFirst({ where: { name } });
+    if (item === null) {
         throw new Error(`Item with name ${name} not found`);
+        return null;
     }
-    return item as Promise<Item>;
+    return item;
 };
 
 /**
@@ -58,19 +57,29 @@ export const fetchItemByName = (name: string): Promise<Item> => {
  * const user = await fetchUser(message.author);
  */
 export const fetchUser = async (user: DiscordUser): Promise<DBUser> => {
-    // Look for user if doesn't already exist make new one and return
-    let userData = await DBUser.findOne({ where: { id: user.id } });
-    if (userData === undefined) {
-        userData = new DBUser();
-        userData.id = user.id;
-        userData.wallet = 0;
-        userData.bank = 0;
-        await userData.save();
+
+    // Look for user if it doesn't already exist make new one and return
+    let userData = await container.prisma.user.findFirst({where: {id: user.id}});
+
+    if (userData === null) {
+        userData = await container.prisma.user.create({
+            data: {
+                id: user.id,
+                wallet: 0,
+                bank: 0
+            }
+        });
     }
     if (!isSafeInteger(userData.wallet) || !isSafeInteger(userData.bank)) {
-        userData.wallet = 0;
-        userData.bank = 0;
-        await userData.save();
+        userData = await container.prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                wallet: 0,
+                bank: 0
+            }
+        })
     }
     return userData;
 };
@@ -78,22 +87,34 @@ export const fetchUser = async (user: DiscordUser): Promise<DBUser> => {
 /**
  * Fetchers A Users Inventory
  * @param user
- * @param item
+ * @param itemData
  *
  * @example
  * const inventory = await fetchInventory(message.author, await fetchItemByName('apple'));
  */
-export const fetchInventory = async (user: DiscordUser, item: Item): Promise<Inventory> => {
-    const userData = await fetchUser(user);
-    let inventory = await Inventory.findOne({ where: { userId: userData.id, itemID: item.id } });
-    if (inventory === undefined) {
-        inventory = new Inventory();
-        inventory.userId = user.id;
-        inventory.itemID = item.id;
-        inventory.amount = 0;
-        await inventory.save();
+export const fetchInventory = async (user: DiscordUser, itemData: Item): Promise<Inventory> => {
+    let inventoryData = await container.prisma.inventory.findFirst({
+        where: {
+            userID: user.id,
+            itemID: itemData.id
+        }
+    });
+
+    if (inventoryData === null) {
+        inventoryData = await container.prisma.inventory.create({
+            data: {
+                user: {
+                    connect: {
+                        id: user.id
+                    }
+                },
+                amount: 0,
+                itemID: itemData.id
+            }
+        });
+
     }
-    return inventory;
+    return inventoryData;
 };
 
 /**
@@ -104,17 +125,18 @@ export const fetchInventory = async (user: DiscordUser, item: Item): Promise<Inv
  * const guildData = await fetchGuild(message.guild);
  */
 export const fetchGuild = async (guild: DiscordGuild): Promise<DBGuild> => {
-    if (guild === undefined) {
+    if (guild === null) {
         throw new Error('Guild is undefined');
     }
-    let guildData = await DBGuild.findOne({ where: { id: guild.id } });
-    if (guildData === undefined) {
-        guildData = new DBGuild();
-        guildData.id = guild.id;
-        guildData.prefix = '-';
-        guildData.slotsMoneyPool = 0;
-        guildData.slotsWinMultiplier = 0;
-        await guildData.save();
+    let guildData = await container.prisma.guild.findFirst({ where: { id: guild.id } });
+    if (guildData === null) {
+        guildData = await container.prisma.guild.create({
+            data: {
+                id: guild.id,
+                slotsMoneyPool: 0,
+                slotsWinMultiplier: 0
+            }
+        });
     }
     return guildData;
 };

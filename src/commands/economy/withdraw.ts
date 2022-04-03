@@ -14,19 +14,24 @@ export default class WithdrawCommand extends Command {
 		const user = await fetchUser(interaction.user);
 		const arg = interaction.options.getString('amount') as string;
 		const amountToWithdraw = parseAmount(arg, user, false);
-		if (isNaN(amountToWithdraw))
+
+		if (isNaN(amountToWithdraw)) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw'!)],
 				ephemeral: true
 			});
-		if (amountToWithdraw > user.bank)
+		}
+
+		if (amountToWithdraw > user.bank) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed('You don\'t have enough money in your bank to withdraw that much')
 				],
 				ephemeral: true
 			});
-		if (!isSafeInteger(amountToWithdraw))
+		}
+
+		if (!isSafeInteger(amountToWithdraw)) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -36,9 +41,17 @@ export default class WithdrawCommand extends Command {
 				],
 				ephemeral: true
 			});
-		user.wallet += amountToWithdraw;
-		user.bank -= amountToWithdraw;
-		await user.save();
+		}
+
+		await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				wallet: user.wallet + amountToWithdraw,
+				bank: user.bank - amountToWithdraw
+			}
+		});
 
 		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi
 		const webhook = new WebhookClient({
