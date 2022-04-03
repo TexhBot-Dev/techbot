@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Guild {
+  id                 String @id
+  slotsWinMultiplier Int    @default(0)
+  slotsMoneyPool     Int    @default(0)
+}
+
+model User {
+  id          String      @id
+  wallet      Int         @default(0)
+  bank        Int         @default(0)
+  inventory   Inventory[] @relation("Inventory")
+  currentJob  String      @default("jobless")
+  jobEXP      Int         @default(0)
+  passiveMode Boolean     @default(false)
+}
+
+model Inventory {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation("Inventory", fields: [userID], references: [id])
+  userID String
+  item   Item   @relation(fields: [itemId], references: [id])
+  itemID Int
+  amount Int    @default(0)
+  itemId Int
+}
+
+model Item {
+  id          Int         @id @default(autoincrement())
+  name        String
+  price       Int
+  rarity      String
+  emoji       String?
+  description String      @default("I was forgotten about by the devs ;(")
+  sellable    Boolean     @default(false)
+  tradeable   Boolean     @default(false)
+  collectable Boolean     @default(false)
+  Inventory   Inventory[]
+}
+
+model Job {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String @default("I was forgotten about by the devs ;(")
+  minimumXP   Int    @default(0)
+}
