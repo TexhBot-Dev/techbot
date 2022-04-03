@@ -9,13 +9,13 @@
  * isSafeInteger(-1) // false
  */
 export const isSafeInteger = (value: number): boolean => {
-    value = Math.floor(value);
+	value = Math.floor(value);
 
-    if (!Number.isSafeInteger(value)) {
-        return false;
-    }
-    if (value < 0) {
-        return false;
-    }
-    return value <= 1000000000000;
+	if (!Number.isSafeInteger(value)) {
+		return false;
+	}
+	if (value < 0) {
+		return false;
+	}
+	return value <= 1000000000000;
 };

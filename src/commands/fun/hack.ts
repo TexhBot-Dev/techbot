@@ -2,41 +2,13 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 
-const dms = [
-	'Nice toes',
-	'Sheesh!',
-	'Chill bro',
-	'We are just friends?',
-	'Is it small?',
-	'Love you too mom.'
-];
+const dms = ['Nice toes', 'Sheesh!', 'Chill bro', 'We are just friends?', 'Is it small?', 'Love you too mom.'];
 
-const passwords = [
-	'Greyissilly123',
-	'OwOSupriseDolls69',
-	'BigBoi420',
-	'HugeToad213',
-	'password',
-	'timothyoncrack'
-];
+const passwords = ['Greyissilly123', 'OwOSupriseDolls69', 'BigBoi420', 'HugeToad213', 'password', 'timothyoncrack'];
 
-const emails = [
-	'deeznuts@yahoo.com',
-	'joemomma@gmail.com',
-	'nullvoid@gmail.com',
-	'kekwww@gmail.com',
-	'thatonedude@gmail.com'
-];
+const emails = ['deeznuts@yahoo.com', 'joemomma@gmail.com', 'nullvoid@gmail.com', 'kekwww@gmail.com', 'thatonedude@gmail.com'];
 
-const realNames = [
-	'Timothy Green',
-	'Joe Smith',
-	'James Madison',
-	'Harry Cox',
-	'Lipin Jection',
-	'Pat Myaz',
-	'Nick O\' Teen'
-];
+const realNames = ['Timothy Green', 'Joe Smith', 'James Madison', 'Harry Cox', 'Lipin Jection', 'Pat Myaz', "Nick O' Teen"];
 
 @ApplyOptions<CommandOptions>({
 	name: 'hack',
@@ -69,17 +41,13 @@ export class ReverseCommand extends Command {
 			interaction.editReply('Getting last message sent in DMs... 39%');
 		}, 13000);
 		setTimeout(() => {
-			interaction.editReply(
-				`Last message sent in DMs: \`${dms[Math.floor(Math.random() * dms.length)]}\``
-			);
+			interaction.editReply(`Last message sent in DMs: \`${dms[Math.floor(Math.random() * dms.length)]}\``);
 		}, 15000);
 		setTimeout(() => {
 			interaction.editReply(`Getting password... 50%`);
 		}, 17000);
 		setTimeout(() => {
-			interaction.editReply(
-				`Password is \`${passwords[Math.floor(Math.random() * passwords.length)]}\``
-			);
+			interaction.editReply(`Password is \`${passwords[Math.floor(Math.random() * passwords.length)]}\``);
 		}, 19000);
 		setTimeout(() => {
 			interaction.editReply('Getting email... 74%');
@@ -91,9 +59,7 @@ export class ReverseCommand extends Command {
 			interaction.editReply('Getting real name... 89%');
 		}, 25000);
 		setTimeout(() => {
-			interaction.editReply(
-				`Got real name! \`${realNames[Math.floor(Math.random() * realNames.length)]}\``
-			);
+			interaction.editReply(`Got real name! \`${realNames[Math.floor(Math.random() * realNames.length)]}\``);
 		}, 27000);
 		setTimeout(() => {
 			interaction.editReply('Selling information on black market... 96%');
@@ -107,13 +73,13 @@ export class ReverseCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addUserOption((option) =>
-					option.setName('user').setDescription('The user to hack.').setRequired(true)
-				), {idHints:['944645979905331251']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addUserOption((option) => option.setName('user').setDescription('The user to hack.').setRequired(true)),
+			{ idHints: ['944645979905331251'] }
 		);
 	}
 

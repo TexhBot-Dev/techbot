@@ -14,8 +14,8 @@ export class HuntCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944645717232848907']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944645717232848907']
+		});
 	}
 }

@@ -14,7 +14,7 @@ const updatePreferredEmojiColor = async (user: User, color: string, prisma: Pris
 			preferredEmojiColor: color
 		}
 	});
-}
+};
 
 @ApplyOptions<CommandOptions>({
 	name: 'setting',
@@ -71,46 +71,46 @@ export default class SettingCommand extends Command {
 						]
 					});
 
-				await interaction.reply(
-					`Changed your preferred emoji color to **${colorName.toProperCase()}**.`
-				);
+				await interaction.reply(`Changed your preferred emoji color to **${colorName.toProperCase()}**.`);
 				break;
 		}
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('option')
-						.setDescription('What to Do.')
-						.setChoices([
-							['emojicolor', 'emojicolor'],
-							['coloremoji', 'coloremoji']
-						])
-						.setRequired(true)
-				)
-				.addStringOption((option) =>
-					option
-						.setName('toggle')
-						.setDescription('Color for your new emoji')
-						.setChoices([
-							['default', 'default'],
-							['yellow', 'yellow'],
-							['pale', 'pale'],
-							['white', 'white'],
-							['cream', 'cream'],
-							['cream white', 'cream white'],
-							['brown', 'brown'],
-							['dark brown', 'dark brown'],
-							['black', 'black'],
-							['dark', 'dark']
-						])
-						.setRequired(true)
-				), {idHints:['944645805313257482']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) =>
+						option
+							.setName('option')
+							.setDescription('What to Do.')
+							.setChoices([
+								['emojicolor', 'emojicolor'],
+								['coloremoji', 'coloremoji']
+							])
+							.setRequired(true)
+					)
+					.addStringOption((option) =>
+						option
+							.setName('toggle')
+							.setDescription('Color for your new emoji')
+							.setChoices([
+								['default', 'default'],
+								['yellow', 'yellow'],
+								['pale', 'pale'],
+								['white', 'white'],
+								['cream', 'cream'],
+								['cream white', 'cream white'],
+								['brown', 'brown'],
+								['dark brown', 'dark brown'],
+								['black', 'black'],
+								['dark', 'dark']
+							])
+							.setRequired(true)
+					),
+			{ idHints: ['944645805313257482'] }
 		);
 	}
 }

@@ -13,12 +13,9 @@ export class FishCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const itemData = await fetchItemByName('fishing_pole');
 		if (itemData === null) {
-			return interaction.reply('You don\'t have a fishing pole.');
+			return interaction.reply("You don't have a fishing pole.");
 		}
-		const doesUserHaveFishingPole = await fetchInventory(
-			interaction.user,
-			itemData
-		);
+		const doesUserHaveFishingPole = await fetchInventory(interaction.user, itemData);
 
 		if (doesUserHaveFishingPole === null || doesUserHaveFishingPole.amount === 0) return interaction.reply('You do not have a fishing pole!');
 		const fishing_success = !!Math.random();
@@ -36,15 +33,15 @@ export class FishCommand extends Command {
 					data: {
 						amount: inventory.amount + fish_amount
 					}
-				})
+				});
 			});
 			return interaction.reply(`You caught a ${fish.name}!`);
 		} else return interaction.reply('You failed to catch anything!');
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944645631291572244']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944645631291572244']
+		});
 	}
 }

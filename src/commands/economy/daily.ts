@@ -25,17 +25,14 @@ export default class DailyCommand extends Command {
 			});
 		});
 
-		embed
-			.setTitle('Daily Coins :D')
-			.setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tomorrow.`)
-			.setColor('BLUE');
+		embed.setTitle('Daily Coins :D').setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tomorrow.`).setColor('BLUE');
 
 		return interaction.reply({ embeds: [embed] });
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944645546642128987']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944645546642128987']
+		});
 	}
 }

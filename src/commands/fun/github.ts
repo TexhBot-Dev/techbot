@@ -24,30 +24,24 @@ export default class GitHubCommand extends Command {
 			.addField('Relationships', `${ghUser.followers} Followers\nFollowing ${ghUser.following} People`)
 			.addField('Creation Date', `<t:${creationDate}:f> (<t:${creationDate}:R>)`)
 			.addField('Updated Last', `<t:${updatedLast}:f> (<t:${updatedLast}:R>)`)
-			.addField(
-				'Public Projects',
-				`${ghUser.public_repos} Public Repositories\n${ghUser.public_gists} Public Gists`
-			)
+			.addField('Public Projects', `${ghUser.public_repos} Public Repositories\n${ghUser.public_gists} Public Gists`)
 			.addField(
 				'Social',
-				`${ghUser.blog ? 'Blog: ' + ghUser.blog : ''}\n${
-					ghUser.twitter ? 'Twitter: ' + ghUser.twitter : ''
-				}\n${ghUser.email ? 'Email: ' + ghUser.email : ''}`.replace(/\n+/g, '\n')
+				`${ghUser.blog ? 'Blog: ' + ghUser.blog : ''}\n${ghUser.twitter ? 'Twitter: ' + ghUser.twitter : ''}\n${
+					ghUser.email ? 'Email: ' + ghUser.email : ''
+				}`.replace(/\n+/g, '\n')
 			);
 		return interaction.reply({ embeds: [response] });
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('user')
-						.setDescription('The GitHub user to fetch info about.')
-						.setRequired(true)
-				), {idHints:['944645979645280256']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('user').setDescription('The GitHub user to fetch info about.').setRequired(true)),
+			{ idHints: ['944645979645280256'] }
 		);
 	}
 }
@@ -69,5 +63,4 @@ type GitHubUser = {
 	following: string;
 	created_at: string;
 	updated_at: string;
-}
-
+};

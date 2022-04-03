@@ -26,13 +26,13 @@ export class EightballCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option.setName('question').setDescription('The question to ask').setRequired(true)
-				), {idHints:['944645894249250867']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('question').setDescription('The question to ask').setRequired(true)),
+			{ idHints: ['944645894249250867'] }
 		);
 	}
 }

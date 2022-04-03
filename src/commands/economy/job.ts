@@ -41,7 +41,7 @@ export default class JobCommand extends Command {
 					return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
 				}
 
-				const job = jobs.filter(a => a.name === value.replaceAll(' ', '_'))[0];
+				const job = jobs.filter((a) => a.name === value.replaceAll(' ', '_'))[0];
 
 				if (job === undefined) {
 					return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
@@ -72,10 +72,7 @@ export default class JobCommand extends Command {
 				break;
 
 			case 'xp':
-				const xpEmbed = new MessageEmbed()
-					.setTitle('Current XP')
-					.setDescription(`${user.jobEXP.toLocaleString()} XP`)
-					.setColor('BLUE');
+				const xpEmbed = new MessageEmbed().setTitle('Current XP').setDescription(`${user.jobEXP.toLocaleString()} XP`).setColor('BLUE');
 
 				await interaction.reply({ embeds: [xpEmbed] });
 				break;
@@ -93,29 +90,28 @@ export default class JobCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('option')
-						.setDescription('The option you want to do.')
-						.setChoices([
-							['list', 'List'],
-							['select', 'Select'],
-							['current', 'Current'],
-							['xp', 'XP'],
-							['help', 'Help']
-						])
-						.setRequired(true)
-				)
-				.addStringOption((option) =>
-					option
-						.setName('value')
-						.setDescription('A value to pass in to the command. Only use if needed.')
-						.setRequired(false)
-				), {idHints:['944645718889619456']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) =>
+						option
+							.setName('option')
+							.setDescription('The option you want to do.')
+							.setChoices([
+								['list', 'List'],
+								['select', 'Select'],
+								['current', 'Current'],
+								['xp', 'XP'],
+								['help', 'Help']
+							])
+							.setRequired(true)
+					)
+					.addStringOption((option) =>
+						option.setName('value').setDescription('A value to pass in to the command. Only use if needed.').setRequired(false)
+					),
+			{ idHints: ['944645718889619456'] }
 		);
 	}
 }

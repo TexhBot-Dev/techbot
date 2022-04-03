@@ -24,9 +24,7 @@ export default class WithdrawCommand extends Command {
 
 		if (amountToWithdraw > user.bank) {
 			return interaction.reply({
-				embeds: [
-					generateErrorEmbed('You don\'t have enough money in your bank to withdraw that much')
-				],
+				embeds: [generateErrorEmbed("You don't have enough money in your bank to withdraw that much")],
 				ephemeral: true
 			});
 		}
@@ -61,9 +59,7 @@ export default class WithdrawCommand extends Command {
 		const embed = new MessageEmbed()
 			.setTitle('Withdraw')
 			.setDescription(
-				`${interaction.user.tag} (${
-					interaction.user.id
-				}) has withdrawn ${amountToWithdraw.toLocaleString()} coins from their bank account.`
+				`${interaction.user.tag} (${interaction.user.id}) has withdrawn ${amountToWithdraw.toLocaleString()} coins from their bank account.`
 			)
 			.setColor('#00ff00')
 			.setTimestamp();
@@ -79,16 +75,13 @@ export default class WithdrawCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('amount')
-						.setRequired(true)
-						.setDescription('The amount of money to withdraw')
-				), {idHints:['944645891850117150']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('amount').setRequired(true).setDescription('The amount of money to withdraw')),
+			{ idHints: ['944645891850117150'] }
 		);
 	}
 }

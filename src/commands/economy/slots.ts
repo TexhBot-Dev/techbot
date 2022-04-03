@@ -25,14 +25,8 @@ export default class SlotsCommand extends Command {
 		const randomNumber = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
 
 		const firstRoll = items[Math.floor(items.length * Math.random())];
-		const secondRoll =
-			guild.slotsWinMultiplier < randomNumber
-				? items[Math.floor(items.length * Math.random())]
-				: firstRoll;
-		const thirdRoll =
-			guild.slotsWinMultiplier < randomNumber
-				? items[Math.floor(items.length * Math.random())]
-				: firstRoll;
+		const secondRoll = guild.slotsWinMultiplier < randomNumber ? items[Math.floor(items.length * Math.random())] : firstRoll;
+		const thirdRoll = guild.slotsWinMultiplier < randomNumber ? items[Math.floor(items.length * Math.random())] : firstRoll;
 
 		const play = new MessageEmbed()
 			.setTitle('Slot Machine')
@@ -77,7 +71,7 @@ export default class SlotsCommand extends Command {
 						id: interaction.user.id
 					},
 					data: {
-						wallet: user.wallet += moneyEarned
+						wallet: (user.wallet += moneyEarned)
 					}
 				});
 
@@ -101,7 +95,7 @@ export default class SlotsCommand extends Command {
 					},
 					data: {
 						slotsWinMultiplier: guild.slotsWinMultiplier++,
-						slotsMoneyPool: guild.slotsMoneyPool += amount
+						slotsMoneyPool: (guild.slotsMoneyPool += amount)
 					}
 				});
 
@@ -111,16 +105,13 @@ export default class SlotsCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('amount')
-						.setDescription('The amount of money you want to gamble')
-						.setRequired(true)
-				), {idHints:['944645806814793779']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('amount').setDescription('The amount of money you want to gamble').setRequired(true)),
+			{ idHints: ['944645806814793779'] }
 		);
 	}
 }

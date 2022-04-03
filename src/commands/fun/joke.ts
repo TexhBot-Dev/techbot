@@ -3,7 +3,6 @@ import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 
-
 @ApplyOptions<CommandOptions>({
 	name: 'joke',
 	description: 'Gives you a nice joke.',
@@ -16,8 +15,8 @@ export default class JokeCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944646064831610900']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944646064831610900']
+		});
 	}
 }

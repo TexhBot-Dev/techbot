@@ -6,7 +6,7 @@ import { fetchUser } from '../../lib/helpers';
 @ApplyOptions<CommandOptions>({
 	name: 'balance',
 	aliases: ['bal', 'money', 'balance', 'cash'],
-	description: 'Returns a user\'s current balance.',
+	description: "Returns a user's current balance.",
 	detailedDescription: 'balance [user]'
 })
 export default class BalanceCommand extends Command {
@@ -25,13 +25,13 @@ export default class BalanceCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addUserOption((options) =>
-					options.setName('user').setDescription('The user to check the balance of.')
-				), {idHints:['944645544230420521']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addUserOption((options) => options.setName('user').setDescription('The user to check the balance of.')),
+			{ idHints: ['944645544230420521'] }
 		);
 	}
 }

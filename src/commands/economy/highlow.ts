@@ -1,10 +1,4 @@
-import {
-	CommandInteraction,
-	MessageActionRow,
-	MessageButton,
-	MessageComponentInteraction,
-	MessageEmbed
-} from 'discord.js';
+import { CommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { fetchUser } from '../../lib/helpers';
@@ -90,8 +84,8 @@ export default class HighlowCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944645632847646762']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944645632847646762']
+		});
 	}
 }

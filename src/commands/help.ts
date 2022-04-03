@@ -15,11 +15,7 @@ export default class HelpCommand extends Command {
 		const commands = this.container.stores.get('commands');
 
 		if (specifiedCommand.length > 0) {
-			const command = commands.find(
-				(c) =>
-					c.name === specifiedCommand.toLowerCase() ||
-					c.name.startsWith(specifiedCommand.toLowerCase())
-			);
+			const command = commands.find((c) => c.name === specifiedCommand.toLowerCase() || c.name.startsWith(specifiedCommand.toLowerCase()));
 			if (!command) return interaction.reply('That command does not exist!');
 
 			const singleCommandResponse = new MessageEmbed()
@@ -41,9 +37,7 @@ export default class HelpCommand extends Command {
 
 			// Filter commands into categories and take into account sub categories
 			const filteredCommands = commands.filter(
-				(c) =>
-					String(c.fullCategory) === category ||
-					String(c.fullCategory[c.fullCategory.length]) === category[category.length]
+				(c) => String(c.fullCategory) === category || String(c.fullCategory[c.fullCategory.length]) === category[category.length]
 			);
 			for (const [_, command] of filteredCommands) {
 				fields.push({
@@ -65,13 +59,13 @@ export default class HelpCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option.setName('specific_command').setDescription('The command to get help for.')
-				), {idHints: ['944645456951128085']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('specific_command').setDescription('The command to get help for.')),
+			{ idHints: ['944645456951128085'] }
 		);
 	}
 }

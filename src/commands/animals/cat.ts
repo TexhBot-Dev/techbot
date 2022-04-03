@@ -17,18 +17,16 @@ export default class CatCommand extends Command {
 		catEmbed.setImage(cat.url).setTitle('Cat').setURL(cat.url).setColor('BLUE');
 
 		if (!isNullOrUndefined(cat.breeds)) {
-			catEmbed.setDescription(
-				`Breed: ${cat.breeds[0].name}\nLife Span: ${cat.breeds[0].life_span}\nTemperament: ${cat.breeds[0].temperament}`
-			);
+			catEmbed.setDescription(`Breed: ${cat.breeds[0].name}\nLife Span: ${cat.breeds[0].life_span}\nTemperament: ${cat.breeds[0].temperament}`);
 		}
 
 		return interaction.reply({ embeds: [catEmbed] });
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944645460482723881']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944645460482723881']
+		});
 	}
 }
 
@@ -82,4 +80,3 @@ type WeightCat = {
 	imperial: string;
 	metric: string;
 };
-

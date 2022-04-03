@@ -16,12 +16,7 @@ export default class WorkCommand extends Command {
 
 		if (job === 'jobless') {
 			return interaction.reply({
-				embeds: [
-					generateErrorEmbed(
-						'You don\'t have a job! Do `job select janitor` to get started!',
-						'No Job'
-					)
-				]
+				embeds: [generateErrorEmbed("You don't have a job! Do `job select janitor` to get started!", 'No Job')]
 			});
 		}
 
@@ -52,8 +47,8 @@ export default class WorkCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944645893120983082']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944645893120983082']
+		});
 	}
 }

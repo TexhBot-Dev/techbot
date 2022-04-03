@@ -5,6 +5,6 @@
  * const randomEntry = pickRandom([1, 2, 3, 4]) // 1
  */
 export const pickRandom = <T>(array: readonly T[]): T => {
-    const { length } = array;
-    return array[Math.floor(Math.random() * length)];
+	const { length } = array;
+	return array[Math.floor(Math.random() * length)];
 };

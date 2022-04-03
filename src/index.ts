@@ -1,6 +1,6 @@
 import './lib/setup';
 import { container, LogLevel, SapphireClient } from '@sapphire/framework';
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
 declare module '@sapphire/pieces' {
 	interface Container {
@@ -17,10 +17,7 @@ const client = new SapphireClient({
 		level: LogLevel.Info
 	},
 	shards: 'auto',
-	intents: [
-		'GUILDS',
-		'GUILD_INTEGRATIONS'
-	]
+	intents: ['GUILDS', 'GUILD_INTEGRATIONS']
 });
 
 (async () => {

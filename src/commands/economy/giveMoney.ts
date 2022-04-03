@@ -56,9 +56,7 @@ export default class GiveMoneyCommand extends Command {
 		});
 		const embed = new MessageEmbed()
 			.setTitle('User gave money!')
-			.setDescription(
-				`${interaction.user.tag} has given ${amount.toLocaleString()} to ${receiver.tag}.`
-			)
+			.setDescription(`${interaction.user.tag} has given ${amount.toLocaleString()} to ${receiver.tag}.`)
 			.setColor('#00ff00')
 			.setTimestamp();
 
@@ -66,23 +64,15 @@ export default class GiveMoneyCommand extends Command {
 
 		const response = new MessageEmbed()
 			.setTitle('Money Transferred')
-			.setDescription(
-				`You gave **$${amount.toLocaleString()}** ${pluralize('coin', amount)} to **${
-					receiver.tag
-				}**.`
-			)
+			.setDescription(`You gave **$${amount.toLocaleString()}** ${pluralize('coin', amount)} to **${receiver.tag}**.`)
 			.addField(
 				'Your Balance',
-				`\`\`\`diff\n+ Before: ${(
-					author.wallet + amount
-				).toLocaleString()}\n- After: ${author.wallet.toLocaleString()}\`\`\``,
+				`\`\`\`diff\n+ Before: ${(author.wallet + amount).toLocaleString()}\n- After: ${author.wallet.toLocaleString()}\`\`\``,
 				true
 			)
 			.addField(
 				`${receiver.tag}'s Balance`,
-				`\`\`\`diff\n- Before: ${(
-					user.wallet - amount
-				).toLocaleString()}\n+ After: ${user.wallet.toLocaleString()}\`\`\``,
+				`\`\`\`diff\n- Before: ${(user.wallet - amount).toLocaleString()}\n+ After: ${user.wallet.toLocaleString()}\`\`\``,
 				true
 			)
 			.setColor('BLUE');
@@ -91,19 +81,16 @@ export default class GiveMoneyCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addUserOption((option) =>
-					option.setName('user').setDescription('The user to give money to.').setRequired(true)
-				)
-				.addStringOption((option) =>
-					option
-						.setName('amount')
-						.setDescription('The amount of money to give to the user.')
-						.setRequired(true)
-				), {idHints:['944645632411435049']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addUserOption((option) => option.setName('user').setDescription('The user to give money to.').setRequired(true))
+					.addStringOption((option) =>
+						option.setName('amount').setDescription('The amount of money to give to the user.').setRequired(true)
+					),
+			{ idHints: ['944645632411435049'] }
 		);
 	}
 }

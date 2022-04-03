@@ -5,7 +5,7 @@ import { fetchUser, generateErrorEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'rob',
-	description: 'Lets you rob another user\'s bank account.',
+	description: "Lets you rob another user's bank account.",
 	detailedDescription: 'rob <user>'
 })
 export default class RobCommand extends Command {
@@ -19,14 +19,14 @@ export default class RobCommand extends Command {
 
 		if (interaction.user.id === userToRob.id) {
 			return interaction.reply({
-				embeds: [generateErrorEmbed('You can\'t rob yourself.', 'Invalid User')],
+				embeds: [generateErrorEmbed("You can't rob yourself.", 'Invalid User')],
 				ephemeral: true
 			});
 		}
 
 		if (userToRob.bot) {
 			return interaction.reply({
-				embeds: [generateErrorEmbed('You can\'t rob bots!', 'Invalid User')],
+				embeds: [generateErrorEmbed("You can't rob bots!", 'Invalid User')],
 				ephemeral: true
 			});
 		}
@@ -36,19 +36,14 @@ export default class RobCommand extends Command {
 
 		if (robbedUser.passiveMode) {
 			return interaction.reply({
-				embeds: [
-					generateErrorEmbed(
-						`<@${userToRob.id}> is in passive mode. Leave them alone!`,
-						'User is in Passive Mode'
-					)
-				],
+				embeds: [generateErrorEmbed(`<@${userToRob.id}> is in passive mode. Leave them alone!`, 'User is in Passive Mode')],
 				ephemeral: true
 			});
 		}
 
 		if (robber.passiveMode) {
 			return interaction.reply({
-				embeds: [generateErrorEmbed('You can\'t rob while in passive mode!', 'Passive Mode Enabled')],
+				embeds: [generateErrorEmbed("You can't rob while in passive mode!", 'Passive Mode Enabled')],
 				ephemeral: true
 			});
 		}
@@ -81,9 +76,7 @@ export default class RobCommand extends Command {
 				.setColor('RED')
 				.addField(
 					`Your Balance`,
-					`\`\`\`diff\n+ Before:  ${(
-						robber.wallet + lossAmount
-					).toLocaleString()}\n- After: ${robber.wallet.toLocaleString()}\`\`\``,
+					`\`\`\`diff\n+ Before:  ${(robber.wallet + lossAmount).toLocaleString()}\n- After: ${robber.wallet.toLocaleString()}\`\`\``,
 					true
 				)
 				.addField(
@@ -120,9 +113,7 @@ export default class RobCommand extends Command {
 				.setColor('GREEN')
 				.addField(
 					`Your Balance`,
-					`\`\`\`diff\n- Before:  ${(
-						robber.wallet - winAmount
-					).toLocaleString()}\n+ After: ${robber.wallet.toLocaleString()}\`\`\``,
+					`\`\`\`diff\n- Before:  ${(robber.wallet - winAmount).toLocaleString()}\n+ After: ${robber.wallet.toLocaleString()}\`\`\``,
 					true
 				)
 				.addField(
@@ -138,13 +129,13 @@ export default class RobCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addUserOption((option) =>
-					option.setName('user').setRequired(true).setDescription('The user to rob.')
-				), {idHints:['944645803815866488']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addUserOption((option) => option.setName('user').setRequired(true).setDescription('The user to rob.')),
+			{ idHints: ['944645803815866488'] }
 		);
 	}
 }

@@ -15,13 +15,13 @@ export class OwOCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option.setName('text_to_owoify').setDescription('The text to owoify.').setRequired(true)
-				), {idHints:['944646065439801374']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('text_to_owoify').setDescription('The text to owoify.').setRequired(true)),
+			{ idHints: ['944646065439801374'] }
 		);
 	}
 }

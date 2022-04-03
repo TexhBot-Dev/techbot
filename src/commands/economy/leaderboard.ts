@@ -20,9 +20,11 @@ export default class LeaderboardCommand extends Command {
 			return interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
 		}
 
-		const topUsers = (await this.container.prisma.user.findMany({
-			take: 10
-		})).sort((a, b) => b.wallet - a.wallet);
+		const topUsers = (
+			await this.container.prisma.user.findMany({
+				take: 10
+			})
+		).sort((a, b) => b.wallet - a.wallet);
 
 		const leaderboardEmbed = new MessageEmbed();
 		const leaderboardData: string[] = [];
@@ -32,7 +34,6 @@ export default class LeaderboardCommand extends Command {
 		const validUsers = topUsers.filter((user) => {
 			if (user.wallet + user.bank < 0) return false;
 			return guildOnly;
-
 		});
 
 		for (const user of validUsers) {
@@ -48,31 +49,17 @@ export default class LeaderboardCommand extends Command {
 				// Removed unnecessary {} around case statements
 				case 1:
 					// Made all lines single lines so its actually readable, for the love of god change your max line length
-					leaderboardData.push(
-						`:first_place: • ${userInformation.tag} - ${
-							valueForEmbed() ? valueForEmbed().toLocaleString() : 0
-						}`
-					);
+					leaderboardData.push(`:first_place: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`);
 					break;
 				case 2:
-					leaderboardData.push(
-						`:second_place: • ${userInformation.tag} - ${
-							valueForEmbed() ? valueForEmbed().toLocaleString() : 0
-						}`
-					);
+					leaderboardData.push(`:second_place: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`);
 					break;
 				case 3:
-					leaderboardData.push(
-						`:third_place: • ${userInformation.tag} - ${
-							valueForEmbed() ? valueForEmbed().toLocaleString() : 0
-						}`
-					);
+					leaderboardData.push(`:third_place: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`);
 					break;
 				default:
 					leaderboardData.push(
-						`:${this.numToEnglish(counter)}: • ${userInformation.tag} - ${
-							valueForEmbed() ? valueForEmbed().toLocaleString() : 0
-						}`
+						`:${this.numToEnglish(counter)}: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`
 					);
 			}
 			counter++;
@@ -83,21 +70,23 @@ export default class LeaderboardCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('flags')
-						.setDescription('Flags to use')
-						.setChoices([
-							['Only show guilds', '--guildOnly'],
-							['Only show wallets', '--walletOnly'],
-							['Only show banks', '--bankOnly'],
-							['Show overall money', '--overallMoney']
-						])
-				), {idHints:['944645719409713183']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) =>
+						option
+							.setName('flags')
+							.setDescription('Flags to use')
+							.setChoices([
+								['Only show guilds', '--guildOnly'],
+								['Only show wallets', '--walletOnly'],
+								['Only show banks', '--bankOnly'],
+								['Show overall money', '--overallMoney']
+							])
+					),
+			{ idHints: ['944645719409713183'] }
 		);
 	}
 
@@ -131,12 +120,7 @@ export default class LeaderboardCommand extends Command {
 		// 												Added strict if check here instead of ambiguous
 		if (number < 100) return `${tens[~~(number / 10) - 2]}${digit !== 0 ? '-' + num[digit] : ''}`;
 		// Changed return types to string so its actually clear whats returned
-		if (number < 1000)
-			return `${num[~~(number / 100)]} hundred ${
-				number % 100 == 0 ? '' : ' ' + this.numToEnglish(number % 100)
-			}`;
-		return `${this.numToEnglish(~~(number / 1000))} thousand ${
-			number % 1000 != 0 ? ' ' + this.numToEnglish(number % 1000) : ''
-		}`;
+		if (number < 1000) return `${num[~~(number / 100)]} hundred ${number % 100 == 0 ? '' : ' ' + this.numToEnglish(number % 100)}`;
+		return `${this.numToEnglish(~~(number / 1000))} thousand ${number % 1000 != 0 ? ' ' + this.numToEnglish(number % 1000) : ''}`;
 	}
 }

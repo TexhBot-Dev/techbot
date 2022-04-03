@@ -31,11 +31,7 @@ const people = [
 	'Saba Hartley'
 ];
 
-const failedBegResponses = [
-	'Your pathetic poor person.',
-	'Go beg someone else!',
-	'Back in the old days, we had to work for our money.'
-];
+const failedBegResponses = ['Your pathetic poor person.', 'Go beg someone else!', 'Back in the old days, we had to work for our money.'];
 
 @ApplyOptions<CommandOptions>({
 	name: 'beg',
@@ -77,8 +73,8 @@ export default class BegCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder.setName(this.name).setDescription(this.description), {idHints:['944645544725336094']}
-		);
+		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
+			idHints: ['944645544725336094']
+		});
 	}
 }

@@ -42,11 +42,7 @@ export default class EvalCommand extends Command {
 		return message.reply(`${output}\n${typeFooter}`);
 	}
 
-	private async eval(
-		message: Message<boolean>,
-		code: string,
-		flags: { async: boolean; depth: number; showHidden: boolean }
-	) {
+	private async eval(message: Message<boolean>, code: string, flags: { async: boolean; depth: number; showHidden: boolean }) {
 		if (flags.async) code = `(async () => {\n${code}\n})();`;
 
 		// @ts-expect-error value is never read, this is so `msg` is possible as an alias when sending the eval.
@@ -67,8 +63,7 @@ export default class EvalCommand extends Command {
 						showHidden: flags.showHidden
 					});
 				}
-			} catch (error) {
-			}
+			} catch (error) {}
 		} catch (error) {
 			if (error && error instanceof Error && error.stack) {
 				this.container.client.logger.error(error);

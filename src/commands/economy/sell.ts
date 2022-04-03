@@ -30,36 +30,30 @@ export class SellCommand extends Command {
 					id: inventory.id
 				},
 				data: {
-					amount: inventory.amount -= amount
+					amount: (inventory.amount -= amount)
 				}
 			});
 
 			await this.container.prisma.user.update({
 				where: user,
 				data: {
-					wallet: user.wallet += Math.trunc(itemData.price / 2)
+					wallet: (user.wallet += Math.trunc(itemData.price / 2))
 				}
 			});
 
-			return interaction.reply(
-				`Sold **${amount}** of **${item}** for **$${Math.trunc(
-					itemData.price / 2
-				).toLocaleString()}**.`
-			);
+			return interaction.reply(`Sold **${amount}** of **${item}** for **$${Math.trunc(itemData.price / 2).toLocaleString()}**.`);
 		});
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option.setName('item').setRequired(true).setDescription('The item to sell.')
-				)
-				.addStringOption((option) =>
-					option.setName('amount').setRequired(true).setDescription('The amount to sell.')
-				), {idHints:['944645804331794542']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('item').setRequired(true).setDescription('The item to sell.'))
+					.addStringOption((option) => option.setName('amount').setRequired(true).setDescription('The amount to sell.')),
+			{ idHints: ['944645804331794542'] }
 		);
 	}
 }

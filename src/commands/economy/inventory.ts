@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<CommandOptions>({
 	name: 'inventory',
-	description: 'Shows a user\'s item inventory.',
+	description: "Shows a user's item inventory.",
 	aliases: ['inv', 'bag', 'stuff'],
 	detailedDescription: 'inventory [user]'
 })
@@ -38,9 +38,7 @@ export default class InventoryCommand extends Command {
 			if (itemData === null) return;
 			inventoryEmbed.addField(
 				`${itemNumber}: ${itemData.name}`,
-				`Price: ${itemData.price.toLocaleString()}\nRarity: ${
-					itemData.rarity
-				}\nAmount: ${inventory.amount.toLocaleString()}`
+				`Price: ${itemData.price.toLocaleString()}\nRarity: ${itemData.rarity}\nAmount: ${inventory.amount.toLocaleString()}`
 			);
 			itemNumber++;
 		}
@@ -49,13 +47,13 @@ export default class InventoryCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addUserOption((option) =>
-					option.setName('user').setDescription('The user to check the inventory of.')
-				), {idHints:['944645718331752558']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addUserOption((option) => option.setName('user').setDescription('The user to check the inventory of.')),
+			{ idHints: ['944645718331752558'] }
 		);
 	}
 }

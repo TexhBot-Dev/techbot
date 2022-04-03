@@ -33,13 +33,7 @@ export default class BetCommand extends Command {
 				}
 			});
 			return interaction.reply({
-				embeds: [
-					generateEmbed(
-						`Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`,
-						'Bet Won',
-						'DARK_GREEN'
-					)
-				]
+				embeds: [generateEmbed(`Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'Bet Won', 'DARK_GREEN')]
 			});
 		} else {
 			await this.container.prisma.user.update({
@@ -51,25 +45,19 @@ export default class BetCommand extends Command {
 				}
 			});
 			return interaction.reply({
-				embeds: [
-					generateEmbed(
-						`${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`,
-						'Bet Lost',
-						'RED'
-					)
-				]
+				embeds: [generateEmbed(`${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'Bet Lost', 'RED')]
 			});
 		}
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option.setName('amount').setDescription('The amount of money to bet.').setRequired(true)
-				), {idHints:['944645545480290344']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('amount').setDescription('The amount of money to bet.').setRequired(true)),
+			{ idHints: ['944645545480290344'] }
 		);
 	}
 }

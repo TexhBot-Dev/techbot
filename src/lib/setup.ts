@@ -27,11 +27,18 @@ declare global {
 	}
 }
 
-
-String.prototype.toProperCase = function(): string {
+String.prototype.toProperCase = function (): string {
 	return this.replace(/\w\S*/g, (txt: string): string => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase());
 };
 
-String.prototype.owoify = function(): string {
-	return this.replace(/r/g, 'w').replace(/R/g, 'W').replace(/l/g, 'w').replace(/L/g, 'W').replace(/n/g, 'ny').replace(/N/g, 'Ny').replace(/\?/g, '？').replace(/!/g, '！').replace(/\s/g, '  ');
+String.prototype.owoify = function (): string {
+	return this.replace(/r/g, 'w')
+		.replace(/R/g, 'W')
+		.replace(/l/g, 'w')
+		.replace(/L/g, 'W')
+		.replace(/n/g, 'ny')
+		.replace(/N/g, 'Ny')
+		.replace(/\?/g, '？')
+		.replace(/!/g, '！')
+		.replace(/\s/g, '  ');
 };

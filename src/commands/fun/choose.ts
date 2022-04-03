@@ -16,16 +16,13 @@ export class ChooseCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('choices')
-						.setRequired(true)
-						.setDescription('The choices separated by ", "')
-				), {idHints:['944645895163633714']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('choices').setRequired(true).setDescription('The choices separated by ", "')),
+			{ idHints: ['944645895163633714'] }
 		);
 	}
 }

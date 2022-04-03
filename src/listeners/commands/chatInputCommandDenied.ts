@@ -28,11 +28,7 @@ export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
 		return portions.join(' ');
 	}
 
-	public async run({
-						 context,
-						 message: content,
-						 identifier
-					 }: UserError, { interaction }: ChatInputCommandDeniedPayload) {
+	public async run({ context, message: content, identifier }: UserError, { interaction }: ChatInputCommandDeniedPayload) {
 		// `context: { silent: true }` should make UserError silent:
 		// Use cases for this are for example permissions error when running the `eval` command.
 		if (Reflect.get(Object(context), 'silent')) return;
@@ -41,10 +37,7 @@ export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
 			const { remaining } = context as { remaining: number };
 			const humanizedRemaining = UserEvent.humanizeTime(remaining);
 
-			const cooldownEmbed = generateErrorEmbed(
-				`You can only use this command every ${humanizedRemaining}`,
-				identifier
-			);
+			const cooldownEmbed = generateErrorEmbed(`You can only use this command every ${humanizedRemaining}`, identifier);
 
 			return interaction.reply({ embeds: [cooldownEmbed] });
 		}

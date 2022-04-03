@@ -17,12 +17,7 @@ export default class DepositCommand extends Command {
 
 		if (isNaN(amountToDeposit)) {
 			return interaction.reply({
-				embeds: [
-					generateErrorEmbed(
-						`'${arg}' is not a parsable integer.\nUsage: \`/${this.detailedDescription}\``,
-						'Invalid Number'
-					)
-				],
+				embeds: [generateErrorEmbed(`'${arg}' is not a parsable integer.\nUsage: \`/${this.detailedDescription}\``, 'Invalid Number')],
 				ephemeral: true
 			});
 		}
@@ -30,10 +25,7 @@ export default class DepositCommand extends Command {
 		if (amountToDeposit > user.wallet) {
 			return interaction.reply({
 				embeds: [
-					generateErrorEmbed(
-						`You don't have enough money to deposit '${arg}'.\nUsage: \`/${this.detailedDescription}\``,
-						'Invalid Amount'
-					)
+					generateErrorEmbed(`You don't have enough money to deposit '${arg}'.\nUsage: \`/${this.detailedDescription}\``, 'Invalid Amount')
 				],
 				ephemeral: true
 			});
@@ -88,16 +80,13 @@ export default class DepositCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option
-						.setName('amount')
-						.setDescription('The amount of money to deposit')
-						.setRequired(true)
-				), {idHints:['944645630704377936']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('amount').setDescription('The amount of money to deposit').setRequired(true)),
+			{ idHints: ['944645630704377936'] }
 		);
 	}
 }

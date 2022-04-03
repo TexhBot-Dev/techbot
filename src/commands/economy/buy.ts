@@ -58,13 +58,13 @@ export default class BuyCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addStringOption((option) =>
-					option.setName('item').setDescription('The item you want to buy.').setRequired(true)
-				), {idHints:['944645546122051614']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption((option) => option.setName('item').setDescription('The item you want to buy.').setRequired(true)),
+			{ idHints: ['944645546122051614'] }
 		);
 	}
 }

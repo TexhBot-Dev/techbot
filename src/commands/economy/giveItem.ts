@@ -19,7 +19,6 @@ export default class GiveItemCommand extends Command {
 			return interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!')] });
 		}
 
-
 		if (userToGiveTo.bot) {
 			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!')] });
 		}
@@ -76,11 +75,7 @@ export default class GiveItemCommand extends Command {
 		});
 		const embed = new MessageEmbed()
 			.setTitle('User gave item!')
-			.setDescription(
-				`${interaction.user.tag} has given ${amount.toLocaleString()} ${itemToGive} to ${
-					userToGiveTo.tag
-				}.`
-			)
+			.setDescription(`${interaction.user.tag} has given ${amount.toLocaleString()} ${itemToGive} to ${userToGiveTo.tag}.`)
 			.setColor('#00ff00')
 			.setTimestamp();
 		await webhook.send({ embeds: [embed] });
@@ -89,22 +84,15 @@ export default class GiveItemCommand extends Command {
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			builder
-				.setName(this.name)
-				.setDescription(this.description)
-				.addUserOption((option) =>
-					option.setName('user').setDescription('The user to give the item to.').setRequired(true)
-				)
-				.addStringOption((option) =>
-					option
-						.setName('amount')
-						.setDescription('The amount of money to transfer.')
-						.setRequired(true)
-				)
-				.addStringOption((option) =>
-					option.setName('item').setDescription('The item to transfer.').setRequired(true)
-				), {idHints:['944645631857799198']}
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addUserOption((option) => option.setName('user').setDescription('The user to give the item to.').setRequired(true))
+					.addStringOption((option) => option.setName('amount').setDescription('The amount of money to transfer.').setRequired(true))
+					.addStringOption((option) => option.setName('item').setDescription('The item to transfer.').setRequired(true)),
+			{ idHints: ['944645631857799198'] }
 		);
 	}
 }
