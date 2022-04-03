@@ -1,14 +1,8 @@
 import './lib/setup';
-import { container, LogLevel, SapphireClient } from '@sapphire/framework';
-import { PrismaClient } from '@prisma/client';
+import { LogLevel } from '@sapphire/framework';
+import { PepeClient } from './lib/pepeClient';
 
-declare module '@sapphire/pieces' {
-	interface Container {
-		prisma: PrismaClient;
-	}
-}
-
-const client = new SapphireClient({
+const client = new PepeClient({
 	defaultPrefix: 'dr!',
 	regexPrefix: /^(hey +)?bot[,! ]/i,
 	caseInsensitiveCommands: true,
@@ -25,12 +19,13 @@ const client = new SapphireClient({
 		client.logger.info('Logging in');
 		await client.login();
 		client.logger.info('logged in');
-
-		container.prisma = new PrismaClient();
 	} catch (error) {
 		client.logger.fatal(error);
 		await client.destroy();
-		await container.prisma.$disconnect();
-		process.exit(1);
 	}
 })();
+
+process.on('SIGINT', async () => {
+	await client.destroy();
+	process.exit(1);
+});
