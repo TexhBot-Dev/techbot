@@ -58,14 +58,14 @@ export default class BegCommand extends Command {
 			Math.random() * (600 - people.length) + (people.length - 1)
 		);
 
-		fetchUser(interaction.user).then((user) => {
+		fetchUser(interaction.user).then(async (user) => {
 			if (user === null) return;
 			await this.container.prisma.user.update({
 				where: {
 					id: user.id
 				},
 				data: {
-					wallet: user.wallet += moneyEarned
+					wallet: user.wallet + moneyEarned
 				}
 			});
 		});

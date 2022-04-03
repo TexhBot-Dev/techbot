@@ -12,7 +12,6 @@ import { fetchGuild, fetchUser, parseAmount } from '../../lib/helpers';
 export default class SlotsCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
-		if (user === null) return;
 		const amount = parseAmount(interaction.options.getString('amount') as string, user, true);
 
 		if (amount < 20) return interaction.reply('Please gamble a proper amount, a.k.a above 20');
@@ -109,7 +108,6 @@ export default class SlotsCommand extends Command {
 				return interaction.followUp({ content: 'Sorry, you lost your money!' });
 			}, 2000);
 		}
-		return null;
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {

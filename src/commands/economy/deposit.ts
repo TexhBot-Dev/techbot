@@ -12,11 +12,10 @@ import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../..
 export default class DepositCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
-		if (user === null) return;
 		const arg = interaction.options.getString('amount') as string;
 		const amountToDeposit = parseAmount(arg, user, true);
 
-		if (isNaN(amountToDeposit))
+		if (isNaN(amountToDeposit)) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -26,7 +25,9 @@ export default class DepositCommand extends Command {
 				],
 				ephemeral: true
 			});
-		if (amountToDeposit > user.wallet)
+		}
+
+		if (amountToDeposit > user.wallet) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -36,7 +37,9 @@ export default class DepositCommand extends Command {
 				],
 				ephemeral: true
 			});
-		if (!isSafeInteger(amountToDeposit))
+		}
+
+		if (!isSafeInteger(amountToDeposit)) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
@@ -46,14 +49,15 @@ export default class DepositCommand extends Command {
 				],
 				ephemeral: true
 			});
+		}
 
 		await this.container.prisma.user.update({
 			where: {
 				id: user.id
 			},
 			data: {
-				wallet: user.wallet -= amountToDeposit,
-				bank: user.bank += amountToDeposit
+				wallet: user.wallet - amountToDeposit,
+				bank: user.bank + amountToDeposit
 			}
 		});
 

@@ -11,7 +11,6 @@ import { fetchUser, generateErrorEmbed } from '../../lib/helpers';
 export default class WorkCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
-		if (user === null) return;
 		const workEmbed = new MessageEmbed();
 		const job = user.currentJob;
 
@@ -40,7 +39,7 @@ export default class WorkCommand extends Command {
 				id: user.id
 			},
 			data: {
-				wallet: user.wallet += moneyEarned
+				wallet: user.wallet + moneyEarned
 			}
 		});
 

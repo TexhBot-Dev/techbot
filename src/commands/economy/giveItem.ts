@@ -34,8 +34,11 @@ export default class GiveItemCommand extends Command {
 			}); // return message.reply('Please specify a valid amount of money to withdraw');
 		}
 
+		const itemData = await fetchItemByName(itemToGive);
+		if (itemData === null) return;
+
 		// Senders Inventory
-		fetchInventory(interaction.user, await fetchItemByName(itemToGive)).then((inventory) => {
+		fetchInventory(interaction.user, itemData).then(async (inventory) => {
 			if (inventory === null) return interaction.reply('You do not have that item');
 			if (inventory.amount < amount) {
 				return interaction.reply({
@@ -48,20 +51,19 @@ export default class GiveItemCommand extends Command {
 					id: inventory.id
 				},
 				data: {
-					amount: inventory.amount -= amount
+					amount: inventory.amount - amount
 				}
 			});
-			return;
 		});
 		// Receivers Inventory
-		fetchInventory(userToGiveTo, await fetchItemByName(itemToGive)).then((inventory) => {
+		fetchInventory(userToGiveTo, itemData).then(async (inventory) => {
 			if (inventory === null) return;
 			await this.container.prisma.inventory.update({
 				where: {
 					id: inventory.id
 				},
 				data: {
-					amount: inventory.amount += amount
+					amount: inventory.amount + amount
 				}
 			});
 		});

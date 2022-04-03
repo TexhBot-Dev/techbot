@@ -12,7 +12,6 @@ import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../..
 export default class WithdrawCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
-		if (user === null) return;
 		const arg = interaction.options.getString('amount') as string;
 		const amountToWithdraw = parseAmount(arg, user, false);
 
@@ -49,8 +48,8 @@ export default class WithdrawCommand extends Command {
 				id: user.id
 			},
 			data: {
-				wallet: user.wallet += amountToWithdraw,
-				bank: user.bank -= amountToWithdraw
+				wallet: user.wallet + amountToWithdraw,
+				bank: user.bank - amountToWithdraw
 			}
 		});
 

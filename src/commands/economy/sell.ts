@@ -11,13 +11,13 @@ import { fetchInventory, fetchItemByName, fetchUser, generateErrorEmbed } from '
 export class SellCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const item = (interaction.options.getString('item') as string).replaceAll(' ', '_');
+		const itemData = await fetchItemByName(item);
+		if (itemData === null) return;
 		const amount = Number(interaction.options.getString('amount'));
 		const user = await fetchUser(interaction.user);
 
-		await fetchInventory(interaction.user, await fetchItemByName(item)).then(async (inventory) => {
-			const userItem = await fetchItemByName(item);
-			if (userItem === null || inventory === null || user === null) return;
-			if (!userItem.sellable) return interaction.reply('Item is not sellable!');
+		await fetchInventory(interaction.user, itemData).then(async (inventory) => {
+			if (!itemData.sellable) return interaction.reply('Item is not sellable!');
 			if (inventory === undefined) return interaction.reply('You do not have that item');
 			if (inventory.amount < amount) {
 				return interaction.reply({
@@ -37,13 +37,13 @@ export class SellCommand extends Command {
 			await this.container.prisma.user.update({
 				where: user,
 				data: {
-					wallet: user.wallet += Math.trunc(userItem.price / 2)
+					wallet: user.wallet += Math.trunc(itemData.price / 2)
 				}
 			});
 
 			return interaction.reply(
 				`Sold **${amount}** of **${item}** for **$${Math.trunc(
-					userItem.price / 2
+					itemData.price / 2
 				).toLocaleString()}**.`
 			);
 		});

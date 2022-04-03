@@ -14,7 +14,7 @@ export default class BalanceCommand extends Command {
 		const balanceEmbed = new MessageEmbed();
 		const user = interaction.options.getUser('user', false) ?? interaction.user;
 		const dBUserData = await fetchUser(user);
-		if (dBUserData === null) return;
+
 		balanceEmbed
 			.setTitle(`${user.username}, this is your balance!`)
 			.addField('Wallet:', dBUserData.wallet.toLocaleString())

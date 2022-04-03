@@ -43,7 +43,7 @@ export class InventCommand extends Command {
 					id: user.id
 				},
 				data: {
-					wallet: user.wallet += money
+					wallet: user.wallet + money
 				}
 			});
 		});

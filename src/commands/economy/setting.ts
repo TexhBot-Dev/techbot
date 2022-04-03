@@ -5,7 +5,7 @@ import { generateErrorEmbed } from '../../lib/helpers';
 import type { User } from 'discord.js';
 import type { PrismaClient } from '@prisma/client';
 
-const updatePerferedEmojuColor = async (user: User, color: string, prisma: PrismaClient) => {
+const updatePreferredEmojiColor = async (user: User, color: string, prisma: PrismaClient) => {
 	return await prisma.user.update({
 		where: {
 			id: user.id
@@ -33,30 +33,30 @@ export default class SettingCommand extends Command {
 				switch (toggle) {
 					case 'default':
 					case 'yellow':
-						await updatePerferedEmojuColor(interaction.user, 'default', this.container.prisma);
+						await updatePreferredEmojiColor(interaction.user, 'default', this.container.prisma);
 						colorName = 'default';
 						break;
 					case 'pale':
 					case 'white':
-						await updatePerferedEmojuColor(interaction.user, 'pale', this.container.prisma);
+						await updatePreferredEmojiColor(interaction.user, 'pale', this.container.prisma);
 						colorName = 'pale';
 						break;
 					case 'cream':
 					case 'cream white':
-						await updatePerferedEmojuColor(interaction.user, 'cream_white', this.container.prisma);
+						await updatePreferredEmojiColor(interaction.user, 'cream_white', this.container.prisma);
 						colorName = 'cream_white';
 						break;
 					case 'brown':
-						await updatePerferedEmojuColor(interaction.user, 'brown', this.container.prisma);
+						await updatePreferredEmojiColor(interaction.user, 'brown', this.container.prisma);
 						colorName = 'brown';
 						break;
 					case 'dark brown':
-						await updatePerferedEmojuColor(interaction.user, 'dark_brown', this.container.prisma);
+						await updatePreferredEmojiColor(interaction.user, 'dark_brown', this.container.prisma);
 						colorName = 'dark_brown';
 						break;
 					case 'black':
 					case 'dark':
-						await updatePerferedEmojuColor(interaction.user, 'black', this.container.prisma);
+						await updatePreferredEmojiColor(interaction.user, 'black', this.container.prisma);
 						colorName = 'black';
 						break;
 					default:

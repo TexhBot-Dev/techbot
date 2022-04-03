@@ -40,10 +40,11 @@ export const parseAmount = (amount: string | number, user: DBUser, useWallet: bo
  * @example
  * const item = await fetchItem('apple');
  */
-export const fetchItemByName = (name: string): Promise<Item | null> => {
-    const item = container.prisma.item.findFirst({ where: { name } });
+export const fetchItemByName = async (name: string): Promise<Item | null> => {
+    const item = await container.prisma.item.findFirst({ where: { name } });
     if (item === null) {
         throw new Error(`Item with name ${name} not found`);
+        return null;
     }
     return item;
 };
@@ -55,18 +56,10 @@ export const fetchItemByName = (name: string): Promise<Item | null> => {
  * @example
  * const user = await fetchUser(message.author);
  */
-export const fetchUser = async (user: DiscordUser): Promise<DBUser | null> => {
+export const fetchUser = async (user: DiscordUser): Promise<DBUser> => {
 
-    // Look for user if doesn't already exist make new one and return
-    let userData = await container.prisma.user.findFirst({where: {id: user.id}}).catch(async () => {
-        return await container.prisma.user.create({
-            data: {
-                id: user.id,
-                wallet: 0,
-                bank: 0.
-            }
-        });
-    });
+    // Look for user if it doesn't already exist make new one and return
+    let userData = await container.prisma.user.findFirst({where: {id: user.id}});
 
     if (userData === null) {
         userData = await container.prisma.user.create({
@@ -99,8 +92,7 @@ export const fetchUser = async (user: DiscordUser): Promise<DBUser | null> => {
  * @example
  * const inventory = await fetchInventory(message.author, await fetchItemByName('apple'));
  */
-export const fetchInventory = async (user: DiscordUser, itemData: Item | null): Promise<Inventory | null> => {
-    if (itemData === null) return null;
+export const fetchInventory = async (user: DiscordUser, itemData: Item): Promise<Inventory> => {
     let inventoryData = await container.prisma.inventory.findFirst({
         where: {
             userID: user.id,
@@ -122,7 +114,7 @@ export const fetchInventory = async (user: DiscordUser, itemData: Item | null): 
         });
 
     }
-    return inventoryData
+    return inventoryData;
 };
 
 /**

@@ -33,7 +33,6 @@ export default class RobCommand extends Command {
 
 		const robbedUser = await fetchUser(userToRob);
 		const robber = await fetchUser(interaction.user);
-		if (robbedUser === null || robber === null) return;
 
 		if (robbedUser.passiveMode) {
 			return interaction.reply({
@@ -63,7 +62,7 @@ export default class RobCommand extends Command {
 					id: robber.id
 				},
 				data: {
-					wallet: robber.wallet -= lossAmount
+					wallet: robber.wallet - lossAmount
 				}
 			});
 
@@ -72,7 +71,7 @@ export default class RobCommand extends Command {
 					id: robbedUser.id
 				},
 				data: {
-					wallet: robber.wallet += lossAmount
+					wallet: robber.wallet + lossAmount
 				}
 			});
 
@@ -102,7 +101,7 @@ export default class RobCommand extends Command {
 					id: robber.id
 				},
 				data: {
-					wallet: robber.wallet += lossAmount
+					wallet: robber.wallet + lossAmount
 				}
 			});
 
@@ -111,7 +110,7 @@ export default class RobCommand extends Command {
 					id: robbedUser.id
 				},
 				data: {
-					wallet: robber.wallet -= lossAmount
+					wallet: robber.wallet - lossAmount
 				}
 			});
 

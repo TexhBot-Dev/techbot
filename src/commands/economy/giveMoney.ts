@@ -13,7 +13,6 @@ export default class GiveMoneyCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const receiver = interaction.options.getUser('user') as User;
 		const author = await fetchUser(interaction.user);
-		if (author === null) return;
 		const amount = parseAmount(interaction.options.getString('amount') as string, author);
 
 		if (receiver.bot || receiver.id === interaction.user.id) {
@@ -35,18 +34,17 @@ export default class GiveMoneyCommand extends Command {
 				id: author.id
 			},
 			data: {
-				wallet: author.wallet -= amount
+				wallet: author.wallet - amount
 			}
 		});
 
 		const user = await fetchUser(receiver);
-		if (user === null) return;
 		await this.container.prisma.user.update({
 			where: {
 				id: user.id
 			},
 			data: {
-				wallet: user.wallet += amount
+				wallet: user.wallet + amount
 			}
 		});
 

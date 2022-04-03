@@ -11,13 +11,15 @@ import { fetchUser, generateEmbed, parseAmount } from '../../lib/helpers';
 export default class BetCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userDetails = await fetchUser(interaction.user);
-		if (userDetails === null) return;
 		const betAmount = parseAmount(interaction.options.getString('amount') as string, userDetails);
 
-		if (betAmount < 10 || isNaN(betAmount))
+		if (betAmount < 10 || isNaN(betAmount)) {
 			return interaction.reply('Please bet a valid amount above 10!');
-		if (userDetails.wallet < betAmount)
+		}
+
+		if (userDetails.wallet < betAmount) {
 			return interaction.reply(`Sorry ${interaction.user.username}, you don't have enough money!`);
+		}
 
 		const chance = Math.random() < 0.5;
 
@@ -27,7 +29,7 @@ export default class BetCommand extends Command {
 					id: userDetails.id
 				},
 				data: {
-					wallet: userDetails.wallet += betAmount
+					wallet: userDetails.wallet + betAmount
 				}
 			});
 			return interaction.reply({
@@ -45,7 +47,7 @@ export default class BetCommand extends Command {
 					id: userDetails.id
 				},
 				data: {
-					wallet: userDetails.wallet -= betAmount
+					wallet: userDetails.wallet - betAmount
 				}
 			});
 			return interaction.reply({
