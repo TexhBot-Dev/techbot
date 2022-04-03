@@ -31,5 +31,3 @@ package-lock.json
 economy
 economy-shm
 economy-wal
-.env*
-!.env.project

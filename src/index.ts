@@ -1,6 +1,6 @@
 import './lib/setup';
 import { container, LogLevel, SapphireClient } from '@sapphire/framework';
-import { Item, PrismaClient } from '@prisma/client';
+import { bPrismaClient } from '@prisma/client';
 
 declare module '@sapphire/pieces' {
 	interface Container {
