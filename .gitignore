@@ -26,8 +26,3 @@ package-lock.json
 # Environment variables
 !.env.development
 .env*
-
-# Database
-economy
-economy-shm
-economy-wal
