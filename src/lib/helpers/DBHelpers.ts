@@ -53,6 +53,7 @@ export const fetchItemByName = async (name: string): Promise<Item | null> => {
  * Fetches Users
  * @param user
  *
+ * @param extraOption
  * @example
  * const user = await fetchUser(message.author);
  */

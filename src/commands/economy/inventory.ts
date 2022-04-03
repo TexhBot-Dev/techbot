@@ -36,6 +36,7 @@ export default class InventoryCommand extends Command {
 				}
 			});
 			if (itemData === null) return;
+
 			inventoryEmbed.addField(
 				`${itemNumber}: ${itemData.name}`,
 				`Price: ${itemData.price.toLocaleString()}\nRarity: ${itemData.rarity}\nAmount: ${inventory.amount.toLocaleString()}`

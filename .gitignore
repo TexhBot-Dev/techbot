@@ -24,7 +24,7 @@ config.ts
 package-lock.json
 
 # Environment variables
-!.env.project
+!.env.development
 .env*
 
 # Database
