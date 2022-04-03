@@ -29,7 +29,7 @@ declare global {
 
 
 String.prototype.toProperCase = function(): string {
-	return this.replace(/\w\S*/g, (txt: string): string => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+	return this.replace(/\w\S*/g, (txt: string): string => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase());
 };
 
 String.prototype.owoify = function(): string {
