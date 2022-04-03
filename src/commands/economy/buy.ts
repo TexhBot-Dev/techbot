@@ -49,7 +49,7 @@ export default class BuyCommand extends Command {
 					id: inventory.id
 				},
 				data: {
-					amount: inventory.amount += 1
+					amount: (inventory.amount += 1)
 				}
 			});
 		});
