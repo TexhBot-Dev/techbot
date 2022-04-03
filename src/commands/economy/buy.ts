@@ -44,7 +44,6 @@ export default class BuyCommand extends Command {
 		});
 
 		fetchInventory(interaction.user, item).then(async (inventory) => {
-			if (inventory === null) return;
 			await this.container.prisma.inventory.update({
 				where: {
 					id: inventory.id

@@ -59,7 +59,6 @@ export default class BegCommand extends Command {
 		);
 
 		fetchUser(interaction.user).then(async (user) => {
-			if (user === null) return;
 			await this.container.prisma.user.update({
 				where: {
 					id: user.id

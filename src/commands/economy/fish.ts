@@ -18,7 +18,7 @@ export class FishCommand extends Command {
 		const doesUserHaveFishingPole = await fetchInventory(
 			interaction.user,
 			itemData
-		) ;
+		);
 
 		if (doesUserHaveFishingPole === null || doesUserHaveFishingPole.amount === 0) return interaction.reply('You do not have a fishing pole!');
 		const fishing_success = !!Math.random();
