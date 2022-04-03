@@ -7,8 +7,7 @@ export class PepeClient extends SapphireClient {
 		super(options);
 
 		container.prisma = new PrismaClient({
-			errorFormat: 'pretty',
-			log: ['query']
+			errorFormat: 'pretty'
 		});
 		container.client = this;
 	}

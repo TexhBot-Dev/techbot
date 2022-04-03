@@ -27,9 +27,7 @@ export default class ShopCommand extends Command {
 			}
 		}
 
-		const items = await this.container.prisma.item
-			.findMany()
-			.then((items) => items.sort((a, b) => b.name.normalize().localeCompare(a.name.normalize())));
+		const items = (await this.container.prisma.item.findMany()).sort((a, b) => a.rarity.localeCompare(b.rarity));
 
 		const embed = new MessageEmbed()
 			.setTitle('Items For Sale')
