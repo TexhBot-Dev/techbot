@@ -35,7 +35,6 @@ export default class HighlowCommand extends Command {
 		const msg = await interaction.channel?.send({ embeds: [embed], components: [row] });
 
 		const user = await fetchUser(interaction.user);
-		if (user === null) return;
 
 		const filter = (interaction: MessageComponentInteraction) =>
 			interaction.customId === 'higher' ||
