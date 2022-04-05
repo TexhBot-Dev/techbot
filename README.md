@@ -1,6 +1,6 @@
 # Pepeboy
 
-This is a not basic setup of a Discord bot using the [sapphire framework](https://www.sapphirejs.com/) written in TypeScript
+This is a not basic setup of a Discord bot using [sapphire framework](https://www.sapphirejs.com/) and [Prisma](https://www.prisma.io/) written in TypeScript
 
 ## How to use it?
 
