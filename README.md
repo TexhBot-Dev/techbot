@@ -10,8 +10,6 @@ You Don't
 
 ```sh
 npm install
-npm run build
-npm run start
 ```
 
 ### Development
