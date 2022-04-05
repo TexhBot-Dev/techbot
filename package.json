@@ -3,8 +3,17 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "type": "commonjs",
-  "author": "@sapphire",
-  "license": "UNLICENSE",
+  "author": {
+    "email": "greysilly7@gmail.com",
+    "name": "Scott Gould",
+    "url": "greyhome.llamaindustries.com"
+  },
+  "contributors": [
+    {
+      "name": "Spen"
+    }
+  ],
+  "license": "AGPL-3.0-only",
   "dependencies": {
     "@discordjs/collection": "^0.5.0",
     "@prisma/client": "^3.11.1",
