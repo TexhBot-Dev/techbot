@@ -3,15 +3,13 @@ import { LogLevel } from '@sapphire/framework';
 import { PepeClient } from './lib/pepeClient';
 
 const client = new PepeClient({
-	defaultPrefix: 'dr!',
-	regexPrefix: /^(hey +)?bot[,! ]/i,
 	caseInsensitiveCommands: true,
 	loadDefaultErrorListeners: true,
 	logger: {
 		level: LogLevel.Info
 	},
 	shards: 'auto',
-	intents: ['GUILDS', 'GUILD_INTEGRATIONS']
+	intents: ['GUILDS']
 });
 
 (async () => {

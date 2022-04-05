@@ -1,8 +1,9 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { isNullOrUndefined } from '@sapphire/utilities';
+import { generateEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'cat',
@@ -11,13 +12,20 @@ import { isNullOrUndefined } from '@sapphire/utilities';
 })
 export default class CatCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const catEmbed = new MessageEmbed();
-		const cat = (await fetch<Cat[]>('https://aws.random.cat/meow', FetchResultTypes.JSON))[0];
+		const cat = (await fetch<Cat[]>('https://api.thecatapi.com/v1/images/search', FetchResultTypes.JSON))[0];
 
-		catEmbed.setImage(cat.url).setTitle('Cat').setURL(cat.url).setColor('BLUE');
+		const catEmbed = generateEmbed('Cat', '', 'BLUE', {
+			image: {
+				url: cat.url,
+				height: cat.height,
+				width: cat.width
+			}
+		});
 
-		if (!isNullOrUndefined(cat.breeds)) {
-			catEmbed.setDescription(`Breed: ${cat.breeds[0].name}\nLife Span: ${cat.breeds[0].life_span}\nTemperament: ${cat.breeds[0].temperament}`);
+		if (!isNullOrUndefined(cat.breeds) && cat.breeds.length > 0) {
+			catEmbed.setFooter({
+				text: `Breed: ${cat.breeds[0].name}\nLife Span: ${cat.breeds[0].life_span}\nTemperament: ${cat.breeds[0].temperament}`
+			});
 		}
 
 		return interaction.reply({ embeds: [catEmbed] });

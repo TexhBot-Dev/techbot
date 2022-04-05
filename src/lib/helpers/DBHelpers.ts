@@ -39,21 +39,20 @@ export const parseAmount = (amount: string | number, user: DBUser, useWallet: bo
  *
  * @example
  * const item = await fetchItem('apple');
+ * console.log(item.name) // 'apple'
  */
 export const fetchItemByName = async (name: string): Promise<Item | null> => {
 	const item = await container.prisma.item.findFirst({ where: { name } });
 	if (item === null) {
 		throw new Error(`Item with name ${name} not found`);
-		return null;
 	}
 	return item;
 };
 
 /**
- * Fetches Users
+ * Fetches Users data from the DB
  * @param user
  *
- * @param extraOption
  * @example
  * const user = await fetchUser(message.author);
  */
@@ -85,12 +84,13 @@ export const fetchUser = async (user: DiscordUser): Promise<DBUser> => {
 };
 
 /**
- * Fetchers A Users Inventory
+ * Fetches a Users' Inventory
  * @param user
  * @param itemData
  *
  * @example
  * const inventory = await fetchInventory(message.author, await fetchItemByName('apple'));
+ * console.log(inventory.amount) // 1
  */
 export const fetchInventory = async (user: DiscordUser, itemData: Item): Promise<Inventory> => {
 	let inventoryData = await container.prisma.inventory.findFirst({
@@ -117,11 +117,12 @@ export const fetchInventory = async (user: DiscordUser, itemData: Item): Promise
 };
 
 /**
- * Fetchers a Users information from the DB
+ * Fetches a Guilds Data from the DB
  * @param guild
  *
  * @example
  * const guildData = await fetchGuild(message.guild);
+ * console.log(guildData.id) // '!'
  */
 export const fetchGuild = async (guild: DiscordGuild): Promise<DBGuild> => {
 	if (guild === null) {

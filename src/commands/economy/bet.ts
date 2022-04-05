@@ -33,7 +33,7 @@ export default class BetCommand extends Command {
 				}
 			});
 			return interaction.reply({
-				embeds: [generateEmbed(`Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'Bet Won', 'DARK_GREEN')]
+				embeds: [generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')]
 			});
 		} else {
 			await this.container.prisma.user.update({
@@ -45,7 +45,7 @@ export default class BetCommand extends Command {
 				}
 			});
 			return interaction.reply({
-				embeds: [generateEmbed(`${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'Bet Lost', 'RED')]
+				embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
 			});
 		}
 	}

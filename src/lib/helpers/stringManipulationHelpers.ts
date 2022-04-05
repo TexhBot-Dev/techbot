@@ -1,11 +1,11 @@
-import type { SapphireClient } from '@sapphire/framework';
-
 /**
  * Cleans text of naughty stuff
  * @param text
  * @param client
  */
-export const clean = (text: string, client: SapphireClient): string => {
+import type { PepeClient } from '../pepeClient';
+
+export const clean = (text: string, client: PepeClient): string => {
 	return text
 		.replace(/@everyone|@here|<@&?(\d{17,19})>/gim, '<mention>')
 		.replace(/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/gim, '<link>')
@@ -26,6 +26,12 @@ export const replacer = (string: string, object: object, regexFlag: string = '')
 	return string;
 };
 
+/**
+ * Pluralizes a string
+ * @param text
+ * @param num
+ * @param suffix
+ */
 export const pluralize = (text: string, num: number, suffix: string = 's'): string => {
 	return text + (num !== 1 ? suffix : '');
 };

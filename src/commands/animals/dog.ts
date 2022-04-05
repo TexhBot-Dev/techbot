@@ -1,8 +1,9 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { isNullOrUndefined } from '@sapphire/utilities';
+import { generateEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'dog',
@@ -11,12 +12,16 @@ import { isNullOrUndefined } from '@sapphire/utilities';
 })
 export default class DogCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const dogEmbed = new MessageEmbed();
 		const dog = (await fetch<Dog[]>('https://api.thedogapi.com/v1/images/search', FetchResultTypes.JSON))[0];
+		const dogEmbed = generateEmbed('Dog', '', 'BLUE', {
+			image: {
+				url: dog.url,
+				height: dog.height,
+				width: dog.width
+			}
+		});
 
-		dogEmbed.setImage(dog.url);
-
-		if (!isNullOrUndefined(dog.breeds)) {
+		if (!isNullOrUndefined(dog.breeds) && dog.breeds.length > 0) {
 			dogEmbed.setFooter({
 				text: `Breed: ${dog.breeds[0].name} | life-span: ${dog.breeds[0].life_span} | Temperament: ${dog.breeds[0].temperament}`
 			});
