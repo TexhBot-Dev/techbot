@@ -3,9 +3,9 @@
  * @param text
  * @param client
  */
-import type { PepeClient } from '../pepeClient';
+import type { SapphireClient } from '@sapphire/framework';
 
-export const clean = (text: string, client: PepeClient): string => {
+export const clean = (text: string, client: SapphireClient): string => {
 	return text
 		.replace(/@everyone|@here|<@&?(\d{17,19})>/gim, '<mention>')
 		.replace(/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/gim, '<link>')

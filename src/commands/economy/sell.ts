@@ -1,7 +1,8 @@
+import type { ItemType } from '@prisma/client';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { fetchInventory, fetchItemByName, fetchUser, generateErrorEmbed } from '../../lib/helpers';
+import { fetchInventories, fetchItemByName, fetchUser, generateErrorEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'sell',
@@ -11,26 +12,27 @@ import { fetchInventory, fetchItemByName, fetchUser, generateErrorEmbed } from '
 export class SellCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const item = (interaction.options.getString('item') as string).replaceAll(' ', '_');
-		const itemData = await fetchItemByName(item);
+		const itemData = await fetchItemByName(item as ItemType['name']);
 		if (itemData === null) return;
 		const amount = Number(interaction.options.getString('amount'));
 		const user = await fetchUser(interaction.user);
 
-		await fetchInventory(interaction.user, itemData).then(async (inventory) => {
+		await fetchInventories(interaction.user).then(async (inventory) => {
+			const inv = inventory.find((i) => i.itemID === itemData.name);
 			if (!itemData.sellable) return interaction.reply('Item is not sellable!');
-			if (inventory === undefined) return interaction.reply('You do not have that item');
-			if (inventory.amount < amount) {
+			if (inv === undefined) return interaction.reply('You do not have that item');
+			if (inv.count < amount) {
 				return interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!')]
 				});
 			}
 
-			await this.container.prisma.inventory.update({
+			await this.container.prisma.item.update({
 				where: {
-					id: inventory.id
+					id: inv.id
 				},
 				data: {
-					amount: (inventory.amount -= amount)
+					count: (inv.count -= amount)
 				}
 			});
 

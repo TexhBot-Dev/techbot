@@ -1,4 +1,4 @@
-import type { Guild as DBGuild, Inventory, Item, User as DBUser } from '@prisma/client';
+import type { Guild as DBGuild, Item, ItemType, User as DBUser } from '@prisma/client';
 import type { Guild as DiscordGuild, User as DiscordUser } from 'discord.js';
 import { isSafeInteger } from './numberHelpers';
 import { container } from '@sapphire/framework';
@@ -41,8 +41,8 @@ export const parseAmount = (amount: string | number, user: DBUser, useWallet: bo
  * const item = await fetchItem('apple');
  * console.log(item.name) // 'apple'
  */
-export const fetchItemByName = async (name: string): Promise<Item | null> => {
-	const item = await container.prisma.item.findFirst({ where: { name } });
+export const fetchItemByName = async (name: ItemType['name']): Promise<ItemType | null> => {
+	const item = await container.prisma.itemType.findFirst({ where: { name } });
 	if (item === null) {
 		throw new Error(`Item with name ${name} not found`);
 	}
@@ -86,34 +86,17 @@ export const fetchUser = async (user: DiscordUser): Promise<DBUser> => {
 /**
  * Fetches a Users' Inventory
  * @param user
- * @param itemData
  *
  * @example
- * const inventory = await fetchInventory(message.author, await fetchItemByName('apple'));
+ * const inventory = await fetchInventory(message.author);
  * console.log(inventory.amount) // 1
  */
-export const fetchInventory = async (user: DiscordUser, itemData: Item): Promise<Inventory> => {
-	let inventoryData = await container.prisma.inventory.findFirst({
+export const fetchInventories = async (user: DiscordUser): Promise<Item[]> => {
+	return await container.prisma.item.findMany({
 		where: {
-			userID: user.id,
-			itemID: itemData.id
+			userID: user.id
 		}
 	});
-
-	if (inventoryData === null) {
-		inventoryData = await container.prisma.inventory.create({
-			data: {
-				user: {
-					connect: {
-						id: user.id
-					}
-				},
-				amount: 0,
-				itemID: itemData.id
-			}
-		});
-	}
-	return inventoryData;
 };
 
 /**

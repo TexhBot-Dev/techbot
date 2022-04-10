@@ -5,8 +5,8 @@ import type { CommandInteraction } from 'discord.js';
 const OWNERS = envParseArray('OWNERS');
 
 export class OwnerOnlyPrecondition extends Precondition {
-	public async chatInputRun(interation: CommandInteraction) {
-		return OWNERS.includes(interation.user.id) ? this.ok() : this.error({ message: 'This command can only be used by the owner.' });
+	public async chatInputRun(interaction: CommandInteraction) {
+		return OWNERS.includes(interaction.user.id) ? this.ok() : this.error({ message: 'This command can only be used by the owner.' });
 	}
 }
 

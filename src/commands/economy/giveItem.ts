@@ -1,7 +1,8 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, User, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchInventory, fetchItemByName, generateErrorEmbed } from '../../lib/helpers';
+import { fetchInventories, fetchItemByName, generateErrorEmbed } from '../../lib/helpers';
+import type { ItemType } from '@prisma/client';
 
 @ApplyOptions<CommandOptions>({
 	name: 'giveItem',
@@ -33,36 +34,38 @@ export default class GiveItemCommand extends Command {
 			}); // return message.reply('Please specify a valid amount of money to withdraw');
 		}
 
-		const itemData = await fetchItemByName(itemToGive);
+		const itemData = await fetchItemByName(itemToGive as ItemType['name']);
 		if (itemData === null) return;
 
 		// Senders Inventory
-		fetchInventory(interaction.user, itemData).then(async (inventory) => {
-			if (inventory === null) return interaction.reply('You do not have that item');
-			if (inventory.amount < amount) {
+		fetchInventories(interaction.user).then(async (inventory) => {
+			const inv = inventory.find((item) => item.itemID === itemToGive);
+			if (inv === undefined) return interaction.reply('You do not have that item');
+			if (inv.count < amount) {
 				return interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!')]
 				});
 			}
 
-			await this.container.prisma.inventory.update({
+			await this.container.prisma.item.update({
 				where: {
-					id: inventory.id
+					id: inv.id
 				},
 				data: {
-					amount: inventory.amount - amount
+					count: inv.count - amount
 				}
 			});
 		});
 		// Receivers Inventory
-		fetchInventory(userToGiveTo, itemData).then(async (inventory) => {
-			if (inventory === null) return;
-			await this.container.prisma.inventory.update({
+		fetchInventories(userToGiveTo).then(async (inventory) => {
+			const inv = inventory.find((item) => item.itemID === itemToGive);
+			if (inv === undefined) return;
+			await this.container.prisma.item.update({
 				where: {
-					id: inventory.id
+					id: inv.id
 				},
 				data: {
-					amount: inventory.amount + amount
+					count: inv.count + amount
 				}
 			});
 		});

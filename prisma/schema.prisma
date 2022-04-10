@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Guild {
@@ -14,40 +14,69 @@ model Guild {
 }
 
 model User {
-  id                  String      @id
-  wallet              Int         @default(0)
-  bank                Int         @default(0)
-  currentJob          String      @default("jobless")
-  jobEXP              Int         @default(0)
-  passiveMode         Boolean     @default(false)
-  preferredEmojiColor String      @default("yellow")
-  premium             Boolean     @default(false)
-  inventory           Inventory[] @relation("Inventory")
-}
-
-model Inventory {
-  id     Int    @id @default(autoincrement())
-  userID String
-  itemID Int
-  amount Int    @default(0)
-  user   User   @relation("Inventory", fields: [userID], references: [id])
+  id                  String   @id
+  wallet              Int      @default(0)
+  bank                Int      @default(0)
+  currentJob          JobNames @default(JOBLESS)
+  jobEXP              Int      @default(0)
+  passiveMode         Boolean  @default(false)
+  preferredEmojiColor String   @default("yellow")
+  premium             Boolean  @default(false)
 }
 
 model Item {
-  id          Int     @id @default(autoincrement())
-  name        String
+  id     Int    @id @default(autoincrement())
+  userID String
+  itemID ItemNames
+  count  Int    @default(0)
+}
+
+model ItemType {
+  name        ItemNames @id
   price       Int
-  rarity      String
+  rarity      Rarity    @default(COMMON)
   emoji       String?
-  description String  @default("I was forgotten about by the devs ;(")
-  sellable    Boolean @default(false)
-  tradeable   Boolean @default(false)
-  collectable Boolean @default(false)
+  description String    @default("I was forgotten about by the devs ;(")
+  sellable    Boolean   @default(false)
+  tradeable   Boolean   @default(false)
+  collectable Boolean   @default(false)
 }
 
 model Job {
-  id          Int    @id @default(autoincrement())
-  name        String
-  description String @default("I was forgotten about by the devs ;(")
-  minimumXP   Int    @default(0)
+  name        JobNames @id
+  description String   @default("I was forgotten about by the devs ;(")
+  minimumXP   Int      @default(0)
+}
+
+enum Rarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+enum JobNames {
+  JOBLESS
+  JANITOR
+  COOK
+  FIRE_FIGHTER
+  YOUTUBER
+  INVESTOR
+  PEPE_KING
+}
+
+enum ItemNames {
+  GRILLED_CHEESE
+  HELICOPTER
+  HUNTING_RIFLE
+  GOLDEN_CHICKEN_NUGGET
+  TV
+  LAPTOP
+  IPHONE
+  FISHING_POLE
+  SCISSORS
+  TROPHY
+  KFC
+  FISH
 }

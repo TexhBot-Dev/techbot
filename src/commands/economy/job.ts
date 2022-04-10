@@ -62,7 +62,7 @@ export default class JobCommand extends Command {
 				const jobEmbed = new MessageEmbed()
 					.setTitle('Current Job')
 					.setDescription(
-						user.currentJob !== 'jobless'
+						user.currentJob !== 'JOBLESS'
 							? `Your current job is **${user.currentJob.toProperCase()}**.`
 							: 'You are currently **Unemployed**.'
 					)

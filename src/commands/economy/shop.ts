@@ -2,6 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetchItemByName, generateErrorEmbed } from '../../lib/helpers';
+import type { ItemType } from '@prisma/client';
 
 @ApplyOptions<CommandOptions>({
 	name: 'shop',
@@ -12,7 +13,7 @@ export default class ShopCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const specificItem = interaction.options.getString('item') || '';
 		if (specificItem.length > 0) {
-			const item = await fetchItemByName(specificItem.toProperCase());
+			const item = await fetchItemByName(specificItem.toUpperCase() as ItemType['name']);
 			if (item !== null) {
 				const embed = new MessageEmbed()
 					.setTitle(item.name.toProperCase())
@@ -27,7 +28,7 @@ export default class ShopCommand extends Command {
 			}
 		}
 
-		const items = (await this.container.prisma.item.findMany()).sort((a, b) => a.rarity.localeCompare(b.rarity));
+		const items = (await this.container.prisma.itemType.findMany()).sort((a, b) => a.rarity.localeCompare(b.rarity));
 
 		const embed = new MessageEmbed()
 			.setTitle('Items For Sale')

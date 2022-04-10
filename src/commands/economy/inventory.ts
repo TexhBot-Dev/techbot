@@ -12,34 +12,30 @@ export default class InventoryCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userToCheck = interaction.options.getUser('user') || interaction.user;
 
-		const userToCheckData = await this.container.prisma.user.findFirst({
+		const inventories = await this.container.prisma.item.findMany({
 			where: {
-				id: userToCheck.id
-			},
-			include: {
-				inventory: true
+				userID: userToCheck.id
 			}
 		});
-		if (userToCheckData === null) return;
 		const inventoryEmbed = new MessageEmbed();
 
-		if (userToCheckData.inventory.length === 0) {
+		if (inventories.length === 0) {
 			inventoryEmbed.setDescription('You have no items in your inventory!');
 			return interaction.reply({ embeds: [inventoryEmbed] });
 		}
 
 		let itemNumber = 1;
-		for (const inventory of userToCheckData.inventory) {
-			const itemData = await this.container.prisma.item.findFirst({
+		for (const inventory of inventories) {
+			const itemData = await this.container.prisma.itemType.findFirst({
 				where: {
-					id: inventory.itemID
+					name: inventory.itemID
 				}
 			});
 			if (itemData === null) return;
 
 			inventoryEmbed.addField(
-				`${itemNumber}: ${itemData.name}`,
-				`Price: ${itemData.price.toLocaleString()}\nRarity: ${itemData.rarity}\nAmount: ${inventory.amount.toLocaleString()}`
+				`${itemNumber}: ${itemData.name.toProperCase()}`,
+				`Price: ${itemData.price.toLocaleString()}\nRarity: ${itemData.rarity}\nAmount: ${inventory.count.toLocaleString()}`
 			);
 			itemNumber++;
 		}

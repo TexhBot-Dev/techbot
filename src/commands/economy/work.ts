@@ -14,7 +14,7 @@ export default class WorkCommand extends Command {
 		const workEmbed = new MessageEmbed();
 		const job = user.currentJob;
 
-		if (job === 'jobless') {
+		if (job === 'JOBLESS') {
 			return interaction.reply({
 				embeds: [generateErrorEmbed("You don't have a job! Do `job select janitor` to get started!", 'No Job')]
 			});
