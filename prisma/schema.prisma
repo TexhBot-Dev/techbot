@@ -24,14 +24,14 @@ model User {
   premium             Boolean  @default(false)
 }
 
-model Item {
+model Inventory {
   id     Int    @id @default(autoincrement())
   userID String
   itemID ItemNames
   count  Int    @default(0)
 }
 
-model ItemType {
+model ItemMetaData {
   name        ItemNames @id
   price       Int
   rarity      Rarity    @default(COMMON)

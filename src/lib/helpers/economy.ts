@@ -3,10 +3,18 @@ import { container } from '@sapphire/framework';
 
 export const updateWallet = async (user: User, amount: number) => {
 	if (amount < 0) throw new Error('Amount must be positive');
-	await container.prisma.$executeRaw`
-		UPDATE user
-		SET money = money + ${amount}
+	return container.prisma.$executeRaw`
+		UPDATE "User"
+		SET wallet = wallet + ${amount}
 		WHERE id = ${user.id}
 	`;
-	return;
+};
+
+export const updateBank = async (user: User, amount: number) => {
+	if (amount < 0) throw new Error('Amount must be positive');
+	return await container.prisma.$executeRaw`
+		UPDATE "User"
+		SET bank = bank + ${amount}
+		WHERE id = ${user.id}
+	`;
 };
