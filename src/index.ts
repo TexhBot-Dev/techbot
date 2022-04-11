@@ -1,25 +1,18 @@
 import './lib/setup';
-import { LogLevel } from '@sapphire/framework';
+
 import { PepeClient } from './lib/pepeClient';
+import { Intents } from 'discord.js';
 
 const client = new PepeClient({
-	caseInsensitiveCommands: true,
-	loadDefaultErrorListeners: true,
-	logger: {
-		level: LogLevel.Info
-	},
-	shards: 'auto',
-	intents: ['GUILDS']
+	intents: [Intents.FLAGS.GUILDS],
+	loadDefaultErrorListeners: true
 });
 
 (async () => {
 	try {
-		client.logger.info('Logging in');
 		await client.login();
-		client.logger.info('logged in');
-	} catch (error) {
-		client.logger.fatal(error);
-		await client.destroy();
+	} catch (err) {
+		console.error(err);
 	}
 })();
 

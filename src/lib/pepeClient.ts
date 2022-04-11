@@ -11,15 +11,6 @@ export class PepeClient extends SapphireClient {
 		});
 		container.client = this;
 	}
-
-	public async destroy() {
-		await super.destroy();
-		await container.prisma.$disconnect().then(() => {
-			this.logger.info('Disconnected from Prisma');
-		});
-
-		this.logger.info('Goodbye from PepeClient');
-	}
 }
 
 declare module '@sapphire/pieces' {
