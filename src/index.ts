@@ -2,10 +2,14 @@ import './lib/setup';
 
 import { PepeClient } from './lib/pepeClient';
 import { Intents } from 'discord.js';
+import { LogLevel } from '@sapphire/framework';
 
 const client = new PepeClient({
 	intents: [Intents.FLAGS.GUILDS],
-	loadDefaultErrorListeners: true
+	loadDefaultErrorListeners: true,
+	logger: {
+		level: LogLevel.Info
+	}
 });
 
 (async () => {
