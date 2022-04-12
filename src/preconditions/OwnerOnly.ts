@@ -1,8 +1,6 @@
 import { Precondition } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 
-const OWNERS = envParseArray('OWNERS');
-
 export class OwnerOnlyPrecondition extends Precondition {
 	public async chatInputRun(interaction: CommandInteraction) {
 		const OWNERS = process.env.OWNERS?.split(',') ?? [];
