@@ -6,7 +6,7 @@ import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { VM } from 'vm2';
 
-const OWNERS = process.env.OWNERS?.split(',') || [];
+const OWNERS = process.env.OWNERS?.split(',') ?? [];
 
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
