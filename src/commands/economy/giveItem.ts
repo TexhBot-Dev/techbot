@@ -1,8 +1,10 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, User, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchInventories, fetchItemByName, generateErrorEmbed } from '../../lib/helpers';
-import type { ItemType } from '@prisma/client';
+import type { ItemNames } from '@prisma/client';
+import { generateErrorEmbed } from '../../lib/helpers/embed';
+import { fetchUserInventory } from '../../lib/helpers/database';
+import { decrementItemCount, incrementItemCount } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'giveItem',
@@ -34,41 +36,16 @@ export default class GiveItemCommand extends Command {
 			}); // return message.reply('Please specify a valid amount of money to withdraw');
 		}
 
-		const itemData = await fetchItemByName(itemToGive as ItemType['name']);
-		if (itemData === null) return;
-
-		// Senders Inventory
-		fetchInventories(interaction.user).then(async (inventory) => {
-			const inv = inventory.find((item) => item.itemID === itemToGive);
-			if (inv === undefined) return interaction.reply('You do not have that item');
+		fetchUserInventory(interaction.user, itemToGive as ItemNames).then((inv) => {
 			if (inv.count < amount) {
 				return interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!')]
 				});
 			}
-
-			await this.container.prisma.item.update({
-				where: {
-					id: inv.id
-				},
-				data: {
-					count: inv.count - amount
-				}
-			});
+			return;
 		});
-		// Receivers Inventory
-		fetchInventories(userToGiveTo).then(async (inventory) => {
-			const inv = inventory.find((item) => item.itemID === itemToGive);
-			if (inv === undefined) return;
-			await this.container.prisma.item.update({
-				where: {
-					id: inv.id
-				},
-				data: {
-					count: inv.count + amount
-				}
-			});
-		});
+		await decrementItemCount(interaction.user, itemToGive as ItemNames, amount);
+		await incrementItemCount(userToGiveTo, itemToGive as ItemNames, amount);
 
 		// Send Message to Webhook
 		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi

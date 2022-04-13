@@ -3,7 +3,7 @@ import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { isNullOrUndefined } from '@sapphire/utilities';
-import { generateEmbed } from '../../lib/helpers';
+import { generateEmbed } from '../../lib/helpers/embed';
 
 @ApplyOptions<CommandOptions>({
 	name: 'cat',
@@ -13,7 +13,6 @@ import { generateEmbed } from '../../lib/helpers';
 export default class CatCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const cat = (await fetch<Cat[]>('https://api.thecatapi.com/v1/images/search', FetchResultTypes.JSON))[0];
-
 		const catEmbed = generateEmbed('Cat', '', 'BLUE', {
 			image: {
 				url: cat.url,

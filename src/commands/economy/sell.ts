@@ -1,8 +1,10 @@
-import type { ItemType } from '@prisma/client';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { fetchInventories, fetchItemByName, fetchUser, generateErrorEmbed } from '../../lib/helpers';
+import type { ItemNames } from '@prisma/client';
+import { fetchItemMetaData, fetchUserInventory } from '../../lib/helpers/database';
+import { generateErrorEmbed } from '../../lib/helpers/embed';
+import { incrementItemCount, subtractFromWallet } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'sell',
@@ -12,36 +14,20 @@ import { fetchInventories, fetchItemByName, fetchUser, generateErrorEmbed } from
 export class SellCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const item = (interaction.options.getString('item') as string).replaceAll(' ', '_');
-		const itemData = await fetchItemByName(item as ItemType['name']);
-		if (itemData === null) return;
-		const amount = Number(interaction.options.getString('amount'));
-		const user = await fetchUser(interaction.user);
+		const itemData = await fetchItemMetaData(item as ItemNames);
+		if (!itemData.sellable) return interaction.reply('Item is not sellable!');
 
-		await fetchInventories(interaction.user).then(async (inventory) => {
-			const inv = inventory.find((i) => i.itemID === itemData.name);
-			if (!itemData.sellable) return interaction.reply('Item is not sellable!');
-			if (inv === undefined) return interaction.reply('You do not have that item');
+		const amount = Number(interaction.options.getString('amount'));
+
+		await fetchUserInventory(interaction.user, itemData.name).then(async (inv) => {
 			if (inv.count < amount) {
 				return interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!')]
 				});
 			}
 
-			await this.container.prisma.item.update({
-				where: {
-					id: inv.id
-				},
-				data: {
-					count: (inv.count -= amount)
-				}
-			});
-
-			await this.container.prisma.user.update({
-				where: user,
-				data: {
-					wallet: (user.wallet += Math.trunc(itemData.price / 2))
-				}
-			});
+			await incrementItemCount(interaction.user, itemData.name, amount);
+			await subtractFromWallet(interaction.user, Math.trunc(itemData.price / 2));
 
 			return interaction.reply(`Sold **${amount}** of **${item}** for **$${Math.trunc(itemData.price / 2).toLocaleString()}**.`);
 		});

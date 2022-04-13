@@ -1,8 +1,10 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchInventories, fetchItemByName, fetchUser, generateErrorEmbed } from '../../lib/helpers';
-import type { ItemType } from '@prisma/client';
+import type { ItemNames } from '@prisma/client';
+import { incrementItemCount, subtractFromWallet } from '../../lib/helpers/economy';
+import { fetchItemMetaData, fetchUser } from '../../lib/helpers/database';
+import { generateErrorEmbed } from '../../lib/helpers/embed';
 
 @ApplyOptions<CommandOptions>({
 	name: 'buy',
@@ -13,7 +15,7 @@ export default class BuyCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const itemToBuy = interaction.options.getString('item') as string;
 
-		const item = await fetchItemByName(itemToBuy.replaceAll(' ', '_') as ItemType['name']);
+		const item = await fetchItemMetaData(itemToBuy.replaceAll(' ', '_') as ItemNames);
 		const user = await fetchUser(interaction.user);
 
 		if (item === null) {
@@ -35,27 +37,8 @@ export default class BuyCommand extends Command {
 			});
 		}
 
-		await this.container.prisma.user.update({
-			where: {
-				id: user.id
-			},
-			data: {
-				wallet: user.wallet - item.price
-			}
-		});
-
-		fetchInventories(interaction.user).then(async (inventories) => {
-			const inventory = inventories.find((inv) => inv.itemID === item.name);
-			await this.container.prisma.item.update({
-				where: {
-					id: inventory!.id
-				},
-				data: {
-					count: (inventory!.count += 1)
-				}
-			});
-		});
-
+		await subtractFromWallet(interaction.user, item.price);
+		await incrementItemCount(interaction.user, item.name);
 		return interaction.reply(`You bought **${item.name}** for **$${item.price.toLocaleString()}**`);
 	}
 

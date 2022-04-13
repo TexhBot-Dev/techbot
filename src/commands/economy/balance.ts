@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { fetchUser } from '../../lib/helpers';
+import { fetchUser } from '../../lib/helpers/database';
 
 @ApplyOptions<CommandOptions>({
 	name: 'balance',

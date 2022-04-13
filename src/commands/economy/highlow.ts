@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { fetchUser } from '../../lib/helpers';
+import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'highlow',
@@ -28,8 +28,6 @@ export default class HighlowCommand extends Command {
 		await interaction.reply({ content: 'Made highlow bet successfully!', ephemeral: true });
 		const msg = await interaction.channel?.send({ embeds: [embed], components: [row] });
 
-		const user = await fetchUser(interaction.user);
-
 		const filter = (interaction: MessageComponentInteraction) =>
 			interaction.customId === 'higher' ||
 			interaction.customId === 'jackpot' ||
@@ -53,24 +51,15 @@ export default class HighlowCommand extends Command {
 			}
 
 			if (won) {
-				user.wallet += amount;
+				await addToWallet(interaction.user, amount);
 			} else {
-				user.wallet -= amount;
+				await subtractFromWallet(interaction.user, amount);
 			}
-
-			await this.container.prisma.user.update({
-				where: {
-					id: user.id
-				},
-				data: {
-					wallet: user.wallet
-				}
-			});
 
 			const newEmbed = new MessageEmbed()
 				.setTitle('Highlow')
 				.setDescription(
-					`You betted **${bet.toProperCase()}**, the first number was **${num}** and the second was **${testNum}**. So, you ${
+					`You bet **${bet.toProperCase()}**, the first number was **${num}** and the second was **${testNum}**. So, you ${
 						won ? 'won' : 'lost'
 					} **$${amount}**.`
 				)

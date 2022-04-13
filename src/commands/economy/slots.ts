@@ -2,7 +2,8 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchGuild, fetchUser, parseAmount } from '../../lib/helpers';
+import { fetchGuild, fetchUser } from '../../lib/helpers/database';
+import { parseAmount } from '../../lib/helpers/numbers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'slots',
@@ -12,7 +13,7 @@ import { fetchGuild, fetchUser, parseAmount } from '../../lib/helpers';
 export default class SlotsCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
-		const amount = parseAmount(interaction.options.getString('amount') as string, user, true);
+		const amount = parseAmount(user.wallet, interaction.options.getString('amount') as any);
 
 		if (amount < 20) return interaction.reply('Please gamble a proper amount, a.k.a above 20');
 		if (user.wallet < amount) return interaction.reply('You dont have enough money...');

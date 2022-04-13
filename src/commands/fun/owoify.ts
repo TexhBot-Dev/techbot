@@ -9,9 +9,19 @@ import type { CommandInteraction } from 'discord.js';
 })
 export class OwOCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const textToOwoify = interaction.options.getString('text_to_owoify') as string;
+		const owoifiedText = interaction.options
+			.getString('text_to_owoify', true)
+			.replace(/r/g, 'w')
+			.replace(/R/g, 'W')
+			.replace(/l/g, 'w')
+			.replace(/L/g, 'W')
+			.replace(/n/g, 'ny')
+			.replace(/N/g, 'Ny')
+			.replace(/\?/g, '？')
+			.replace(/!/g, '！')
+			.replace(/\s/g, ' owo ');
 
-		return interaction.reply(textToOwoify.owoify());
+		return interaction.reply(owoifiedText);
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {

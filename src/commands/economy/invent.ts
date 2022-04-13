@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { fetchUser } from '../../lib/helpers';
+import { addToWallet } from '../../lib/helpers/economy';
 
 // List of inventions
 const inventions = [
@@ -36,17 +36,7 @@ export class InventCommand extends Command {
 		const invention = inventions[Math.floor(Math.random() * inventions.length)];
 		// Choose random amount of money less than 500
 		const money = Math.floor(Math.random() * 500);
-		fetchUser(interaction.user).then(async (user) => {
-			if (user === null) return;
-			await this.container.prisma.user.update({
-				where: {
-					id: user.id
-				},
-				data: {
-					wallet: user.wallet + money
-				}
-			});
-		});
+		await addToWallet(interaction.user, money);
 
 		return interaction.reply(`You invented ${invention} and earned ${money}$`);
 	}

@@ -1,6 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
+import { fetchItemMetaData } from '../../lib/helpers/database';
 
 @ApplyOptions<CommandOptions>({
 	name: 'inventory',
@@ -12,7 +13,7 @@ export default class InventoryCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userToCheck = interaction.options.getUser('user') || interaction.user;
 
-		const inventories = await this.container.prisma.item.findMany({
+		const inventories = await this.container.prisma.inventory.findMany({
 			where: {
 				userID: userToCheck.id
 			}
@@ -26,12 +27,7 @@ export default class InventoryCommand extends Command {
 
 		let itemNumber = 1;
 		for (const inventory of inventories) {
-			const itemData = await this.container.prisma.itemType.findFirst({
-				where: {
-					name: inventory.itemID
-				}
-			});
-			if (itemData === null) return;
+			const itemData = await fetchItemMetaData(inventory.itemID);
 
 			inventoryEmbed.addField(
 				`${itemNumber}: ${itemData.name.toProperCase()}`,

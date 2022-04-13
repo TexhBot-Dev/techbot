@@ -1,7 +1,10 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../../lib/helpers';
+import { isSafeInteger, parseAmount } from '../../lib/helpers/numbers';
+import { fetchUser } from '../../lib/helpers/database';
+import { generateErrorEmbed } from '../../lib/helpers/embed';
+import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'withdraw',
@@ -13,21 +16,7 @@ export default class WithdrawCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
 		const arg = interaction.options.getString('amount') as string;
-		const amountToWithdraw = parseAmount(arg, user, false);
-
-		if (isNaN(amountToWithdraw)) {
-			return interaction.reply({
-				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw'!)],
-				ephemeral: true
-			});
-		}
-
-		if (amountToWithdraw > user.bank) {
-			return interaction.reply({
-				embeds: [generateErrorEmbed("You don't have enough money in your bank to withdraw that much")],
-				ephemeral: true
-			});
-		}
+		const amountToWithdraw = parseAmount(user.bank, arg as any);
 
 		if (!isSafeInteger(amountToWithdraw)) {
 			return interaction.reply({
@@ -41,15 +30,15 @@ export default class WithdrawCommand extends Command {
 			});
 		}
 
-		await this.container.prisma.user.update({
-			where: {
-				id: user.id
-			},
-			data: {
-				wallet: user.wallet + amountToWithdraw,
-				bank: user.bank - amountToWithdraw
-			}
-		});
+		if (amountToWithdraw > user.bank) {
+			return interaction.reply({
+				embeds: [generateErrorEmbed("You don't have enough money in your bank to withdraw that much")],
+				ephemeral: true
+			});
+		}
+
+		await addToWallet(interaction.user, amountToWithdraw);
+		await subtractFromWallet(interaction.user, amountToWithdraw);
 
 		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi
 		const webhook = new WebhookClient({

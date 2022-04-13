@@ -1,7 +1,6 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'passiveModeToggle',
@@ -10,24 +9,15 @@ import { fetchUser } from '../../lib/helpers';
 })
 export default class TogglePassiveModeCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const newValue = interaction.options.getBoolean('new_mode');
+		const newValue = interaction.options.getBoolean('new_mode', true);
 
-		if (newValue === null) return interaction.reply('You need to specify a boolean!');
+		this.container.prisma.$executeRaw`
+				UPDATE "Users"
+				SET passiveMode = ${newValue}
+				WHERE "id" = ${interaction.user.id}
+			`;
 
-		fetchUser(interaction.user).then(async (user) => {
-			if (user === null) return;
-
-			await this.container.prisma.user.update({
-				where: {
-					id: user.id
-				},
-				data: {
-					passiveMode: newValue
-				}
-			});
-		});
-
-		return interaction.reply(`Your passive mode has been set to **${newValue}**!`);
+		return interaction.reply(`Your passive mode has been set to **${newValue ? 'enabled' : 'disabled'}**!`);
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {

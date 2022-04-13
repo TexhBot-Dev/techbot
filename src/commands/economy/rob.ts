@@ -1,7 +1,9 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser, generateErrorEmbed } from '../../lib/helpers';
+import { generateErrorEmbed } from '../../lib/helpers/embed';
+import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
+import { fetchUser } from '../../lib/helpers/database';
 
 @ApplyOptions<CommandOptions>({
 	name: 'rob',
@@ -52,23 +54,8 @@ export default class RobCommand extends Command {
 		const lossAmount = Math.floor(robber.wallet * (Math.random() / 0.75));
 
 		if (Math.random() > 0.6) {
-			await this.container.prisma.user.update({
-				where: {
-					id: robber.id
-				},
-				data: {
-					wallet: robber.wallet - lossAmount
-				}
-			});
-
-			await this.container.prisma.user.update({
-				where: {
-					id: robbedUser.id
-				},
-				data: {
-					wallet: robber.wallet + lossAmount
-				}
-			});
+			await subtractFromWallet(interaction.user, lossAmount);
+			await addToWallet(userToRob, lossAmount);
 
 			const failedResponse = new MessageEmbed()
 				.setDescription(`You failed to rob <@${userToRob.id}>, and lost **$${lossAmount}**!`)
@@ -89,23 +76,8 @@ export default class RobCommand extends Command {
 
 			return interaction.reply({ embeds: [failedResponse] });
 		} else {
-			await this.container.prisma.user.update({
-				where: {
-					id: robber.id
-				},
-				data: {
-					wallet: robber.wallet + lossAmount
-				}
-			});
-
-			await this.container.prisma.user.update({
-				where: {
-					id: robbedUser.id
-				},
-				data: {
-					wallet: robber.wallet - lossAmount
-				}
-			});
+			await subtractFromWallet(userToRob, lossAmount);
+			await addToWallet(interaction.user, lossAmount);
 
 			const successResponse = new MessageEmbed()
 				.setDescription(`You successfully robbed <@${userToRob.id}>, and gained **$${winAmount}**!`)

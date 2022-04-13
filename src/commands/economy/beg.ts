@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser } from '../../lib/helpers';
+import { addToWallet } from '../../lib/helpers/economy';
 
 const people = [
 	'Alistair Douglas',
@@ -40,12 +40,13 @@ const failedBegResponses = ['Your pathetic poor person.', 'Go beg someone else!'
 })
 export default class BegCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const failedBegEmbed = new MessageEmbed()
-			.setAuthor({ name: people[Math.floor(people.length * Math.random())] })
-			.setDescription(failedBegResponses[Math.floor(failedBegResponses.length * Math.random())])
-			.setColor('RED');
-
-		if (Math.random() > 0.5) return interaction.reply({ embeds: [failedBegEmbed] });
+		if (Math.random() > 0.5) {
+			const failedBegEmbed = new MessageEmbed()
+				.setAuthor({ name: people[Math.floor(people.length * Math.random())] })
+				.setDescription(failedBegResponses[Math.floor(failedBegResponses.length * Math.random())])
+				.setColor('RED');
+			return interaction.reply({ embeds: [failedBegEmbed] });
+		}
 
 		const BegEmbed = new MessageEmbed();
 
@@ -54,16 +55,7 @@ export default class BegCommand extends Command {
 			Math.random() * (600 - people.length) + (people.length - 1)
 		);
 
-		fetchUser(interaction.user).then(async (user) => {
-			await this.container.prisma.user.update({
-				where: {
-					id: user.id
-				},
-				data: {
-					wallet: user.wallet + moneyEarned
-				}
-			});
-		});
+		await addToWallet(interaction.user, moneyEarned);
 
 		BegEmbed.setTitle(`You begged ${people[Math.floor(Math.random() * people.length)]} for money`)
 			.setDescription(`💰While begging you earned $${moneyEarned.toLocaleString()}💰`)

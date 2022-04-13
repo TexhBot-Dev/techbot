@@ -3,7 +3,7 @@ import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { isNullOrUndefined } from '@sapphire/utilities';
-import { generateEmbed } from '../../lib/helpers';
+import { generateEmbed } from '../../lib/helpers/embed';
 
 @ApplyOptions<CommandOptions>({
 	name: 'dog',

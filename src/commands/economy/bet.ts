@@ -1,7 +1,10 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser, generateEmbed, parseAmount } from '../../lib/helpers';
+import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
+import { parseAmount } from '../../lib/helpers/numbers';
+import { fetchUser } from '../../lib/helpers/database';
+import { generateEmbed } from '../../lib/helpers/embed';
 
 @ApplyOptions<CommandOptions>({
 	name: 'bet',
@@ -11,9 +14,9 @@ import { fetchUser, generateEmbed, parseAmount } from '../../lib/helpers';
 export default class BetCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userDetails = await fetchUser(interaction.user);
-		const betAmount = parseAmount(interaction.options.getString('amount') as string, userDetails);
+		const betAmount = parseAmount(userDetails.wallet, interaction.options.getString('amount')! as any);
 
-		if (betAmount < 10 || isNaN(betAmount)) {
+		if (betAmount < 10) {
 			return interaction.reply('Please bet a valid amount above 10!');
 		}
 
@@ -21,31 +24,19 @@ export default class BetCommand extends Command {
 			return interaction.reply(`Sorry ${interaction.user.username}, you don't have enough money!`);
 		}
 
-		const chance = Math.random() < 0.5;
-
-		if (chance) {
-			await this.container.prisma.user.update({
-				where: {
-					id: userDetails.id
-				},
-				data: {
-					wallet: userDetails.wallet + betAmount
-				}
-			});
-			return interaction.reply({
-				embeds: [generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')]
+		if (Math.random() < 0.5) {
+			return await addToWallet(interaction.user, betAmount).then(() => {
+				interaction.reply({
+					embeds: [
+						generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')
+					]
+				});
 			});
 		} else {
-			await this.container.prisma.user.update({
-				where: {
-					id: userDetails.id
-				},
-				data: {
-					wallet: userDetails.wallet - betAmount
-				}
-			});
-			return interaction.reply({
-				embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
+			return await subtractFromWallet(interaction.user, betAmount).then(() => {
+				interaction.reply({
+					embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
+				});
 			});
 		}
 	}

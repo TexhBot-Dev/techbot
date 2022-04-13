@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { fetchUser } from '../../lib/helpers';
+import { addToWallet } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'daily',
@@ -11,21 +11,13 @@ import { fetchUser } from '../../lib/helpers';
 })
 export default class DailyCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const embed = new MessageEmbed();
 		const moneyEarned = Math.round(Math.random() * (3000 - 750) + 750);
 
-		fetchUser(interaction.user).then(async (user) => {
-			await this.container.prisma.user.update({
-				where: {
-					id: user.id
-				},
-				data: {
-					wallet: user.wallet + moneyEarned
-				}
-			});
-		});
-
-		embed.setTitle('Daily Coins :D').setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tomorrow.`).setColor('BLUE');
+		await addToWallet(interaction.user, moneyEarned);
+		const embed = new MessageEmbed()
+			.setTitle('Daily Coins :D')
+			.setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tomorrow.`)
+			.setColor('BLUE');
 
 		return interaction.reply({ embeds: [embed] });
 	}

@@ -1,7 +1,10 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../../lib/helpers';
+import { fetchUser } from '../../lib/helpers/database';
+import { isSafeInteger, parseAmount } from '../../lib/helpers/numbers';
+import { generateErrorEmbed } from '../../lib/helpers/embed';
+import { addToBank, subtractFromWallet } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'deposit',
@@ -11,18 +14,11 @@ import { fetchUser, generateErrorEmbed, isSafeInteger, parseAmount } from '../..
 })
 export default class DepositCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const user = await fetchUser(interaction.user);
-		const arg = interaction.options.getString('amount') as string;
-		const amountToDeposit = parseAmount(arg, user, true);
+		const userData = await fetchUser(interaction.user);
+		const arg = interaction.options.getString('amount');
+		const amountToDeposit = parseAmount(userData.bank, arg as any);
 
-		if (isNaN(amountToDeposit)) {
-			return interaction.reply({
-				embeds: [generateErrorEmbed(`'${arg}' is not a parsable integer.\nUsage: \`/${this.detailedDescription}\``, 'Invalid Number')],
-				ephemeral: true
-			});
-		}
-
-		if (amountToDeposit > user.wallet) {
+		if (isSafeInteger(amountToDeposit)) {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(`You don't have enough money to deposit '${arg}'.\nUsage: \`/${this.detailedDescription}\``, 'Invalid Amount')
@@ -31,27 +27,8 @@ export default class DepositCommand extends Command {
 			});
 		}
 
-		if (!isSafeInteger(amountToDeposit)) {
-			return interaction.reply({
-				embeds: [
-					generateErrorEmbed(
-						`'${arg}' is a not a valid [safe integer](https://gist.github.com/DevSpen/25ef4e1098231100262f36659e80534a).\nUsage: \`/${this.detailedDescription}\``,
-						'Unsafe Integer'
-					)
-				],
-				ephemeral: true
-			});
-		}
-
-		await this.container.prisma.user.update({
-			where: {
-				id: user.id
-			},
-			data: {
-				wallet: user.wallet - amountToDeposit,
-				bank: user.bank + amountToDeposit
-			}
-		});
+		await subtractFromWallet(interaction.user, amountToDeposit);
+		await addToBank(interaction.user, amountToDeposit);
 
 		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi
 		const webhook = new WebhookClient({

@@ -5,9 +5,8 @@ import { inspect } from 'util';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { VM } from 'vm2';
-import { envParseArray } from '../../lib/env-parser';
 
-const OWNERS = envParseArray('OWNERS');
+const OWNERS = process.env.OWNERS?.split(',') ?? [];
 
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
@@ -18,7 +17,7 @@ const OWNERS = envParseArray('OWNERS');
 	detailedDescription: 'eval [code]'
 })
 export default class EvalCommand extends Command {
-	async messageRun(message: Message<boolean>, args: Args) {
+	async messageRun(message: Message, args: Args) {
 		const code = await args.rest('string');
 
 		const { result, success, type } = await this.eval(message, code, {
@@ -42,7 +41,7 @@ export default class EvalCommand extends Command {
 		return message.reply(`${output}\n${typeFooter}`);
 	}
 
-	private async eval(message: Message<boolean>, code: string, flags: { async: boolean; depth: number; showHidden: boolean }) {
+	private async eval(message: Message, code: string, flags: { async: boolean; depth: number; showHidden: boolean }) {
 		if (flags.async) code = `(async () => {\n${code}\n})();`;
 
 		// @ts-expect-error value is never read, this is so `msg` is possible as an alias when sending the eval.
