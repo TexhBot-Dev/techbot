@@ -16,56 +16,45 @@ export default class LeaderboardCommand extends Command {
 		const bankOnly = flags.includes('bankOnly');
 		const overallMoney = flags.includes('overallMoney');
 
-		if (guildOnly && walletOnly) {
+		if ((overallMoney && walletOnly) || (overallMoney && bankOnly)) {
 			return interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
 		}
 
-		const topUsers = (
+		const topTenUsers = (
 			await this.container.prisma.user.findMany({
 				take: 10
 			})
-		).sort((a, b) => b.wallet - a.wallet);
+		)
+			.sort((a, b) => b.wallet - a.wallet)
+			.filter((user) => {
+				if (user.wallet + user.bank < 0) return;
+				return guildOnly;
+			})
+			.map((user, position) => {
+				const positionText = (() => {
+					switch (position) {
+						case 0:
+							return 'first_place';
+						case 1:
+							return 'second_place';
+						case 2:
+							return 'third_place';
+						default:
+							return this.numToEnglish(position + 1);
+					}
+				})();
+				const discordUserData = this.container.client.users.cache.get(user.id);
+				// const moneyCount = overallMoney === true ? user.wallet + user.bank : bankOnly === true ? user.bank : user.wallet;
+				const moneyCount = (() => {
+					let money = user.wallet;
+					if (overallMoney) money += user.bank;
+					return money;
+				})();
+				return `${positionText}. ${discordUserData?.username} - ${moneyCount}`;
+			})
+			.join('\n');
 
-		const leaderboardEmbed = new MessageEmbed();
-		const leaderboardData: string[] = [];
-
-		let counter = 1;
-
-		const validUsers = topUsers.filter((user) => {
-			if (user.wallet + user.bank < 0) return false;
-			return guildOnly;
-		});
-
-		for (const user of validUsers) {
-			const userInformation = await this.container.client.users.fetch(user.id);
-
-			const valueForEmbed = (): number => {
-				if (overallMoney) return user.wallet + user.bank;
-				if (bankOnly) return user.bank;
-				return user.wallet;
-			};
-
-			switch (counter) {
-				// Removed unnecessary {} around case statements
-				case 1:
-					// Made all lines single lines so its actually readable, for the love of god change your max line length
-					leaderboardData.push(`:first_place: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`);
-					break;
-				case 2:
-					leaderboardData.push(`:second_place: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`);
-					break;
-				case 3:
-					leaderboardData.push(`:third_place: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`);
-					break;
-				default:
-					leaderboardData.push(
-						`:${this.numToEnglish(counter)}: • ${userInformation.tag} - ${valueForEmbed() ? valueForEmbed().toLocaleString() : 0}`
-					);
-			}
-			counter++;
-		}
-
-		leaderboardEmbed.setDescription(leaderboardData.join('\n'));
+		const leaderboardEmbed = new MessageEmbed().setDescription(topTenUsers).setColor('BLUE').setTimestamp();
 		return interaction.reply({ embeds: [leaderboardEmbed] });
 	}
 
