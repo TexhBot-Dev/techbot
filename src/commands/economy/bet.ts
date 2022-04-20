@@ -14,7 +14,7 @@ import { generateEmbed } from '../../lib/helpers/embed';
 export default class BetCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userDetails = await fetchUser(interaction.user);
-		const betAmount = parseAmount(userDetails.wallet, interaction.options.getString('amount')! as any);
+		const betAmount = parseAmount(userDetails.wallet, interaction.options.getString('amount', true) as any);
 
 		if (betAmount < 10) {
 			return interaction.reply('Please bet a valid amount above 10!');

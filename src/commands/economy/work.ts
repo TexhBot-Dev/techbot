@@ -3,6 +3,7 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { generateErrorEmbed } from '../../lib/helpers/embed';
 import { fetchUser } from '../../lib/helpers/database';
+import { addToWallet } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'work',
@@ -29,15 +30,8 @@ export default class WorkCommand extends Command {
 			pepe_king: 1000
 		} as const;
 
-		let moneyEarned = jobs[job.toLowerCase()];
-		await this.container.prisma.user.update({
-			where: {
-				id: user.id
-			},
-			data: {
-				wallet: user.wallet + moneyEarned
-			}
-		});
+		let moneyEarned = jobs[job.toLocaleLowerCase()];
+		await addToWallet(interaction.user, moneyEarned);
 
 		workEmbed
 			.setTitle(`You worked as a ${job.toProperCase()}`)

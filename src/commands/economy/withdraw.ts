@@ -15,7 +15,7 @@ import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
 export default class WithdrawCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
-		const arg = interaction.options.getString('amount') as string;
+		const arg = interaction.options.getString('amount', true);
 		const amountToWithdraw = parseAmount(user.bank, arg as any);
 
 		if (!isSafeInteger(amountToWithdraw)) {

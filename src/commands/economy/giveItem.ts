@@ -1,5 +1,5 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { CommandInteraction, MessageEmbed, User, WebhookClient } from 'discord.js';
+import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ItemNames } from '@prisma/client';
 import { generateErrorEmbed } from '../../lib/helpers/embed';
@@ -14,9 +14,9 @@ import { decrementItemCount, incrementItemCount } from '../../lib/helpers/econom
 })
 export default class GiveItemCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const userToGiveTo = interaction.options.getUser('user') as User;
-		const itemToGive = interaction.options.getString('item') as string;
-		const amount = Number(interaction.options.getString('amount')) as number;
+		const userToGiveTo = interaction.options.getUser('user', true);
+		const itemToGive = interaction.options.getString('item', true);
+		const amount = Number(interaction.options.getString('amount', true));
 
 		if (userToGiveTo.id === interaction.user.id) {
 			return interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!')] });

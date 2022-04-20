@@ -14,7 +14,7 @@ import { incrementItemCount, subtractFromWallet } from '../../lib/helpers/econom
 export class SellCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const item = (interaction.options.getString('item') as string).replaceAll(' ', '_');
-		const itemData = await fetchItemMetaData(item as ItemNames);
+		const itemData = await fetchItemMetaData(item.toLocaleUpperCase() as ItemNames);
 		if (!itemData.sellable) return interaction.reply('Item is not sellable!');
 
 		const amount = Number(interaction.options.getString('amount'));

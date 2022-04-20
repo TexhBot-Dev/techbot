@@ -12,9 +12,9 @@ import { fetchItemMetaData } from '../../lib/helpers/database';
 })
 export default class ShopCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const specificItem = interaction.options.getString('item') || '';
+		const specificItem = interaction.options.getString('item') ?? '';
 		if (specificItem.length > 0) {
-			const item = await fetchItemMetaData(specificItem.toUpperCase() as ItemNames);
+			const item = await fetchItemMetaData(specificItem.toLocaleUpperCase() as ItemNames);
 			if (item !== null) {
 				const embed = new MessageEmbed()
 					.setTitle(item.name.toProperCase())

@@ -12,7 +12,7 @@ import { fetchUser } from '../../lib/helpers/database';
 })
 export default class RobCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const userToRob = interaction.options.getUser('user')!;
+		const userToRob = interaction.options.getUser('user', true);
 		if (!interaction.inGuild())
 			return interaction.reply({
 				embeds: [generateErrorEmbed('Please use this command in a server.', 'Guild Only Command')],

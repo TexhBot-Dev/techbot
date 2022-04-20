@@ -11,7 +11,7 @@ import { fetchItemMetaData } from '../../lib/helpers/database';
 })
 export default class InventoryCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const userToCheck = interaction.options.getUser('user') || interaction.user;
+		const userToCheck = interaction.options.getUser('user', false) ?? interaction.user;
 		const inventoryEmbed = new MessageEmbed();
 
 		(

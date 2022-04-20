@@ -1,5 +1,5 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { CommandInteraction, MessageEmbed, User, WebhookClient } from 'discord.js';
+import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetchUser } from '../../lib/helpers/database';
 import { isSafeInteger, parseAmount } from '../../lib/helpers/numbers';
@@ -15,7 +15,7 @@ import { pluralize } from '../../lib/helpers/string';
 })
 export default class GiveMoneyCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const receiver = interaction.options.getUser('user') as User;
+		const receiver = interaction.options.getUser('user', true);
 		const author = await fetchUser(interaction.user);
 		const amount = parseAmount(author.wallet, interaction.options.getString('amount') as any);
 

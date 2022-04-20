@@ -13,9 +13,9 @@ import { generateErrorEmbed } from '../../lib/helpers/embed';
 })
 export default class BuyCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const itemToBuy = interaction.options.getString('item') as string;
+		const itemToBuy = interaction.options.getString('item', true);
 
-		const item = await fetchItemMetaData(itemToBuy.replaceAll(' ', '_') as ItemNames);
+		const item = await fetchItemMetaData(itemToBuy.replaceAll(' ', '_').toLocaleUpperCase() as ItemNames);
 		const user = await fetchUser(interaction.user);
 
 		if (item === null) {
