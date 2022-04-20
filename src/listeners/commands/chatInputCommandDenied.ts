@@ -10,7 +10,7 @@ export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
 
 		if (identifier === 'preconditionCooldown') {
 			const { remaining } = context as { remaining: number };
-			const humanizedRemaining = `<t:${Math.floor(remaining / 1000)}:R>`;
+			const humanizedRemaining = `<t:${Math.floor((Date.now() + remaining) / 1000)}:R>`;
 
 			const cooldownEmbed = generateErrorEmbed(`You can only use this command every ${humanizedRemaining}`, identifier);
 
