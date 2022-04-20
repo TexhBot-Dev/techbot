@@ -1,7 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
+import { DurationFormatter } from '@sapphire/time-utilities';
+import { codeBlock } from '@sapphire/utilities';
 import { stripIndents } from 'common-tags';
-import dayjs from 'dayjs';
 import { CommandInteraction, version } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
@@ -11,8 +12,7 @@ import { CommandInteraction, version } from 'discord.js';
 })
 export class StatsCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const duration = dayjs(this.container.client.uptime).format(' D [days], H [hrs], m [mins], s [secs]');
-
+		const duration = new DurationFormatter().format(this.container.client.uptime!);
 		const string = `
 			= STATISTICS =
 			• Mem Usage  :: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
@@ -23,7 +23,7 @@ export class StatsCommand extends Command {
 			• Discord.js :: v${version}
 			• Node       :: ${process.version}`;
 		return interaction.reply({
-			content: `\`\`\`asciidoc\n${stripIndents(string)}\`\`\``
+			content: codeBlock('asciidoc', stripIndents(string))
 		});
 	}
 

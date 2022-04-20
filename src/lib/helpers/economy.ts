@@ -12,7 +12,7 @@ import type { ItemNames } from '@prisma/client';
 export const addToWallet = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return container.prisma.$executeRaw`
-		UPDATE "User"
+		UPDATE \`User\`
 		SET wallet = wallet + ${amount}
 		WHERE id = ${user.id}
 	`;
@@ -27,7 +27,7 @@ export const addToWallet = async (user: User, amount: number) => {
 export const addToBank = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return await container.prisma.$executeRaw`
-		UPDATE "User"
+		UPDATE \`User\`
 		SET bank = bank + ${amount}
 		WHERE id = ${user.id}
 	`;
@@ -42,7 +42,7 @@ export const addToBank = async (user: User, amount: number) => {
 export const subtractFromWallet = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return container.prisma.$executeRaw`
-		UPDATE "User"
+		UPDATE \`User\`
 		SET wallet = wallet - ${amount}
 		WHERE id = ${user.id}
 	`;
@@ -57,7 +57,7 @@ export const subtractFromWallet = async (user: User, amount: number) => {
 export const subtractFromBank = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return await container.prisma.$executeRaw`
-		UPDATE "User"
+		UPDATE \`User\`
 		SET bank = bank - ${amount}
 		WHERE id = ${user.id}
 	`;
@@ -66,7 +66,7 @@ export const subtractFromBank = async (user: User, amount: number) => {
 export const incrementItemCount = async (user: User, name: ItemNames, amount = 1) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return await container.prisma.$executeRaw`
-		UPDATE Inventory
+		UPDATE \`Inventory\`
 		SET count = count + ${amount}
 		WHERE userID = ${user.id}
 		AND itemID = ${name}
@@ -76,7 +76,7 @@ export const incrementItemCount = async (user: User, name: ItemNames, amount = 1
 export const decrementItemCount = async (user: User, name: ItemNames, amount = 1) => {
 	if (isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return await container.prisma.$executeRaw`
-		UPDATE Inventory
+		UPDATE \`Inventory\`
 		SET count = count - ${amount}
 		WHERE userID = ${user.id}
 		AND itemID = ${name}
