@@ -12,9 +12,10 @@ export class ChooseCommand extends Command {
 		let arg = interaction.options
 			.getString('choices', true)
 			.replace(/@everyone|@here|<@&?(\d{17,19})>/gim, '<mention>')
-			.replace(/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/gim, '<link>');
-		const splitArg = arg.split(/,\s?/g);
-		return interaction.reply(splitArg[Math.floor(Math.random() * splitArg.length)]);
+			.replace(/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/gim, '<link>')
+			.split(/,\s?/g);
+
+		return interaction.reply(arg[Math.floor(Math.random() * arg.length)]);
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
