@@ -12,28 +12,26 @@ import { fetchItemMetaData } from '../../lib/helpers/database';
 export default class InventoryCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const userToCheck = interaction.options.getUser('user') || interaction.user;
-
-		const inventories = await this.container.prisma.inventory.findMany({
-			where: {
-				userID: userToCheck.id
-			}
-		});
 		const inventoryEmbed = new MessageEmbed();
 
-		if (inventories.length === 0) {
-			inventoryEmbed.setDescription('You have no items in your inventory!');
+		(
+			await this.container.prisma.inventory.findMany({
+				where: {
+					userID: userToCheck.id
+				}
+			})
+		).map((inv, position) => {
+			fetchItemMetaData(inv.itemID).then((item) => {
+				inventoryEmbed.addField(
+					`${position + 1}: ${item.name.toProperCase()}`,
+					`Price: ${item.price.toLocaleString()}\nRarity: ${item.rarity}\nAmount: ${inv.count.toLocaleString()}`
+				);
+			});
+		});
+
+		if (inventoryEmbed.fields.length === 0) {
+			inventoryEmbed.setDescription('You have no items!');
 			return interaction.reply({ embeds: [inventoryEmbed] });
-		}
-
-		let itemNumber = 1;
-		for (const inventory of inventories) {
-			const itemData = await fetchItemMetaData(inventory.itemID);
-
-			inventoryEmbed.addField(
-				`${itemNumber}: ${itemData.name.toProperCase()}`,
-				`Price: ${itemData.price.toLocaleString()}\nRarity: ${itemData.rarity}\nAmount: ${inventory.count.toLocaleString()}`
-			);
-			itemNumber++;
 		}
 
 		return interaction.reply({ embeds: [inventoryEmbed] });

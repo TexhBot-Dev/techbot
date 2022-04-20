@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 })
 export default class LeaderboardCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const flags = interaction.options.getString('flags', true).split('--');
+		const flags = (interaction.options.getString('flags', false) ?? '').split('--');
 		const guildOnly = flags.includes('guildOnly');
 		const walletOnly = flags.includes('walletOnly');
 		const bankOnly = flags.includes('bankOnly');
@@ -22,15 +22,19 @@ export default class LeaderboardCommand extends Command {
 
 		const topTenUsers = (
 			await this.container.prisma.user.findMany({
-				take: 10
+				take: 10,
+				orderBy: {
+					wallet: 'desc'
+				},
+				where: {
+					wallet: {
+						gt: 0
+					}
+				}
 			})
 		)
-			.sort((a, b) => b.wallet - a.wallet)
-			.filter((user) => {
-				if (user.wallet + user.bank < 0) return;
-				return guildOnly;
-			})
 			.map((user, position) => {
+				if (guildOnly && !interaction.guild?.members.cache.has(user.id)) return;
 				const positionText = (() => {
 					switch (position) {
 						case 0:
@@ -44,15 +48,16 @@ export default class LeaderboardCommand extends Command {
 					}
 				})();
 				const discordUserData = this.container.client.users.cache.get(user.id);
-				// const moneyCount = overallMoney === true ? user.wallet + user.bank : bankOnly === true ? user.bank : user.wallet;
 				const moneyCount = (() => {
 					let money = user.wallet;
 					if (overallMoney) money += user.bank;
 					return money;
 				})();
-				return `${positionText}. ${discordUserData?.username} - ${moneyCount}`;
+				return `:${positionText}: ${discordUserData?.username} - ${moneyCount}`;
 			})
 			.join('\n');
+
+		if (topTenUsers.length === 0) return;
 
 		const leaderboardEmbed = new MessageEmbed().setDescription(topTenUsers).setColor('BLUE').setTimestamp();
 		return interaction.reply({ embeds: [leaderboardEmbed] });

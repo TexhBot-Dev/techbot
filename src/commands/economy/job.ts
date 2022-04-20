@@ -11,12 +11,12 @@ import { fetchUser } from '../../lib/helpers/database';
 })
 export default class JobCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const toDo = interaction.options.getString('option');
+		const toDo = interaction.options.getString('option', true);
 		const value = interaction.options.getString('value');
 		const user = await fetchUser(interaction.user);
 		const jobs = await this.container.prisma.job.findMany();
 
-		switch (toDo?.toLowerCase()) {
+		switch (toDo.toLocaleLowerCase()) {
 			case 'list':
 				let i = 0;
 				const fields: { name: string; value: any }[] = [];
@@ -41,7 +41,7 @@ export default class JobCommand extends Command {
 					return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
 				}
 
-				const job = jobs.filter((a) => a.name === value.replaceAll(' ', '_'))[0];
+				const job = jobs.find((a) => a.name.toLocaleLowerCase() === value.toLocaleLowerCase());
 
 				if (job === undefined) {
 					return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
