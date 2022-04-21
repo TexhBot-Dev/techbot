@@ -46,13 +46,9 @@ export default class HelpCommand extends Command {
 				});
 			}
 
-			paginatedMessage.addPageEmbed(
-				new MessageEmbed()
-					.setTitle(category.toProperCase())
-					.setColor('BLUE')
-					.setDescription(fields.map((f) => `**${f.name}:** ${f.value}`).join('\n'))
-				// .setFooter({ text: `This server's prefix is ${prefix}` })
-			);
+			paginatedMessage.addPageEmbed((embed) => {
+				return embed.setTitle(category.toProperCase()).setDescription(fields.map((f) => `${f.name}: ${f.value}`).join('\n'));
+			});
 		}
 
 		return paginatedMessage.run(interaction, interaction.user);
