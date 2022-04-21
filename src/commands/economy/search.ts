@@ -25,7 +25,7 @@ const items = [
 })
 export class SearchCommand extends Command {
 	public async chatInputRun(interaction: CommandInteraction) {
-		interaction.reply('Searching...');
+		await interaction.reply('Searching...');
 
 		if (Math.random() > 0.5) return interaction.editReply('You found nothing.');
 
