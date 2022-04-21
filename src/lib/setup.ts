@@ -20,8 +20,13 @@ colorette.createColors({ useColor: true });
 declare global {
 	interface String {
 		toProperCase(): string;
+		toSnakeCase(): string;
 	}
 }
 String.prototype.toProperCase = function (): string {
 	return this.replace(/\w\S*/g, (txt: string): string => txt.charAt(0).toLocaleUpperCase() + txt.substring(1).toLocaleLowerCase());
+};
+
+String.prototype.toSnakeCase = function (): string {
+	return this.toLowerCase().replaceAll(' ', '_');
 };
