@@ -19,7 +19,8 @@ export class FishCommand extends Command {
 		if (Math.random() > 0.5) {
 			await incrementItemCount(interaction.user, 'FISH', Math.round(Math.random() * (10 - 1) + 1));
 			return interaction.reply('You caught Fish!');
-		} else return interaction.reply('You failed to catch anything!');
+		}
+		return interaction.reply('You failed to catch anything!');
 	}
 
 	registerApplicationCommands(registry: ApplicationCommandRegistry) {
