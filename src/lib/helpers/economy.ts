@@ -11,11 +11,20 @@ import type { ItemNames } from '@prisma/client';
  */
 export const addToWallet = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
-	return container.prisma.$executeRaw`
-		UPDATE \`User\`
-		SET wallet = wallet + ${amount}
-		WHERE id = ${user.id}
-	`;
+	return container.prisma.user.upsert({
+		where: {
+			id: user.id
+		},
+		update: {
+			wallet: {
+				increment: amount
+			}
+		},
+		create: {
+			id: user.id,
+			wallet: amount
+		}
+	});
 };
 
 /**
@@ -26,11 +35,20 @@ export const addToWallet = async (user: User, amount: number) => {
  */
 export const addToBank = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
-	return await container.prisma.$executeRaw`
-		UPDATE \`User\`
-		SET bank = bank + ${amount}
-		WHERE id = ${user.id}
-	`;
+	return container.prisma.user.upsert({
+		where: {
+			id: user.id
+		},
+		update: {
+			bank: {
+				increment: amount
+			}
+		},
+		create: {
+			id: user.id,
+			bank: amount
+		}
+	});
 };
 
 /**
@@ -41,11 +59,19 @@ export const addToBank = async (user: User, amount: number) => {
  */
 export const subtractFromWallet = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
-	return container.prisma.$executeRaw`
-		UPDATE \`User\`
-		SET wallet = wallet - ${amount}
-		WHERE id = ${user.id}
-	`;
+	return container.prisma.user.upsert({
+		where: {
+			id: user.id
+		},
+		update: {
+			wallet: {
+				decrement: amount
+			}
+		},
+		create: {
+			id: user.id
+		}
+	});
 };
 
 /**
@@ -56,29 +82,61 @@ export const subtractFromWallet = async (user: User, amount: number) => {
  */
 export const subtractFromBank = async (user: User, amount: number) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
-	return await container.prisma.$executeRaw`
-		UPDATE \`User\`
-		SET bank = bank - ${amount}
-		WHERE id = ${user.id}
-	`;
+	return container.prisma.user.upsert({
+		where: {
+			id: user.id
+		},
+		update: {
+			bank: {
+				decrement: amount
+			}
+		},
+		create: {
+			id: user.id
+		}
+	});
 };
 
 export const incrementItemCount = async (user: User, name: ItemNames, amount = 1) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
-	return await container.prisma.$executeRaw`
-		UPDATE \`Inventory\`
-		SET count = count + ${amount}
-		WHERE userID = ${user.id}
-		AND itemID = ${name}
-	`;
+	return container.prisma.inventory.upsert({
+		where: {
+			userID_itemID: {
+				itemID: name,
+				userID: user.id
+			}
+		},
+		update: {
+			count: {
+				increment: amount
+			}
+		},
+		create: {
+			itemID: name,
+			count: amount,
+			userID: user.id
+		}
+	});
 };
 
 export const decrementItemCount = async (user: User, name: ItemNames, amount = 1) => {
 	if (isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
-	return await container.prisma.$executeRaw`
-		UPDATE \`Inventory\`
-		SET count = count - ${amount}
-		WHERE userID = ${user.id}
-		AND itemID = ${name}
-	`;
+	return container.prisma.inventory.upsert({
+		where: {
+			userID_itemID: {
+				itemID: name,
+				userID: user.id
+			}
+		},
+		update: {
+			count: {
+				decrement: amount
+			}
+		},
+		create: {
+			itemID: name,
+			count: amount,
+			userID: user.id
+		}
+	});
 };

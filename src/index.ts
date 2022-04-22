@@ -2,7 +2,7 @@ import './lib/setup';
 
 import { PepeClient } from './lib/pepeClient';
 import { Intents } from 'discord.js';
-import { LogLevel } from '@sapphire/framework';
+import { ApplicationCommandRegistries, LogLevel, RegisterBehavior } from '@sapphire/framework';
 
 const client = new PepeClient({
 	intents: [Intents.FLAGS.GUILDS],
@@ -11,6 +11,7 @@ const client = new PepeClient({
 		level: LogLevel.Info
 	}
 });
+ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.Overwrite);
 
 (async () => {
 	try {

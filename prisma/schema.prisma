@@ -25,10 +25,11 @@ model User {
 }
 
 model Inventory {
-  id     Int    @id @default(autoincrement())
   userID String
   itemID ItemNames
-  count  Int    @default(0)
+  count  Int       @default(0)
+
+  @@unique([userID, itemID])
 }
 
 model ItemMetaData {
