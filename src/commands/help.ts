@@ -2,6 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { ApplyOptions } from '@sapphire/decorators';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { generateEmbed } from '../lib/helpers/embed';
 
 @ApplyOptions<CommandOptions>({
 	name: 'help',
@@ -10,20 +11,15 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 })
 export default class HelpCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
-		const specifiedCommand = interaction.options.getString('specific_command', false) ?? '';
+		const specifiedCommand = interaction.options.getString('specific_command', false);
 		// List All Commands Registered In Sapphire
 		const commands = this.container.stores.get('commands');
 
-		if (specifiedCommand.length > 0) {
+		if (specifiedCommand !== null) {
 			const command = commands.find((c) => c.name === specifiedCommand.toLowerCase() || c.name.startsWith(specifiedCommand.toLowerCase()));
-			if (!command) return interaction.reply('That command does not exist!');
+			if (command === undefined) return interaction.reply('That command does not exist!');
 
-			const singleCommandResponse = new MessageEmbed()
-				.setTitle(`${command.detailedDescription}`)
-				.setDescription(`${command.description}`)
-				.setColor('BLUE');
-
-			return interaction.reply({ embeds: [singleCommandResponse] });
+			return interaction.reply({ embeds: [generateEmbed(command.name.toProperCase(), command.description)] });
 		}
 
 		const categories = commands.categories;
@@ -47,7 +43,7 @@ export default class HelpCommand extends Command {
 			}
 
 			paginatedMessage.addPageEmbed((embed) => {
-				return embed.setTitle(category.toProperCase()).setDescription(fields.map((f) => `${f.name}: ${f.value}`).join('\n'));
+				return embed.setTitle(category.toProperCase()).setDescription(fields.map((f) => `${f.name.toProperCase()}: ${f.value}`).join('\n'));
 			});
 		}
 
@@ -60,7 +56,9 @@ export default class HelpCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((option) => option.setName('specific_command').setDescription('The command to get help for.')),
+					.addStringOption((option) =>
+						option.setName('specific_command').setDescription('The command to get help for.').setAutocomplete(true)
+					),
 			{ idHints: ['944645456951128085'] }
 		);
 	}
