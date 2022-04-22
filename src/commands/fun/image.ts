@@ -10,6 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 export default class ImageCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {
 		const subcommand = interaction.options.getSubcommand();
+		const ephemeral = interaction.options.getBoolean('ephemeral') ?? false;
 		switch (subcommand) {
 			case 'random': {
 				const imageMeta = {
@@ -22,7 +23,7 @@ export default class ImageCommand extends Command {
 					.setTitle("Here's your image")
 					.setImage(`https://picsum.photos/${imageMeta.width}/${imageMeta.height}/${imageMeta.grayscale ? '?grayscale' : ''}`)
 					.setColor('BLUE');
-				void interaction.reply({ embeds: [response] });
+				void interaction.reply({ embeds: [response], ephemeral });
 			}
 		}
 	}
@@ -45,6 +46,12 @@ export default class ImageCommand extends Command {
 								option
 									.setName('grayscale')
 									.setDescription('Whether the random image should be grayscale. Default is false.')
+									.setRequired(false)
+							)
+							.addBooleanOption((options) =>
+								options
+									.setName('ephemeral')
+									.setDescription('Whether the response should be only visible to you. Default is false.')
 									.setRequired(false)
 							)
 					),
