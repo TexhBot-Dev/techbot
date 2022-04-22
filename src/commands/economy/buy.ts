@@ -15,10 +15,10 @@ export default class BuyCommand extends Command {
 	async chatInputRun(interaction: CommandInteraction) {
 		const itemToBuy = interaction.options.getString('item', true);
 
-		const item = await fetchItemMetaData(itemToBuy.replaceAll(' ', '_').toLocaleUpperCase() as ItemNames);
+		const item = await fetchItemMetaData(itemToBuy.toConstantCase() as ItemNames);
 		const user = await fetchUser(interaction.user);
 
-		if (item === null) {
+		if (!item) {
 			return interaction.reply({
 				embeds: [generateErrorEmbed(`Invalid item \'${itemToBuy}\' specified!`, 'Invalid Item Name')]
 			});
@@ -48,7 +48,9 @@ export default class BuyCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((option) => option.setName('item').setDescription('The item you want to buy.').setRequired(true)),
+					.addStringOption((option) =>
+						option.setName('item').setDescription('The item you want to buy.').setRequired(true).setAutocomplete(true)
+					),
 			{ idHints: ['944645546122051614'] }
 		);
 	}

@@ -45,7 +45,7 @@ export default class ShopCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((option) => option.setName('item').setDescription('The item to get information on.')),
+					.addStringOption((option) => option.setName('item').setDescription('The item to get information on.').setAutocomplete(true)),
 			{ idHints: ['944645805766238229'] }
 		);
 	}

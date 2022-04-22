@@ -21,6 +21,7 @@ declare global {
 	interface String {
 		toProperCase(): string;
 		toSnakeCase(): string;
+		toConstantCase(): string;
 	}
 }
 String.prototype.toProperCase = function (): string {
@@ -29,4 +30,8 @@ String.prototype.toProperCase = function (): string {
 
 String.prototype.toSnakeCase = function (): string {
 	return this.toLowerCase().replaceAll(' ', '_');
+};
+
+String.prototype.toConstantCase = function (): string {
+	return this.replace(/\s/g, '_').toUpperCase();
 };

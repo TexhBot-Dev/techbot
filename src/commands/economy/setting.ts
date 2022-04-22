@@ -1,76 +1,34 @@
-import { ApplicationCommandRegistry, Command, CommandOptions, container } from '@sapphire/framework';
+import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { CommandInteraction } from 'discord.js';
 import type { User } from 'discord.js';
-import { generateErrorEmbed } from '../../lib/helpers/embed';
-
-const updatePreferredEmojiColor = async (user: User, color: string) => {
-	return await container.prisma.user.update({
-		where: {
-			id: user.id
-		},
-		data: {
-			preferredEmojiColor: color
-		}
-	});
-};
 
 @ApplyOptions<CommandOptions>({
 	name: 'setting',
-	description: 'Allows you to change your default emoji',
-	detailedDescription: 'settings'
+	description: 'Customize your settings.',
+	detailedDescription: 'settings <subcommand> <...values>'
 })
 export default class SettingCommand extends Command {
+	private async updatePreferredEmojiColor(user: User, color: string) {
+		return await this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				preferredEmojiColor: color
+			}
+		});
+	}
 	async chatInputRun(interaction: CommandInteraction) {
-		const option = interaction.options.getString('string', true);
+		const subcommand = interaction.options.getSubcommand(true);
 
-		switch (option.toLowerCase()) {
-			case 'emojicolor':
-			case 'coloremoji':
-				const toggle = interaction.options.getString('toggle', true);
-				let colorName: string | null;
-				switch (toggle) {
-					case 'default':
-					case 'yellow':
-						await updatePreferredEmojiColor(interaction.user, 'default');
-						colorName = 'default';
-						break;
-					case 'pale':
-					case 'white':
-						await updatePreferredEmojiColor(interaction.user, 'pale');
-						colorName = 'pale';
-						break;
-					case 'cream':
-					case 'cream white':
-						await updatePreferredEmojiColor(interaction.user, 'cream_white');
-						colorName = 'cream_white';
-						break;
-					case 'brown':
-						await updatePreferredEmojiColor(interaction.user, 'brown');
-						colorName = 'brown';
-						break;
-					case 'dark brown':
-						await updatePreferredEmojiColor(interaction.user, 'dark_brown');
-						colorName = 'dark_brown';
-						break;
-					case 'black':
-					case 'dark':
-						await updatePreferredEmojiColor(interaction.user, 'black');
-						colorName = 'black';
-						break;
-					default:
-						colorName = null;
+		switch (subcommand) {
+			case 'emoji_color':
+				{
+					const newColor = interaction.options.getString('new_color') ?? 'default';
+					this.updatePreferredEmojiColor(interaction.user, newColor);
+					interaction.reply({ content: `Changed your preferred emoji color to **${newColor.toProperCase()}**.`, ephemeral: true });
 				}
-				if (toggle === '' || colorName === null)
-					return interaction.reply({
-						embeds: [
-							generateErrorEmbed(
-								`Invalid preferred emoji color name '${toggle}' provided as the second argument.\nValid options: \`default\`, \`pale\`, \`cream white\`, \`brown\`, \`dark brown\`, \`black\``
-							)
-						]
-					});
-
-				await interaction.reply(`Changed your preferred emoji color to **${colorName.toProperCase()}**.`);
 				break;
 		}
 	}
@@ -81,33 +39,24 @@ export default class SettingCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((option) =>
-						option
-							.setName('option')
-							.setDescription('What to Do.')
-							.setChoices([
-								['emojicolor', 'emojicolor'],
-								['coloremoji', 'coloremoji']
-							])
-							.setRequired(true)
-					)
-					.addStringOption((option) =>
-						option
-							.setName('toggle')
-							.setDescription('Color for your new emoji')
-							.setChoices([
-								['default', 'default'],
-								['yellow', 'yellow'],
-								['pale', 'pale'],
-								['white', 'white'],
-								['cream', 'cream'],
-								['cream white', 'cream white'],
-								['brown', 'brown'],
-								['dark brown', 'dark brown'],
-								['black', 'black'],
-								['dark', 'dark']
-							])
-							.setRequired(true)
+					.addSubcommand((subcommand) =>
+						subcommand
+							.setName('emoji_color')
+							.setDescription('Modify preferred color of emojis.')
+							.addStringOption((option) =>
+								option
+									.setName('new_color')
+									.setDescription('Color for your new emoji')
+									.setChoices([
+										['Default 👋', 'default'],
+										['Pale 👋🏻', 'pale'],
+										['Cream 👋🏼', 'cream'],
+										['Brown 👋🏽', 'brown'],
+										['Dark Drown 👋🏾', 'dark_brown'],
+										['Black 👋🏿', 'black']
+									])
+									.setRequired(true)
+							)
 					),
 			{ idHints: ['944645805313257482'] }
 		);
