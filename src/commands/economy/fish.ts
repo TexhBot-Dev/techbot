@@ -11,7 +11,7 @@ import { incrementItemCount } from '../../lib/helpers/economy';
 	detailedDescription: ''
 })
 export class FishCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const doesUserHaveFishingPole = (await fetchUserInventory(interaction.user, 'FISHING_POLE')).count > 0;
 
 		if (!doesUserHaveFishingPole) return interaction.reply('You do not have a fishing pole!');
@@ -23,7 +23,7 @@ export class FishCommand extends Command {
 		return interaction.reply('You failed to catch anything!');
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645631291572244']
 		});

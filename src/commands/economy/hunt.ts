@@ -31,7 +31,7 @@ const animals = [
 	detailedDescription: 'hunt'
 })
 export class HuntCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.reply('Searching for an Animal...');
 
 		if (Math.random() > 0.5) return interaction.editReply("You didn't find any Animals.");
@@ -45,7 +45,7 @@ export class HuntCommand extends Command {
 		return interaction.editReply(`You culled a(n) ${animal} and earned ${money} coins!`);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['966754372199542794']
 		});

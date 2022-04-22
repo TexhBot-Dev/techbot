@@ -11,7 +11,7 @@ import { parseAmount } from '../../lib/helpers/numbers';
 	detailedDescription: 'slots <amount>'
 })
 export default class SlotsCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
 		const amount = parseAmount(user.wallet, interaction.options.getString('amount') as any);
 
@@ -105,7 +105,7 @@ export default class SlotsCommand extends Command {
 		}
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

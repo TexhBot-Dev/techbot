@@ -11,7 +11,7 @@ import { fetchUser } from '../../lib/helpers/database';
 	detailedDescription: 'rob <user>'
 })
 export default class RobCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const userToRob = interaction.options.getUser('user', true);
 		if (!interaction.inGuild())
 			return interaction.reply({
@@ -100,7 +100,7 @@ export default class RobCommand extends Command {
 		}
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

@@ -14,7 +14,7 @@ import { pluralize } from '../../lib/helpers/string';
 	detailedDescription: 'share <user> <amount>'
 })
 export default class GiveMoneyCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const receiver = interaction.options.getUser('user', true);
 		const author = await fetchUser(interaction.user);
 		const amount = parseAmount(author.wallet, interaction.options.getString('amount') as any);
@@ -70,7 +70,7 @@ export default class GiveMoneyCommand extends Command {
 		return interaction.reply({ embeds: [response] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

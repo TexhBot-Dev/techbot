@@ -9,12 +9,12 @@ import type { CommandInteraction } from 'discord.js';
 	detailedDescription: 'coinflip'
 })
 export class CoinFlipCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		if (Math.random() > 0.5) return interaction.reply('Heads');
 		else return interaction.reply('Tails');
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645979150372874']
 		});

@@ -11,7 +11,7 @@ import { fetchItemMetaData } from '../../lib/helpers/database';
 	detailedDescription: 'shop'
 })
 export default class ShopCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const specificItem = interaction.options.getString('item') ?? '';
 		if (specificItem.length > 0) {
 			const item = await fetchItemMetaData(specificItem.toLocaleUpperCase() as ItemNames);
@@ -39,7 +39,7 @@ export default class ShopCommand extends Command {
 		return interaction.reply({ embeds: [embed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

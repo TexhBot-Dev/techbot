@@ -12,7 +12,7 @@ import { generateEmbed } from '../../lib/helpers/embed';
 	detailedDescription: 'bet <bet amount>'
 })
 export default class BetCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const userDetails = await fetchUser(interaction.user);
 		const betAmount = parseAmount(userDetails.wallet, interaction.options.getString('amount', true) as any);
 
@@ -41,7 +41,7 @@ export default class BetCommand extends Command {
 		}
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

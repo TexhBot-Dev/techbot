@@ -12,7 +12,7 @@ import { incrementItemCount, subtractFromWallet } from '../../lib/helpers/econom
 	detailedDescription: 'sell <item> <amount>'
 })
 export class SellCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const item = (interaction.options.getString('item') as string).replaceAll(' ', '_');
 		const itemData = await fetchItemMetaData(item.toLocaleUpperCase() as ItemNames);
 		if (!itemData.sellable) return interaction.reply('Item is not sellable!');
@@ -33,7 +33,7 @@ export class SellCommand extends Command {
 		});
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

@@ -24,7 +24,7 @@ const items = [
 	description: 'Searches for items on the ground.'
 })
 export class SearchCommand extends Command {
-	public async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.reply('Searching...');
 
 		if (Math.random() > 0.5) return interaction.editReply('You found nothing.');
@@ -38,7 +38,7 @@ export class SearchCommand extends Command {
 		return interaction.editReply(`You found ${item} and ${money} coins!`);
 	}
 
-	public registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['966753016898261074']
 		});

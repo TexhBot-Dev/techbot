@@ -39,7 +39,7 @@ const failedBegResponses = ['Your pathetic poor person.', 'Go beg someone else!'
 	detailedDescription: 'beg'
 })
 export default class BegCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		if (Math.random() > 0.5) {
 			const failedBegEmbed = new MessageEmbed()
 				.setAuthor({ name: people[Math.floor(people.length * Math.random())] })
@@ -64,7 +64,7 @@ export default class BegCommand extends Command {
 		return interaction.reply({ embeds: [BegEmbed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645544725336094']
 		});

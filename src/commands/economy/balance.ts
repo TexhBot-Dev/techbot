@@ -10,7 +10,7 @@ import { fetchUser } from '../../lib/helpers/database';
 	detailedDescription: 'balance [user]'
 })
 export default class BalanceCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const balanceEmbed = new MessageEmbed();
 		const user = interaction.options.getUser('user', false) ?? interaction.user;
 		const dBUserData = await fetchUser(user);
@@ -24,7 +24,7 @@ export default class BalanceCommand extends Command {
 		return interaction.reply({ embeds: [balanceEmbed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

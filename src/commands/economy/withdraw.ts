@@ -13,7 +13,7 @@ import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
 	detailedDescription: 'with <amount>'
 })
 export default class WithdrawCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
 		const arg = interaction.options.getString('amount', true);
 		const amountToWithdraw = parseAmount(user.bank, arg as any);
@@ -63,7 +63,7 @@ export default class WithdrawCommand extends Command {
 		return interaction.reply({ embeds: [response] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

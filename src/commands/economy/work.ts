@@ -11,7 +11,7 @@ import { addToWallet } from '../../lib/helpers/economy';
 	detailedDescription: 'work'
 })
 export default class WorkCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const user = await fetchUser(interaction.user);
 		const workEmbed = new MessageEmbed();
 		const job = user.currentJob;
@@ -41,7 +41,7 @@ export default class WorkCommand extends Command {
 		return interaction.reply({ embeds: [workEmbed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645893120983082']
 		});

@@ -11,7 +11,7 @@ import { generateEmbed } from '../../lib/helpers/embed';
 	detailedDescription: 'cat'
 })
 export default class CatCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const cat = (await fetch<Cat[]>('https://api.thecatapi.com/v1/images/search', FetchResultTypes.JSON))[0];
 		const catEmbed = generateEmbed('Cat', '', 'BLUE', {
 			image: {
@@ -30,7 +30,7 @@ export default class CatCommand extends Command {
 		return interaction.reply({ embeds: [catEmbed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645460482723881']
 		});

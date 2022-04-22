@@ -13,10 +13,11 @@ const realNames = ['Timothy Green', 'Joe Smith', 'James Madison', 'Harry Cox', '
 @ApplyOptions<CommandOptions>({
 	name: 'hack',
 	description: 'Hack a user. 100% real, totally.',
-	detailedDescription: 'hack <user>'
+	detailedDescription: 'hack <user>',
+	cooldownDelay: 200_000
 })
 export class ReverseCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const user = interaction.options.getUser('user');
 		await interaction.reply(`Hacking ${user}... 0%`);
 		setTimeout(() => {
@@ -72,7 +73,7 @@ export class ReverseCommand extends Command {
 		}, 35500);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

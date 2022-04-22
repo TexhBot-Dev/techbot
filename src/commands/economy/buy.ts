@@ -12,7 +12,7 @@ import { generateErrorEmbed } from '../../lib/helpers/embed';
 	detailedDescription: 'buy <item>'
 })
 export default class BuyCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const itemToBuy = interaction.options.getString('item', true);
 
 		const item = await fetchItemMetaData(itemToBuy.toConstantCase() as ItemNames);
@@ -42,7 +42,7 @@ export default class BuyCommand extends Command {
 		return interaction.reply(`You bought **${item.name}** for **$${item.price.toLocaleString()}**`);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

@@ -8,11 +8,11 @@ import { ApplyOptions } from '@sapphire/decorators';
 	detailedDescription: 'image <subcommand> [...options]'
 })
 export default class ImageCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const subcommand = interaction.options.getSubcommand();
 		switch (subcommand) {
 			case 'random': {
-				const imageMeta: ImageMeta = {
+				const imageMeta = {
 					width: interaction.options.getInteger('width') ?? 512,
 					height: interaction.options.getInteger('height') ?? 1024,
 					grayscale: interaction.options.getBoolean('grayscale') ?? false
@@ -27,7 +27,7 @@ export default class ImageCommand extends Command {
 		}
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder
@@ -51,10 +51,4 @@ export default class ImageCommand extends Command {
 			{ idHints: ['967049211956830290'] }
 		);
 	}
-}
-
-interface ImageMeta {
-	width: number;
-	height: number;
-	grayscale: boolean;
 }

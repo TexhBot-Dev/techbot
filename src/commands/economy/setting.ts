@@ -19,7 +19,7 @@ export default class SettingCommand extends Command {
 			}
 		});
 	}
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const subcommand = interaction.options.getSubcommand(true);
 
 		switch (subcommand) {
@@ -33,7 +33,7 @@ export default class SettingCommand extends Command {
 		}
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

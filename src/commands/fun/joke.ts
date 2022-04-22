@@ -9,12 +9,12 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 	detailedDescription: 'joke'
 })
 export default class JokeCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const joke = (await fetch<{ joke: string }>('https://api.popcat.xyz/joke', FetchResultTypes.JSON)).joke;
 		return interaction.reply(joke);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944646064831610900']
 		});

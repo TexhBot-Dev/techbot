@@ -9,7 +9,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	flags: ['guildOnly', 'ownerOnly', 'bankOnly', 'overallMoney']
 })
 export default class LeaderboardCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const flags = (interaction.options.getString('flags', false) ?? '').split('--');
 		const guildOnly = flags.includes('guildOnly');
 		const walletOnly = flags.includes('walletOnly');
@@ -63,7 +63,7 @@ export default class LeaderboardCommand extends Command {
 		return interaction.reply({ embeds: [leaderboardEmbed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

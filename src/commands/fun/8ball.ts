@@ -8,7 +8,7 @@ import type { CommandInteraction } from 'discord.js';
 	detailedDescription: '8ball <question>'
 })
 export class EightballCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const optionsArray = [
 			'Yes!',
 			'No!',
@@ -25,7 +25,7 @@ export class EightballCommand extends Command {
 		return interaction.reply(`:8ball: ${optionsArray[Math.floor(Math.random() * optionsArray.length)]}`);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

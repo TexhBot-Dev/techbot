@@ -17,7 +17,7 @@ const OWNERS = process.env.OWNERS?.split(',') ?? [];
 	detailedDescription: 'eval [code]'
 })
 export default class EvalCommand extends Command {
-	async messageRun(message: Message, args: Args) {
+	public override async messageRun(message: Message, args: Args) {
 		const code = await args.rest('string');
 
 		const { result, success, type } = await this.eval(message, code, {

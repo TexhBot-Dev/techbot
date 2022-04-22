@@ -10,7 +10,7 @@ import { fetchItemMetaData } from '../../lib/helpers/database';
 	detailedDescription: 'inventory [user]'
 })
 export default class InventoryCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const userToCheck = interaction.options.getUser('user', false) ?? interaction.user;
 		const inventoryEmbed = new MessageEmbed();
 
@@ -37,7 +37,7 @@ export default class InventoryCommand extends Command {
 		return interaction.reply({ embeds: [inventoryEmbed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

@@ -13,7 +13,7 @@ import { addToBank, subtractFromWallet } from '../../lib/helpers/economy';
 	detailedDescription: 'deposit <amount>'
 })
 export default class DepositCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const userData = await fetchUser(interaction.user);
 		const arg = interaction.options.getString('amount');
 		const amountToDeposit = parseAmount(userData.bank, arg as any);
@@ -56,7 +56,7 @@ export default class DepositCommand extends Command {
 		return interaction.reply({ embeds: [response] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

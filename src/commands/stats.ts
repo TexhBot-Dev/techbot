@@ -11,7 +11,7 @@ import { CommandInteraction, version } from 'discord.js';
 	detailedDescription: 'stats'
 })
 export class StatsCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const duration = new DurationFormatter().format(this.container.client.uptime!);
 		const string = `
 			= STATISTICS =
@@ -27,7 +27,7 @@ export class StatsCommand extends Command {
 		});
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645459165712454']
 		});

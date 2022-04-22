@@ -10,7 +10,7 @@ import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
 	aliases: ['hl']
 })
 export default class HighlowCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const num = Math.floor(Math.random() * 100) + 1;
 		const embed = new MessageEmbed()
 			.setDescription(
@@ -72,7 +72,7 @@ export default class HighlowCommand extends Command {
 		});
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645632847646762']
 		});

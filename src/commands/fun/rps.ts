@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	detailedDescription: `rps <choice>`
 })
 export default class rpsCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const choice = interaction.options.getString('choice', true);
 
 		if (choice === '') return interaction.reply('You need to specify a choice!');
@@ -31,7 +31,7 @@ export default class rpsCommand extends Command {
 		return interaction.reply('Something went wrong!');
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

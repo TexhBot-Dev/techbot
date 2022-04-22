@@ -8,7 +8,7 @@ import type { CommandInteraction } from 'discord.js';
 	detailedDescription: 'choose <string>, ...'
 })
 export class ChooseCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		let arg = interaction.options
 			.getString('choices', true)
 			.replace(/@everyone|@here|<@&?(\d{17,19})>/gim, '<mention>')
@@ -18,7 +18,7 @@ export class ChooseCommand extends Command {
 		return interaction.reply(arg[Math.floor(Math.random() * arg.length)]);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

@@ -11,7 +11,7 @@ import { replacer } from '../../lib/helpers/string';
 	detailedDescription: 'clapify <text>'
 })
 export default class clapifyCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const text = interaction.options.getString('text') as string;
 		const user = await fetchUser(interaction.user);
 
@@ -31,7 +31,7 @@ export default class clapifyCommand extends Command {
 		return interaction.reply(text.replace(/\s+/g, ` ${emoji} `));
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

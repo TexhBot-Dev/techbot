@@ -29,9 +29,9 @@ String.prototype.toProperCase = function (): string {
 };
 
 String.prototype.toSnakeCase = function (): string {
-	return this.toLowerCase().replaceAll(' ', '_');
+	return this.toLocaleUpperCase().replaceAll(' ', '_');
 };
 
 String.prototype.toConstantCase = function (): string {
-	return this.replace(/\s/g, '_').toUpperCase();
+	return this.replace(/\s/g, '_').toLocaleUpperCase();
 };

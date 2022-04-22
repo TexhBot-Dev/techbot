@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	detailedDescription: 'passivemodetoggle <bool>'
 })
 export default class TogglePassiveModeCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const newValue = interaction.options.getBoolean('new_mode', true);
 
 		this.container.prisma.$executeRaw`
@@ -20,7 +20,7 @@ export default class TogglePassiveModeCommand extends Command {
 		return interaction.reply(`Your passive mode has been set to **${newValue ? 'enabled' : 'disabled'}**!`);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

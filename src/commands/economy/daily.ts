@@ -10,7 +10,7 @@ import { addToWallet } from '../../lib/helpers/economy';
 	detailedDescription: 'daily'
 })
 export default class DailyCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const moneyEarned = Math.round(Math.random() * (3000 - 750) + 750);
 
 		await addToWallet(interaction.user, moneyEarned);
@@ -22,7 +22,7 @@ export default class DailyCommand extends Command {
 		return interaction.reply({ embeds: [embed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645546642128987']
 		});

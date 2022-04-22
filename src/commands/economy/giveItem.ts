@@ -13,7 +13,7 @@ import { decrementItemCount, incrementItemCount } from '../../lib/helpers/econom
 	detailedDescription: 'give-item <user> <item> <amount>'
 })
 export default class GiveItemCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const userToGiveTo = interaction.options.getUser('user', true);
 		const itemToGive = interaction.options.getString('item', true);
 		const amount = Number(interaction.options.getString('amount', true));
@@ -63,7 +63,7 @@ export default class GiveItemCommand extends Command {
 		return interaction.reply(`You gave ${amount} ${itemToGive} to ${userToGiveTo.username}`);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

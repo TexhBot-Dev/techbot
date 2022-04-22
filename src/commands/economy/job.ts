@@ -10,7 +10,7 @@ import { fetchUser } from '../../lib/helpers/database';
 	detailedDescription: 'job [option] ...'
 })
 export default class JobCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const toDo = interaction.options.getString('option', true);
 		const value = interaction.options.getString('value');
 		const user = await fetchUser(interaction.user);
@@ -89,7 +89,7 @@ export default class JobCommand extends Command {
 		}
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

@@ -9,7 +9,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 	detailedDescription: 'github <user>'
 })
 export default class GitHubCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const user = interaction.options.getString('user');
 		const ghUser = await fetch<GitHubUser>(`https://api.popcat.xyz/github/${user}`, FetchResultTypes.JSON);
 		const updatedLast = Math.trunc(new Date(ghUser.updated_at).getTime() / 1000);
@@ -34,7 +34,7 @@ export default class GitHubCommand extends Command {
 		return interaction.reply({ embeds: [response] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

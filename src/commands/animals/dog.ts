@@ -11,7 +11,7 @@ import { generateEmbed } from '../../lib/helpers/embed';
 	detailedDescription: 'dog'
 })
 export default class DogCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	override async chatInputRun(interaction: CommandInteraction) {
 		const dog = (await fetch<Dog[]>('https://api.thedogapi.com/v1/images/search', FetchResultTypes.JSON))[0];
 		const dogEmbed = generateEmbed('Dog', '', 'BLUE', {
 			image: {
@@ -29,7 +29,7 @@ export default class DogCommand extends Command {
 		return interaction.reply({ embeds: [dogEmbed] });
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645460860223510']
 		});

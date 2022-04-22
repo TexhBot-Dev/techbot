@@ -10,7 +10,7 @@ import { generateEmbed } from '../lib/helpers/embed';
 	detailedDescription: 'help [command]'
 })
 export default class HelpCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const specifiedCommand = interaction.options.getString('specific_command', false);
 		// List All Commands Registered In Sapphire
 		const commands = this.container.stores.get('commands');
@@ -50,7 +50,7 @@ export default class HelpCommand extends Command {
 		return paginatedMessage.run(interaction, interaction.user);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			(builder) =>
 				builder

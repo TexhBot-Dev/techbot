@@ -31,7 +31,7 @@ const inventions = [
 	detailedDescription: 'invent'
 })
 export class InventCommand extends Command {
-	async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		// Chose random thing from inventions array
 		const invention = inventions[Math.floor(Math.random() * inventions.length)];
 		// Choose random amount of money less than 500
@@ -41,7 +41,7 @@ export class InventCommand extends Command {
 		return interaction.reply(`You invented ${invention} and earned ${money}$`);
 	}
 
-	registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645717702623332']
 		});
