@@ -14,23 +14,15 @@ export default class ImageCommand extends Command {
 		switch (subcommand) {
 			case 'random': {
 				const imageMeta: ImageMeta = {
-					width: interaction.options.getInteger('width') || 500,
-					height: interaction.options.getInteger('height') || 500,
+					width: interaction.options.getInteger('width') ?? 512,
+					height: interaction.options.getInteger('height') ?? 1024,
 					grayscale: interaction.options.getBoolean('grayscale') ?? false
 				};
-				const image = await fetch(
-					`https://picsum.photos/${imageMeta.width}/${imageMeta.height}/` + imageMeta.grayscale ? '?grayscale' : '',
-					{
-						headers: {
-							'User-Agent': 'PepeBoy/1.0; Greysilly#8813',
-							'X-Identity': 'PepeBoy/1.0; Greysilly#8813'
-						}
-					},
-					FetchResultTypes.Buffer
-				);
-				console.log(image);
 
-				const response = new MessageEmbed().setTitle("Here's your image").setImage(image.toString()).setColor('BLUE');
+				const response = new MessageEmbed()
+					.setTitle("Here's your image")
+					.setImage(`https://picsum.photos/${imageMeta.width}/${imageMeta.height}/${imageMeta.grayscale ? '?grayscale' : ''}`)
+					.setColor('BLUE');
 				interaction.reply({ embeds: [response] });
 			}
 		}
