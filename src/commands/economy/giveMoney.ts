@@ -20,17 +20,17 @@ export default class GiveMoneyCommand extends Command {
 		const amount = parseAmount(author.wallet, interaction.options.getString('amount') as any);
 
 		if (receiver.bot || receiver.id === interaction.user.id) {
-			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
 		}
 
 		if (isSafeInteger(amount)) {
 			return interaction.reply({
-				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw')]
+				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw', 'Invalid amount')]
 			});
 		}
 
 		if (author.wallet < amount) {
-			return interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!', 'Invalid amount')] });
 		}
 
 		await subtractFromWallet(interaction.user, amount);

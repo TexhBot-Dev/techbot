@@ -1,7 +1,6 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { CommandInteraction } from 'discord.js';
-import type { User } from 'discord.js';
+import type { CommandInteraction, User } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'setting',
@@ -9,25 +8,15 @@ import type { User } from 'discord.js';
 	detailedDescription: 'settings <subcommand> <...values>'
 })
 export default class SettingCommand extends Command {
-	private async updatePreferredEmojiColor(user: User, color: string) {
-		return await this.container.prisma.user.update({
-			where: {
-				id: user.id
-			},
-			data: {
-				preferredEmojiColor: color
-			}
-		});
-	}
-	public override async chatInputRun(interaction: CommandInteraction) {
+	public override chatInputRun(interaction: CommandInteraction) {
 		const subcommand = interaction.options.getSubcommand(true);
 
 		switch (subcommand) {
 			case 'emoji_color':
 				{
 					const newColor = interaction.options.getString('new_color') ?? 'default';
-					this.updatePreferredEmojiColor(interaction.user, newColor);
-					interaction.reply({ content: `Changed your preferred emoji color to **${newColor.toProperCase()}**.`, ephemeral: true });
+					void this.updatePreferredEmojiColor(interaction.user, newColor);
+					void interaction.reply({ content: `Changed your preferred emoji color to **${newColor.toProperCase()}**.`, ephemeral: true });
 				}
 				break;
 		}
@@ -60,5 +49,16 @@ export default class SettingCommand extends Command {
 					),
 			{ idHints: ['944645805313257482'] }
 		);
+	}
+
+	private async updatePreferredEmojiColor(user: User, color: string) {
+		return this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				preferredEmojiColor: color
+			}
+		});
 	}
 }

@@ -37,14 +37,14 @@ export default class CatCommand extends Command {
 	}
 }
 
-type Cat = {
+interface Cat {
 	breeds?: BreedsEntityCat[] | null;
 	id: string;
 	url: string;
 	width: number;
 	height: number;
-};
-type BreedsEntityCat = {
+}
+interface BreedsEntityCat {
 	weight: WeightCat;
 	id: string;
 	name: string;
@@ -82,8 +82,8 @@ type BreedsEntityCat = {
 	wikipedia_url: string;
 	hypoallergenic: number;
 	reference_image_id: string;
-};
-type WeightCat = {
+}
+interface WeightCat {
 	imperial: string;
 	metric: string;
-};
+}

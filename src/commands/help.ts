@@ -22,7 +22,7 @@ export default class HelpCommand extends Command {
 			return interaction.reply({ embeds: [generateEmbed(command.name.toProperCase(), command.description)] });
 		}
 
-		const categories = commands.categories;
+		const { categories } = commands;
 		const paginatedMessage = new PaginatedMessage({
 			template: new MessageEmbed().setTitle('Help').setColor('BLUE')
 			// .setFooter({ text: `This server's prefix is ${prefix}` })

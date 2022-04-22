@@ -13,7 +13,7 @@ const client = new PepeClient({
 });
 ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.Overwrite);
 
-(async () => {
+void (async () => {
 	try {
 		await client.login();
 	} catch (err) {
@@ -21,7 +21,7 @@ ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior
 	}
 })();
 
-process.on('SIGINT', async () => {
-	await client.destroy();
+process.on('SIGINT', () => {
+	client.destroy();
 	process.exit(1);
 });

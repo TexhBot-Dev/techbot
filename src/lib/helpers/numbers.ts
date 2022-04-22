@@ -13,7 +13,7 @@ export const isSafeInteger = (value: number): boolean => {
 };
 
 export const parseAmount = (value: number | string, amount: 'all' | 'half' | 'third' | 'quarter' | 'fourth'): number => {
-	const parsed = parseInt(value as string);
+	const parsed = parseInt(value as string, 10);
 	if (!isSafeInteger(parsed)) throw new Error('Invalid number');
 
 	switch (amount) {

@@ -12,8 +12,8 @@ import { ColorResolvable, MessageEmbed, MessageEmbedOptions } from 'discord.js';
  * return interaction.reply({ embeds: [embed] });
  * ```
  */
-export const generateErrorEmbed = (error: string, errorType: string = '', ExtraEmbedOptions?: MessageEmbedOptions): MessageEmbed => {
-	const errType = errorType !== '' ? `: ${errorType}` : '';
+export const generateErrorEmbed = (error: string, errorType: string, ExtraEmbedOptions?: MessageEmbedOptions): MessageEmbed => {
+	const errType = errorType === '' ? '' : `: ${errorType}`;
 
 	return generateEmbed(`Error${errType}`, error, '#ED4245', ExtraEmbedOptions);
 };

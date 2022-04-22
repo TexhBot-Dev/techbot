@@ -22,7 +22,9 @@ export default class WithdrawCommand extends Command {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
-						`'${arg}' is a not a valid [safe integer](https://gist.github.com/DevSpen/25ef4e1098231100262f36659e80534a).\nUsage: \`$/${this.detailedDescription}\``,
+						`'${arg}' is a not a valid [safe integer](https://gist.github.com/DevSpen/25ef4e1098231100262f36659e80534a).\nUsage: \`$/${
+							this.detailedDescription as string
+						}\``,
 						'Unsafe Integer'
 					)
 				],
@@ -32,7 +34,7 @@ export default class WithdrawCommand extends Command {
 
 		if (amountToWithdraw > user.bank) {
 			return interaction.reply({
-				embeds: [generateErrorEmbed("You don't have enough money in your bank to withdraw that much")],
+				embeds: [generateErrorEmbed("You don't have enough money in your bank to withdraw that much", 'Invalid amount')],
 				ephemeral: true
 			});
 		}

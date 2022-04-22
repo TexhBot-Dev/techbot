@@ -21,7 +21,10 @@ export default class DepositCommand extends Command {
 		if (isSafeInteger(amountToDeposit)) {
 			return interaction.reply({
 				embeds: [
-					generateErrorEmbed(`You don't have enough money to deposit '${arg}'.\nUsage: \`/${this.detailedDescription}\``, 'Invalid Amount')
+					generateErrorEmbed(
+						`You don't have enough money to deposit '${arg}'.\nUsage: \`/${this.detailedDescription as string}\``,
+						'Invalid Amount'
+					)
 				],
 				ephemeral: true
 			});

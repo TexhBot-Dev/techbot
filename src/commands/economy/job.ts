@@ -18,74 +18,86 @@ export default class JobCommand extends Command {
 
 		switch (toDo.toLocaleLowerCase()) {
 			case 'list':
-				let i = 0;
-				const fields: { name: string; value: any }[] = [];
-				for (const job of jobs) {
-					fields.push({
-						name: `${i}: ${job.name.toProperCase()}`,
-						value: `Description: ${job.description} **MIN EXP:** ${job.minimumXP}`
-					});
-					i++;
+				{
+					let i = 0;
+					const fields: { name: string; value: any }[] = [];
+					for (const job of jobs) {
+						fields.push({
+							name: `${i}: ${job.name.toProperCase()}`,
+							value: `Description: ${job.description} **MIN EXP:** ${job.minimumXP}`
+						});
+						i++;
+					}
+
+					const listEmbed = new MessageEmbed()
+						.setTitle('Available Jobs')
+						.setDescription(fields.map((f) => `**${f.name}:** ${f.value}`).join('\n'))
+						.setFooter({ text: `To get a job run jobs select <job name>!` })
+						.setColor(0x00ff00);
+
+					void interaction.reply({ embeds: [listEmbed] });
 				}
-
-				const listEmbed = new MessageEmbed()
-					.setTitle('Available Jobs')
-					.setDescription(fields.map((f) => `**${f.name}:** ${f.value}`).join('\n'))
-					.setFooter({ text: `To get a job run jobs select <job name>!` })
-					.setColor(0x00ff00);
-
-				await interaction.reply({ embeds: [listEmbed] });
 				break;
 			case 'select':
-				if (value === null) {
-					return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
-				}
-
-				const job = jobs.find((a) => a.name.toLocaleLowerCase() === value.toLocaleLowerCase());
-
-				if (job === undefined) {
-					return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
-				}
-
-				await this.container.prisma.user.update({
-					where: {
-						id: user.id
-					},
-					data: {
-						currentJob: job.name
+				{
+					if (value === null) {
+						return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
 					}
-				});
 
-				await interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
+					const job = jobs.find((a) => a.name.toLocaleLowerCase() === value.toLocaleLowerCase());
+
+					if (job === undefined) {
+						return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
+					}
+
+					void this.container.prisma.user.update({
+						where: {
+							id: user.id
+						},
+						data: {
+							currentJob: job.name
+						}
+					});
+
+					void interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
+				}
+
 				break;
 			case 'current':
-				const jobEmbed = new MessageEmbed()
-					.setTitle('Current Job')
-					.setDescription(
-						user.currentJob !== 'JOBLESS'
-							? `Your current job is **${user.currentJob.toProperCase()}**.`
-							: 'You are currently **Unemployed**.'
-					)
-					.setColor('BLUE');
+				{
+					const jobEmbed = new MessageEmbed()
+						.setTitle('Current Job')
+						.setDescription(
+							user.currentJob === 'JOBLESS'
+								? 'You are currently **Unemployed**.'
+								: `Your current job is **${user.currentJob.toProperCase()}**.`
+						)
+						.setColor('BLUE');
 
-				await interaction.reply({ embeds: [jobEmbed] });
+					void interaction.reply({ embeds: [jobEmbed] });
+				}
+
 				break;
 
 			case 'xp':
-				const xpEmbed = new MessageEmbed().setTitle('Current XP').setDescription(`${user.jobEXP.toLocaleString()} XP`).setColor('BLUE');
-
-				await interaction.reply({ embeds: [xpEmbed] });
+				{
+					const xpEmbed = new MessageEmbed().setTitle('Current XP').setDescription(`${user.jobEXP.toLocaleString()} XP`).setColor('BLUE');
+					void interaction.reply({ embeds: [xpEmbed] });
+				}
 				break;
 
 			case 'help':
-				const helpReply = new MessageEmbed()
-					.setTitle('Jobs')
-					.setDescription(
-						`**/job list** - Returns a list of all available jobs.\n**/job select <value>** - Selects a job.\n**/job current** - Returns your current job.\n**/job xp** - Returns your current XP.`
-					)
-					.setColor('BLUE');
+				{
+					const helpReply = new MessageEmbed()
+						.setTitle('Jobs')
+						.setDescription(
+							`**/job list** - Returns a list of all available jobs.\n**/job select <value>** - Selects a job.\n**/job current** - Returns your current job.\n**/job xp** - Returns your current XP.`
+						)
+						.setColor('BLUE');
 
-				return interaction.reply({ embeds: [helpReply] });
+					void interaction.reply({ embeds: [helpReply] });
+				}
+				break;
 		}
 	}
 

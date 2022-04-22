@@ -29,8 +29,9 @@ export default class BuyCommand extends Command {
 				embeds: [
 					generateErrorEmbed(
 						`You don't have enough money to purchase \`${item.name.toProperCase()}\`.\nThe item's price of \`${item.price.toLocaleString()}\` is greater than your wallet balance of \`${user.wallet.toLocaleString()}\`.\nUsage: \`/${
-							this.detailedDescription
-						}\``
+							this.detailedDescription as string
+						}\``,
+						'Insufficient Amount'
 					)
 				],
 				ephemeral: true

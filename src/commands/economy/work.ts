@@ -30,7 +30,7 @@ export default class WorkCommand extends Command {
 			pepe_king: 1000
 		} as const;
 
-		let moneyEarned = jobs[job.toLocaleLowerCase()];
+		const moneyEarned = jobs[job.toLocaleLowerCase()];
 		await addToWallet(interaction.user, moneyEarned);
 
 		workEmbed

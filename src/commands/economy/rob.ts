@@ -75,29 +75,26 @@ export default class RobCommand extends Command {
 				);
 
 			return interaction.reply({ embeds: [failedResponse] });
-		} else {
-			await subtractFromWallet(userToRob, lossAmount);
-			await addToWallet(interaction.user, lossAmount);
-
-			const successResponse = new MessageEmbed()
-				.setDescription(`You successfully robbed <@${userToRob.id}>, and gained **$${winAmount}**!`)
-				.setTitle('Rob Successful')
-				.setColor('GREEN')
-				.addField(
-					`Your Balance`,
-					`\`\`\`diff\n- Before:  ${(robber.wallet - winAmount).toLocaleString()}\n+ After: ${robber.wallet.toLocaleString()}\`\`\``,
-					true
-				)
-				.addField(
-					`${userToRob.tag}'s Balance`,
-					`\`\`\`diff\n+ Before:  ${(
-						robbedUser.wallet + winAmount
-					).toLocaleString()}\n- After: ${robbedUser.wallet.toLocaleString()}\`\`\``,
-					true
-				);
-
-			return interaction.reply({ embeds: [successResponse] });
 		}
+		void subtractFromWallet(userToRob, lossAmount);
+		void addToWallet(interaction.user, lossAmount);
+
+		const successResponse = new MessageEmbed()
+			.setDescription(`You successfully robbed <@${userToRob.id}>, and gained **$${winAmount}**!`)
+			.setTitle('Rob Successful')
+			.setColor('GREEN')
+			.addField(
+				`Your Balance`,
+				`\`\`\`diff\n- Before:  ${(robber.wallet - winAmount).toLocaleString()}\n+ After: ${robber.wallet.toLocaleString()}\`\`\``,
+				true
+			)
+			.addField(
+				`${userToRob.tag}'s Balance`,
+				`\`\`\`diff\n+ Before:  ${(robbedUser.wallet + winAmount).toLocaleString()}\n- After: ${robbedUser.wallet.toLocaleString()}\`\`\``,
+				true
+			);
+
+		return interaction.reply({ embeds: [successResponse] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

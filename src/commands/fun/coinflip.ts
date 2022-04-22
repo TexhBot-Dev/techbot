@@ -11,7 +11,7 @@ import type { CommandInteraction } from 'discord.js';
 export class CoinFlipCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		if (Math.random() > 0.5) return interaction.reply('Heads');
-		else return interaction.reply('Tails');
+		return interaction.reply('Tails');
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

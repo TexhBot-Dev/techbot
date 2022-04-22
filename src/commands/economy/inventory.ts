@@ -21,7 +21,7 @@ export default class InventoryCommand extends Command {
 				}
 			})
 		).map((inv, position) => {
-			fetchItemMetaData(inv.itemID).then((item) => {
+			return fetchItemMetaData(inv.itemID).then((item) => {
 				inventoryEmbed.addField(
 					`${position + 1}: ${item.name.toProperCase()}`,
 					`Price: ${item.price.toLocaleString()}\nRarity: ${item.rarity}\nAmount: ${inv.count.toLocaleString()}`

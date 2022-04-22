@@ -9,7 +9,7 @@ import type { CommandInteraction } from 'discord.js';
 })
 export class ChooseCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		let arg = interaction.options
+		const arg = interaction.options
 			.getString('choices', true)
 			.replace(/@everyone|@here|<@&?(\d{17,19})>/gim, '<mention>')
 			.replace(/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/gim, '<link>')

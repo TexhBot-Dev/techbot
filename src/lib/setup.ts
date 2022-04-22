@@ -24,14 +24,15 @@ declare global {
 		toConstantCase(): string;
 	}
 }
-String.prototype.toProperCase = function (): string {
-	return this.replace(/\w\S*/g, (txt: string): string => txt.charAt(0).toLocaleUpperCase() + txt.substring(1).toLocaleLowerCase());
-};
 
-String.prototype.toSnakeCase = function (): string {
-	return this.toLocaleUpperCase().replaceAll(' ', '_');
-};
+Reflect.defineProperty(String.prototype, 'toProperCase', {
+	value: (str: string) => str.replace(/\w\S*/g, (txt: string): string => txt.charAt(0).toLocaleUpperCase() + txt.substring(1).toLocaleLowerCase())
+});
 
-String.prototype.toConstantCase = function (): string {
-	return this.replace(/\s/g, '_').toLocaleUpperCase();
-};
+Reflect.defineProperty(String.prototype, 'toSnakeCase', {
+	value: (str: string) => str.toLocaleUpperCase().replaceAll(' ', '_')
+});
+
+Reflect.defineProperty(String.prototype, 'toConstantCase', {
+	value: (str: string) => str.replace(/\s/g, '_').toLocaleUpperCase()
+});

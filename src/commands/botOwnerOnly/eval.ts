@@ -55,6 +55,7 @@ export default class EvalCommand extends Command {
 			// eslint-disable-next-line no-eval
 			try {
 				if (OWNERS.includes(message.author.id)) {
+					// eslint-disable-next-line no-eval
 					result = inspect(eval(code), { depth: flags.depth, showHidden: flags.showHidden });
 				} else {
 					result = inspect(new VM({ timeout: 1000, sandbox: {} }).run(code), {

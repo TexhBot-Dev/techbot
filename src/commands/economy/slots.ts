@@ -31,7 +31,7 @@ export default class SlotsCommand extends Command {
 
 		const play = new MessageEmbed()
 			.setTitle('Slot Machine')
-			.setDescription('• ' + slotEmoji + '  ' + slotEmoji + '  ' + slotEmoji + ' •')
+			.setDescription(`• ${slotEmoji}  ${slotEmoji}  ${slotEmoji} •`)
 			.setColor('BLUE')
 			.setFooter({ text: 'Are you feeling lucky?' });
 
@@ -54,14 +54,14 @@ export default class SlotsCommand extends Command {
 			.setFooter({ text: 'Are you feeling lucky?' });
 
 		await interaction.reply({ embeds: [play] });
-		setTimeout(() => {
-			interaction.editReply({ embeds: [firstRollEmbed] });
+		setTimeout(async () => {
+			await interaction.editReply({ embeds: [firstRollEmbed] });
 		}, 600);
-		setTimeout(() => {
-			interaction.editReply({ embeds: [secondRollEmbed] });
+		setTimeout(async () => {
+			await interaction.editReply({ embeds: [secondRollEmbed] });
 		}, 1200);
-		setTimeout(() => {
-			interaction.editReply({ embeds: [thirdRollEmbed] });
+		setTimeout(async () => {
+			await interaction.editReply({ embeds: [thirdRollEmbed] });
 		}, 1800);
 
 		if (firstRoll === secondRoll && firstRoll === thirdRoll) {

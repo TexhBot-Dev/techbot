@@ -29,10 +29,8 @@ export default class HighlowCommand extends Command {
 		const msg = await interaction.channel?.send({ embeds: [embed], components: [row] });
 
 		const filter = (interaction: MessageComponentInteraction) =>
-			interaction.customId === 'higher' ||
-			interaction.customId === 'jackpot' ||
-			(interaction.customId === 'lower' && interaction.user.id === interaction.user.id);
-		msg?.awaitMessageComponent({ filter, time: 30_000 }).then(async (interaction) => {
+			interaction.customId === 'higher' || interaction.customId === 'jackpot' || interaction.customId === 'lower';
+		await msg?.awaitMessageComponent({ filter, time: 30_000 }).then(async (interaction) => {
 			const bet = interaction.customId;
 			const testNum = Math.floor(Math.random() * 100) + 1;
 
@@ -66,9 +64,9 @@ export default class HighlowCommand extends Command {
 				.setColor(won ? 'GREEN' : 'RED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() });
 
-			interaction.reply({ embeds: [newEmbed] });
-			msg.delete();
-			//msg.edit({embeds: [newEmbed], components: [com]});
+			await interaction.reply({ embeds: [newEmbed] });
+			await msg.delete();
+			// msg.edit({embeds: [newEmbed], components: [com]});
 		});
 	}
 

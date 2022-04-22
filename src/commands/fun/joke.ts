@@ -10,7 +10,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 })
 export default class JokeCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const joke = (await fetch<{ joke: string }>('https://api.popcat.xyz/joke', FetchResultTypes.JSON)).joke;
+		const { joke } = await fetch<{ joke: string }>('https://api.popcat.xyz/joke', FetchResultTypes.JSON);
 		return interaction.reply(joke);
 	}
 

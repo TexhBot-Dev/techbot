@@ -8,7 +8,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 	detailedDescription: 'image <subcommand> [...options]'
 })
 export default class ImageCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
+	public override chatInputRun(interaction: CommandInteraction) {
 		const subcommand = interaction.options.getSubcommand();
 		switch (subcommand) {
 			case 'random': {
@@ -22,7 +22,7 @@ export default class ImageCommand extends Command {
 					.setTitle("Here's your image")
 					.setImage(`https://picsum.photos/${imageMeta.width}/${imageMeta.height}/${imageMeta.grayscale ? '?grayscale' : ''}`)
 					.setColor('BLUE');
-				interaction.reply({ embeds: [response] });
+				void interaction.reply({ embeds: [response] });
 			}
 		}
 	}

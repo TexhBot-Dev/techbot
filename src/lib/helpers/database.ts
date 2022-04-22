@@ -11,7 +11,7 @@ export const fetchItemMetaData = async (itemName: ItemNames): Promise<ItemMetaDa
 };
 
 export const fetchUserInventories = async (user: DiscordUser): Promise<Inventory[]> => {
-	return await container.prisma.inventory.findMany({
+	return container.prisma.inventory.findMany({
 		where: {
 			userID: user.id
 		}

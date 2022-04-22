@@ -34,7 +34,7 @@ export default class LeaderboardCommand extends Command {
 			})
 		)
 			.map((user, position) => {
-				if (guildOnly && !interaction.guild?.members.cache.has(user.id)) return;
+				if (guildOnly && !interaction.guild?.members.cache.has(user.id)) return false;
 				const positionText = (() => {
 					switch (position) {
 						case 0:
@@ -112,9 +112,9 @@ export default class LeaderboardCommand extends Command {
 
 		const digit = number % 10;
 		// 												Added strict if check here instead of ambiguous
-		if (number < 100) return `${tens[~~(number / 10) - 2]}${digit !== 0 ? '-' + num[digit] : ''}`;
+		if (number < 100) return `${tens[~~(number / 10) - 2]}${digit === 0 ? '' : `-${num[digit]}`}`;
 		// Changed return types to string so its actually clear whats returned
-		if (number < 1000) return `${num[~~(number / 100)]} hundred ${number % 100 == 0 ? '' : ' ' + this.numToEnglish(number % 100)}`;
-		return `${this.numToEnglish(~~(number / 1000))} thousand ${number % 1000 != 0 ? ' ' + this.numToEnglish(number % 1000) : ''}`;
+		if (number < 1000) return `${num[~~(number / 100)]} hundred ${number % 100 === 0 ? '' : ` ${this.numToEnglish(number % 100)}`}`;
+		return `${this.numToEnglish(~~(number / 1000))} thousand ${number % 1000 === 0 ? '' : ` ${this.numToEnglish(number % 1000)}`}`;
 	}
 }

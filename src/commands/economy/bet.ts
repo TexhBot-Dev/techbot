@@ -25,20 +25,19 @@ export default class BetCommand extends Command {
 		}
 
 		if (Math.random() < 0.5) {
-			return await addToWallet(interaction.user, betAmount).then(() => {
-				interaction.reply({
+			return addToWallet(interaction.user, betAmount).then(() => {
+				void interaction.reply({
 					embeds: [
 						generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')
 					]
 				});
 			});
-		} else {
-			return await subtractFromWallet(interaction.user, betAmount).then(() => {
-				interaction.reply({
-					embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
-				});
-			});
 		}
+		return subtractFromWallet(interaction.user, betAmount).then(() => {
+			void interaction.reply({
+				embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
+			});
+		});
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

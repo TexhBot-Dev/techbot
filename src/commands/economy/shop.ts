@@ -21,12 +21,11 @@ export default class ShopCommand extends Command {
 					.setDescription(`> ${item.description}\nPrice: $${item.price.toLocaleString()}`)
 					.setColor('BLUE');
 				return interaction.reply({ embeds: [embed] });
-			} else {
-				return interaction.reply({
-					embeds: [generateErrorEmbed(`Could not find item with name '${specificItem}'.`, 'Invalid Item Name')],
-					ephemeral: true
-				});
 			}
+			return interaction.reply({
+				embeds: [generateErrorEmbed(`Could not find item with name '${specificItem}'.`, 'Invalid Item Name')],
+				ephemeral: true
+			});
 		}
 
 		const items = (await this.container.prisma.itemMetaData.findMany()).sort((a, b) => a.rarity.localeCompare(b.rarity));

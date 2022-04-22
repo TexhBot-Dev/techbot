@@ -19,31 +19,30 @@ export default class GiveItemCommand extends Command {
 		const amount = Number(interaction.options.getString('amount', true));
 
 		if (userToGiveTo.id === interaction.user.id) {
-			return interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!', 'Invalid user')] });
 		}
 
 		if (userToGiveTo.bot) {
-			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
 		}
 
 		if (itemToGive === null) {
-			return interaction.reply({ embeds: [generateErrorEmbed('Invalid Item Specified!')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('Invalid Item Specified!', 'Invalid item')] });
 		}
 
 		if (amount < 0) {
 			return interaction.reply({
-				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw')]
+				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw', 'Invalid amount')]
 			}); // return message.reply('Please specify a valid amount of money to withdraw');
 		}
 
-		fetchUserInventory(interaction.user, itemToGive as ItemNames).then((inv) => {
-			if (inv.count < amount) {
-				return interaction.reply({
-					embeds: [generateErrorEmbed('You do not have that much of that item!')]
-				});
-			}
-			return;
-		});
+		const inv = await fetchUserInventory(interaction.user, itemToGive as ItemNames);
+		if (inv.count < amount) {
+			return interaction.reply({
+				embeds: [generateErrorEmbed('You do not have that much of that item!', 'Invalid amount')]
+			});
+		}
+
 		await decrementItemCount(interaction.user, itemToGive as ItemNames, amount);
 		await incrementItemCount(userToGiveTo, itemToGive as ItemNames, amount);
 

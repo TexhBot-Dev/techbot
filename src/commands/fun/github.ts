@@ -27,8 +27,8 @@ export default class GitHubCommand extends Command {
 			.addField('Public Projects', `${ghUser.public_repos} Public Repositories\n${ghUser.public_gists} Public Gists`)
 			.addField(
 				'Social',
-				`${ghUser.blog ? 'Blog: ' + ghUser.blog : ''}\n${ghUser.twitter ? 'Twitter: ' + ghUser.twitter : ''}\n${
-					ghUser.email ? 'Email: ' + ghUser.email : ''
+				`${ghUser.blog ? `Blog: ${ghUser.blog}` : ''}\n${ghUser.twitter ? `Twitter: ${ghUser.twitter}` : ''}\n${
+					ghUser.email ? `Email: ${ghUser.email}` : ''
 				}`.replace(/\n+/g, '\n')
 			);
 		return interaction.reply({ embeds: [response] });
@@ -46,7 +46,7 @@ export default class GitHubCommand extends Command {
 	}
 }
 
-type GitHubUser = {
+interface GitHubUser {
 	url: string;
 	avatar: string;
 	account_type: 'User' | 'Organization';
@@ -63,4 +63,4 @@ type GitHubUser = {
 	following: string;
 	created_at: string;
 	updated_at: string;
-};
+}

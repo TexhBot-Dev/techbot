@@ -22,7 +22,7 @@ export class SellCommand extends Command {
 		await fetchUserInventory(interaction.user, itemData.name).then(async (inv) => {
 			if (inv.count < amount) {
 				return interaction.reply({
-					embeds: [generateErrorEmbed('You do not have that much of that item!')]
+					embeds: [generateErrorEmbed('You do not have that much of that item!', 'Invalid amount')]
 				});
 			}
 

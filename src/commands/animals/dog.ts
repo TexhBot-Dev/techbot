@@ -11,7 +11,7 @@ import { generateEmbed } from '../../lib/helpers/embed';
 	detailedDescription: 'dog'
 })
 export default class DogCommand extends Command {
-	override async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		const dog = (await fetch<Dog[]>('https://api.thedogapi.com/v1/images/search', FetchResultTypes.JSON))[0];
 		const dogEmbed = generateEmbed('Dog', '', 'BLUE', {
 			image: {
@@ -29,21 +29,21 @@ export default class DogCommand extends Command {
 		return interaction.reply({ embeds: [dogEmbed] });
 	}
 
-	override registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
 			idHints: ['944645460860223510']
 		});
 	}
 }
 
-type Dog = {
+interface Dog {
 	breeds?: BreedsEntityDog[] | null;
 	id: string;
 	url: string;
 	width: number;
 	height: number;
-};
-type BreedsEntityDog = {
+}
+interface BreedsEntityDog {
 	weight: WeightOrHeightDog;
 	height: WeightOrHeightDog;
 	id: number;
@@ -53,8 +53,8 @@ type BreedsEntityDog = {
 	life_span: string;
 	temperament: string;
 	reference_image_id: string;
-};
-type WeightOrHeightDog = {
+}
+interface WeightOrHeightDog {
 	imperial: string;
 	metric: string;
-};
+}

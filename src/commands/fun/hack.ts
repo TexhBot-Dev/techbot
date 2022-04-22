@@ -20,56 +20,56 @@ export class ReverseCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const user = interaction.options.getUser('user');
 		await interaction.reply(`Hacking ${user}... 0%`);
-		setTimeout(() => {
-			interaction.editReply('Getting IP... 9%');
+		setTimeout(async () => {
+			await interaction.editReply('Getting IP... 9%');
 		}, 1000);
 		setTimeout(() => {
-			interaction.editReply(`Got IP... ${this.ip()}`);
+			void interaction.editReply(`Got IP... ${this.ip()}`);
 		}, 2500);
 		setTimeout(() => {
-			interaction.editReply('Stealing identity ... 17%');
+			void interaction.editReply('Stealing identity ... 17%');
 		}, 5000);
 		setTimeout(() => {
-			interaction.editReply('Stole identity!');
+			void interaction.editReply('Stole identity!');
 		}, 6500);
 		setTimeout(() => {
-			interaction.editReply('Buying vbucks... 27%');
+			void interaction.editReply('Buying vbucks... 27%');
 		}, 8500);
 		setTimeout(() => {
-			interaction.editReply('Purchased 19 dollar forknife card!');
+			void interaction.editReply('Purchased 19 dollar forknife card!');
 		}, 11000);
 		setTimeout(() => {
-			interaction.editReply('Getting last message sent in DMs... 39%');
+			void interaction.editReply('Getting last message sent in DMs... 39%');
 		}, 13000);
 		setTimeout(() => {
-			interaction.editReply(`Last message sent in DMs: \`${dms[Math.floor(Math.random() * dms.length)]}\``);
+			void interaction.editReply(`Last message sent in DMs: \`${dms[Math.floor(Math.random() * dms.length)]}\``);
 		}, 15000);
 		setTimeout(() => {
-			interaction.editReply(`Getting password... 50%`);
+			void interaction.editReply(`Getting password... 50%`);
 		}, 17000);
 		setTimeout(() => {
-			interaction.editReply(`Password is \`${passwords[Math.floor(Math.random() * passwords.length)]}\``);
+			void interaction.editReply(`Password is \`${passwords[Math.floor(Math.random() * passwords.length)]}\``);
 		}, 19000);
 		setTimeout(() => {
-			interaction.editReply('Getting email... 74%');
+			void interaction.editReply('Getting email... 74%');
 		}, 21000);
 		setTimeout(() => {
-			interaction.editReply(`Got email! \`${emails[Math.floor(Math.random() * emails.length)]}\``);
+			void interaction.editReply(`Got email! \`${emails[Math.floor(Math.random() * emails.length)]}\``);
 		}, 23000);
 		setTimeout(() => {
-			interaction.editReply('Getting real name... 89%');
+			void interaction.editReply('Getting real name... 89%');
 		}, 25000);
 		setTimeout(() => {
-			interaction.editReply(`Got real name! \`${realNames[Math.floor(Math.random() * realNames.length)]}\``);
+			void interaction.editReply(`Got real name! \`${realNames[Math.floor(Math.random() * realNames.length)]}\``);
 		}, 27000);
 		setTimeout(() => {
-			interaction.editReply('Selling information on black market... 96%');
+			void interaction.editReply('Selling information on black market... 96%');
 		}, 30000);
 		setTimeout(() => {
-			interaction.editReply('Sold all information on black market! Haha.');
+			void interaction.editReply('Sold all information on black market! Haha.');
 		}, 33000);
 		setTimeout(() => {
-			interaction.editReply('A totally real and dangerous have complete.');
+			void interaction.editReply('A totally real and dangerous have complete.');
 		}, 35500);
 	}
 
@@ -85,14 +85,8 @@ export class ReverseCommand extends Command {
 	}
 
 	private ip() {
-		return (
-			Math.floor(Math.random() * 255) +
-			'.' +
-			Math.floor(Math.random() * 255) +
-			'.' +
-			Math.floor(Math.random() * 255) +
-			'.' +
-			Math.floor(Math.random() * 255)
-		);
+		return `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(
+			Math.random() * 255
+		)}`;
 	}
 }

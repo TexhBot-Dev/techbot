@@ -4,8 +4,8 @@
  * @param num
  * @param suffix
  */
-export const pluralize = (text: string, num: number, suffix: string = 's'): string => {
-	return text + (num !== 1 ? suffix : '');
+export const pluralize = (text: string, num: number, suffix = 's'): string => {
+	return text + (num === 1 ? '' : suffix);
 };
 
 /**
@@ -24,9 +24,9 @@ export const clean = (text: string): string => {
  * @param object
  * @param regexFlag
  */
-export const replacer = (string: string, object: object, regexFlag: string = ''): string => {
+export const replacer = (string: string, object: object, regexFlag = ''): string => {
 	for (const [key, value] of Object.entries(object)) {
-		let reg = new RegExp(key, regexFlag);
+		const reg = new RegExp(key, regexFlag);
 		string = string.replace(reg, value);
 	}
 	return string;
