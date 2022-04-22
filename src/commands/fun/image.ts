@@ -28,7 +28,6 @@ export default class ImageCommand extends Command {
 					},
 					FetchResultTypes.Buffer
 				);
-				console.log(image);
 
 				const response = new MessageEmbed().setTitle("Here's your image").setImage(image.toString()).setColor('BLUE');
 				interaction.reply({ embeds: [response] });
