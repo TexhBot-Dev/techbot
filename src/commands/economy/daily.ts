@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { addToWallet } from '../../lib/helpers/economy';
+import { randomInt, addToWallet } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'daily',
@@ -11,7 +11,7 @@ import { addToWallet } from '../../lib/helpers/economy';
 })
 export default class DailyCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const moneyEarned = Math.round(Math.random() * (3000 - 750) + 750);
+		const moneyEarned = randomInt(500, 3500);
 
 		await addToWallet(interaction.user, moneyEarned);
 		const embed = new MessageEmbed()
@@ -19,7 +19,7 @@ export default class DailyCommand extends Command {
 			.setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tomorrow.`)
 			.setColor('BLUE');
 
-		return interaction.reply({ embeds: [embed] });
+		return void interaction.reply({ embeds: [embed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

@@ -1,10 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
-import { parseAmount } from '../../lib/helpers/numbers';
-import { fetchUser } from '../../lib/helpers/database';
-import { generateEmbed } from '../../lib/helpers/embed';
+import { generateEmbed, fetchUser, parseAmount, addToWallet, subtractFromWallet, randomUnitInterval } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'bet',
@@ -17,26 +14,28 @@ export default class BetCommand extends Command {
 		const betAmount = parseAmount(userDetails.wallet, interaction.options.getString('amount', true) as any);
 
 		if (betAmount < 10) {
-			return interaction.reply('Please bet a valid amount above 10!');
+			return void interaction.reply('Please bet a valid amount above 10!');
 		}
 
 		if (userDetails.wallet < betAmount) {
-			return interaction.reply(`Sorry ${interaction.user.username}, you don't have enough money!`);
+			return void interaction.reply(`Sorry ${interaction.user.username}, you don't have enough money!`);
 		}
 
-		if (Math.random() < 0.5) {
-			return addToWallet(interaction.user, betAmount).then(() => {
+		if (randomUnitInterval() < 0.5) {
+			addToWallet(interaction.user, betAmount).then(() => {
 				void interaction.reply({
 					embeds: [
 						generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')
 					]
 				});
 			});
+			return;
 		}
-		return subtractFromWallet(interaction.user, betAmount).then(() => {
-			void interaction.reply({
-				embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
-			});
+
+		await subtractFromWallet(interaction.user, betAmount);
+
+		return void interaction.reply({
+			embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
 		});
 	}
 

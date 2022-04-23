@@ -27,7 +27,7 @@ export default class CatCommand extends Command {
 			});
 		}
 
-		return interaction.reply({ embeds: [catEmbed] });
+		return void interaction.reply({ embeds: [catEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

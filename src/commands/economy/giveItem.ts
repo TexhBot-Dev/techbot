@@ -1,16 +1,12 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isSafeInteger, decrementItemCount, incrementItemCount, fetchUserInventory, generateErrorEmbed } from '../../lib/helpers';
 import type { ItemNames } from '@prisma/client';
-import { generateErrorEmbed } from '../../lib/helpers/embed';
-import { fetchUserInventory } from '../../lib/helpers/database';
-import { decrementItemCount, incrementItemCount } from '../../lib/helpers/economy';
-
 @ApplyOptions<CommandOptions>({
 	name: 'giveItem',
-	aliases: ['give-item', 'shareItem', 'share-item'],
 	description: 'Allows you to give items to another user.',
-	detailedDescription: 'give-item <user> <item> <amount>'
+	detailedDescription: 'giveItem <user> <item> <amount>'
 })
 export default class GiveItemCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -19,26 +15,26 @@ export default class GiveItemCommand extends Command {
 		const amount = Number(interaction.options.getString('amount', true));
 
 		if (userToGiveTo.id === interaction.user.id) {
-			return interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!', 'Invalid user')] });
+			return void interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!', 'Invalid user')] });
 		}
 
 		if (userToGiveTo.bot) {
-			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
+			return void interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
 		}
 
 		if (itemToGive === null) {
-			return interaction.reply({ embeds: [generateErrorEmbed('Invalid Item Specified!', 'Invalid item')] });
+			return void interaction.reply({ embeds: [generateErrorEmbed('Invalid Item Specified!', 'Invalid item')] });
 		}
 
-		if (amount < 0) {
-			return interaction.reply({
+		if (amount < 0 || isSafeInteger(amount)) {
+			return void interaction.reply({
 				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw', 'Invalid amount')]
-			}); // return message.reply('Please specify a valid amount of money to withdraw');
+			});
 		}
 
 		const inv = await fetchUserInventory(interaction.user, itemToGive as ItemNames);
 		if (inv.count < amount) {
-			return interaction.reply({
+			return void interaction.reply({
 				embeds: [generateErrorEmbed('You do not have that much of that item!', 'Invalid amount')]
 			});
 		}
@@ -59,7 +55,7 @@ export default class GiveItemCommand extends Command {
 			.setTimestamp();
 		await webhook.send({ embeds: [embed] });
 
-		return interaction.reply(`You gave ${amount} ${itemToGive} to ${userToGiveTo.username}`);
+		return void interaction.reply({ content: `You gave ${amount} ${itemToGive} to ${userToGiveTo.username}.`, allowedMentions: {} });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

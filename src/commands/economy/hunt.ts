@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { addToWallet } from '../../lib/helpers/economy';
+import { randomUnitInterval, randomInt, addToWallet } from '../../lib/helpers';
 
 const animals = [
 	'pig',
@@ -34,15 +34,13 @@ export class HuntCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.reply('Searching for an Animal...');
 
-		if (Math.random() > 0.5) return interaction.editReply("You didn't find any Animals.");
+		if (randomUnitInterval() > 0.5) return void interaction.editReply("You didn't find any animals.");
 
-		// Get random item from items
-		const animal = animals[Math.floor(Math.random() * animals.length)];
-		// generate random amount of money no greater than 100
-		const money = Math.floor(Math.random() * 100) + 1;
+		const animal = animals.randomElement();
+		const money = randomInt(50, 300);
 
 		await addToWallet(interaction.user, money);
-		return interaction.editReply(`You culled a(n) ${animal} and earned ${money} coins!`);
+		return void interaction.editReply(`You killed a(n) ${animal} and earned $${money.toLocaleString()} coins!`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

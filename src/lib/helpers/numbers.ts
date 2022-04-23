@@ -6,13 +6,10 @@
  * isSafeNumber(-1) // false
  */
 export const isSafeInteger = (value: number): boolean => {
-	if (!Number.isSafeInteger(value)) return false;
-	if (value < 0) return false;
-
-	return value <= 1000000000000;
+	return !Number.isSafeInteger(value) || value < 0 ? false : value <= 1000000000000;
 };
 
-export const parseAmount = (value: number | string, amount: 'all' | 'half' | 'third' | 'quarter' | 'fourth'): number => {
+export const parseAmount = (value: number | string, amount: 'all' | 'half' | 'third' | 'quarter' | 'fourth' | number | string): number => {
 	const parsed = parseInt(value as string, 10);
 	if (!isSafeInteger(parsed)) throw new Error('Invalid number');
 
@@ -26,7 +23,9 @@ export const parseAmount = (value: number | string, amount: 'all' | 'half' | 'th
 		case 'fourth':
 		case 'quarter':
 			return Math.trunc(parsed / 4);
-		default:
-			return 0;
+		default: {
+			amount = parseInt(amount.toString().replace(/,|\s/gi, ''));
+			return amount || 0;
+		}
 	}
 };

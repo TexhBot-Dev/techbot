@@ -14,8 +14,8 @@ export class ChooseCommand extends Command {
 			.replace(/@everyone|@here|<@&?(\d{17,19})>/gim, '<mention>')
 			.replace(/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/gim, '<link>')
 			.split(/,\s?/g);
-
-		return interaction.reply(arg[Math.floor(Math.random() * arg.length)]);
+		if (arg.length < 2) return void interaction.reply({ content: 'Please provide at least 2 options to choose from.', ephemeral: true });
+		return void interaction.reply(arg.randomElement());
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -24,7 +24,7 @@ export class ChooseCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((option) => option.setName('choices').setRequired(true).setDescription('The choices separated by ", "')),
+					.addStringOption((option) => option.setName('choices').setRequired(true).setDescription('The choices separated by ", ".')),
 			{ idHints: ['944645895163633714'] }
 		);
 	}

@@ -26,7 +26,7 @@ export default class DogCommand extends Command {
 				text: `Breed: ${dog.breeds[0].name} | life-span: ${dog.breeds[0].life_span} | Temperament: ${dog.breeds[0].temperament}`
 			});
 		}
-		return interaction.reply({ embeds: [dogEmbed] });
+		return void interaction.reply({ embeds: [dogEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

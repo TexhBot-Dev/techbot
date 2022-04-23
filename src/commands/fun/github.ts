@@ -6,12 +6,13 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 @ApplyOptions<CommandOptions>({
 	name: 'github',
 	description: 'Get information about a GitHub user or organization.',
-	detailedDescription: 'github <user>'
+	detailedDescription: 'github <username>'
 })
 export default class GitHubCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const user = interaction.options.getString('user');
-		const ghUser = await fetch<GitHubUser>(`https://api.popcat.xyz/github/${user}`, FetchResultTypes.JSON);
+		const user = interaction.options.getString('username');
+		const ghUser = await fetch<GitHubUser>(`https://api.popcat.xyz/github/${user}`, FetchResultTypes.JSON).catch(() => null);
+		if (!ghUser) return void interaction.reply({ content: `No such GitHub user found with name '${user}'.`, ephemeral: true });
 		const updatedLast = Math.trunc(new Date(ghUser.updated_at).getTime() / 1000);
 		const creationDate = Math.trunc(new Date(ghUser.created_at).getTime() / 1000);
 
@@ -31,7 +32,7 @@ export default class GitHubCommand extends Command {
 					ghUser.email ? `Email: ${ghUser.email}` : ''
 				}`.replace(/\n+/g, '\n')
 			);
-		return interaction.reply({ embeds: [response] });
+		return void interaction.reply({ embeds: [response] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -40,7 +41,7 @@ export default class GitHubCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((option) => option.setName('user').setDescription('The GitHub user to fetch info about.').setRequired(true)),
+					.addStringOption((option) => option.setName('username').setDescription('The GitHub user to fetch info about.').setRequired(true)),
 			{ idHints: ['944645979645280256'] }
 		);
 	}

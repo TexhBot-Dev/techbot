@@ -1,9 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { generateErrorEmbed } from '../../lib/helpers/embed';
-import { fetchUser } from '../../lib/helpers/database';
-import { addToWallet } from '../../lib/helpers/economy';
+import { addToWallet, fetchUser, generateErrorEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'work',
@@ -17,7 +15,7 @@ export default class WorkCommand extends Command {
 		const job = user.currentJob;
 
 		if (job === 'JOBLESS') {
-			return interaction.reply({
+			return void interaction.reply({
 				embeds: [generateErrorEmbed("You don't have a job! Do `job select janitor` to get started!", 'No Job')]
 			});
 		}
@@ -38,7 +36,7 @@ export default class WorkCommand extends Command {
 			.setDescription(`While working you earned **$${moneyEarned.toLocaleString()}**.`)
 			.setColor('BLUE');
 
-		return interaction.reply({ embeds: [workEmbed] });
+		return void interaction.reply({ embeds: [workEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

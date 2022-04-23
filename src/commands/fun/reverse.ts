@@ -9,9 +9,9 @@ import type { CommandInteraction } from 'discord.js';
 })
 export class ReverseCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const text_to_reverse = interaction.options.getString('text_to_reverse') as string;
-		return interaction.reply(
-			text_to_reverse
+		const text = interaction.options.getString('text') as string;
+		return void interaction.reply(
+			text
 				.split('')
 				.reverse()
 				.join('')
@@ -25,7 +25,7 @@ export class ReverseCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((options) => options.setName('text_to_reverse').setDescription('The text to reverse.').setRequired(true)),
+					.addStringOption((options) => options.setName('text').setDescription('The text to reverse.').setRequired(true)),
 			{ idHints: ['944646066324787270'] }
 		);
 	}

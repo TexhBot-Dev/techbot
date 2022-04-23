@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { fetchUser } from '../../lib/helpers/database';
+import { fetchUser } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'balance',
@@ -21,7 +21,7 @@ export default class BalanceCommand extends Command {
 			.addField('Bank:', dBUserData.bank.toLocaleString())
 			.addField('Total:', (dBUserData.wallet + dBUserData.bank).toLocaleString())
 			.setColor('#4EAFF6');
-		return interaction.reply({ embeds: [balanceEmbed] });
+		void interaction.reply({ embeds: [balanceEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

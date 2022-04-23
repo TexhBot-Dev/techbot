@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchItemMetaData } from '../../lib/helpers/database';
+import { fetchItemMetaData } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'inventory',
@@ -20,21 +20,20 @@ export default class InventoryCommand extends Command {
 					userID: userToCheck.id
 				}
 			})
-		).map((inv, position) => {
-			return fetchItemMetaData(inv.itemID).then((item) => {
-				inventoryEmbed.addField(
-					`${position + 1}: ${item.name.toProperCase()}`,
-					`Price: ${item.price.toLocaleString()}\nRarity: ${item.rarity}\nAmount: ${inv.count.toLocaleString()}`
-				);
-			});
+		).map(async (inv, position) => {
+			const item = await fetchItemMetaData(inv.itemID);
+			inventoryEmbed.addField(
+				`${position + 1}: ${item.name.toProperCase()}`,
+				`Price: ${item.price.toLocaleString()}\nRarity: ${item.rarity}\nAmount: ${inv.count.toLocaleString()}`
+			);
 		});
 
 		if (inventoryEmbed.fields.length === 0) {
-			inventoryEmbed.setDescription('You have no items!');
-			return interaction.reply({ embeds: [inventoryEmbed] });
+			inventoryEmbed.setDescription('You have no items!').setColor('RED');
+			return void interaction.reply({ embeds: [inventoryEmbed] });
 		}
 
-		return interaction.reply({ embeds: [inventoryEmbed] });
+		return void interaction.reply({ embeds: [inventoryEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

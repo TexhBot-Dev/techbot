@@ -17,7 +17,7 @@ export default class LeaderboardCommand extends Command {
 		const overallMoney = flags.includes('overallMoney');
 
 		if ((overallMoney && walletOnly) || (overallMoney && bankOnly)) {
-			return interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
+			return void interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
 		}
 
 		const topTenUsers = (
@@ -60,7 +60,7 @@ export default class LeaderboardCommand extends Command {
 		if (topTenUsers.length === 0) return;
 
 		const leaderboardEmbed = new MessageEmbed().setDescription(topTenUsers).setColor('BLUE').setTimestamp();
-		return interaction.reply({ embeds: [leaderboardEmbed] });
+		return void interaction.reply({ embeds: [leaderboardEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -111,7 +111,7 @@ export default class LeaderboardCommand extends Command {
 		const tens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
 		const digit = number % 10;
-		// 												Added strict if check here instead of ambiguous
+		// Added strict if check here instead of ambiguous
 		if (number < 100) return `${tens[~~(number / 10) - 2]}${digit === 0 ? '' : `-${num[digit]}`}`;
 		// Changed return types to string so its actually clear whats returned
 		if (number < 1000) return `${num[~~(number / 100)]} hundred ${number % 100 === 0 ? '' : ` ${this.numToEnglish(number % 100)}`}`;

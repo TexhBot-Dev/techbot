@@ -1,15 +1,10 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser } from '../../lib/helpers/database';
-import { isSafeInteger, parseAmount } from '../../lib/helpers/numbers';
-import { generateErrorEmbed } from '../../lib/helpers/embed';
-import { addToWallet, subtractFromWallet } from '../../lib/helpers/economy';
-import { pluralize } from '../../lib/helpers/string';
+import { pluralize, addToWallet, subtractFromWallet, generateErrorEmbed, isSafeInteger, parseAmount, fetchUser } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'giveMoney',
-	aliases: ['give', 'share'],
 	description: 'Allows you give money to another user.',
 	detailedDescription: 'share <user> <amount>'
 })
@@ -20,17 +15,17 @@ export default class GiveMoneyCommand extends Command {
 		const amount = parseAmount(author.wallet, interaction.options.getString('amount') as any);
 
 		if (receiver.bot || receiver.id === interaction.user.id) {
-			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
+			return void interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
 		}
 
 		if (isSafeInteger(amount)) {
-			return interaction.reply({
+			return void interaction.reply({
 				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw', 'Invalid amount')]
 			});
 		}
 
 		if (author.wallet < amount) {
-			return interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!', 'Invalid amount')] });
+			return void interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!', 'Invalid amount')] });
 		}
 
 		await subtractFromWallet(interaction.user, amount);
@@ -67,7 +62,7 @@ export default class GiveMoneyCommand extends Command {
 			)
 			.setColor('BLUE');
 
-		return interaction.reply({ embeds: [response] });
+		return void interaction.reply({ embeds: [response] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

@@ -14,7 +14,14 @@ export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
 
 			const cooldownEmbed = generateErrorEmbed(`You can use this command ${humanizedRemaining('R')} (${humanizedRemaining('f')}).`, 'Cooldown');
 
-			return interaction.reply({ embeds: [cooldownEmbed], ephemeral: true });
+			return void interaction.reply({ embeds: [cooldownEmbed], ephemeral: true });
+		}
+
+		if (identifier === 'guildOnly') {
+			return void interaction.reply({
+				embeds: [generateErrorEmbed('Please use this command in a server.', 'Guild Only Command')],
+				ephemeral: true
+			});
 		}
 
 		return interaction.reply({ content, allowedMentions: { users: [interaction.user.id], roles: [] }, ephemeral: true });

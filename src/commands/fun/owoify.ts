@@ -10,7 +10,7 @@ import type { CommandInteraction } from 'discord.js';
 export class OwOCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const owoifiedText = interaction.options
-			.getString('text_to_owoify', true)
+			.getString('text', true)
 			.replace(/r/g, 'w')
 			.replace(/R/g, 'W')
 			.replace(/l/g, 'w')
@@ -19,9 +19,9 @@ export class OwOCommand extends Command {
 			.replace(/N/g, 'Ny')
 			.replace(/\?/g, '？')
 			.replace(/!/g, '！')
-			.replace(/\s/g, ' owo ');
+			.replace(/\s+/g, ' owo ');
 
-		return interaction.reply(owoifiedText);
+		return void interaction.reply(owoifiedText);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -30,7 +30,7 @@ export class OwOCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption((option) => option.setName('text_to_owoify').setDescription('The text to owoify.').setRequired(true)),
+					.addStringOption((option) => option.setName('text').setDescription('The text to owoify.').setRequired(true)),
 			{ idHints: ['944646065439801374'] }
 		);
 	}

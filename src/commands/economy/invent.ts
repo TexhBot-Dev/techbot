@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
+import { randomInt } from '../../lib/helpers';
 import { addToWallet } from '../../lib/helpers/economy';
 
 // List of inventions
@@ -28,17 +29,16 @@ const inventions = [
 @ApplyOptions<CommandOptions>({
 	name: 'invent',
 	description: 'Lets you invent stuff and earn money',
-	detailedDescription: 'invent'
+	detailedDescription: 'invent',
+	cooldownDelay: 60_000 * 10 //10 min
 })
 export class InventCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		// Chose random thing from inventions array
-		const invention = inventions[Math.floor(Math.random() * inventions.length)];
-		// Choose random amount of money less than 500
-		const money = Math.floor(Math.random() * 500);
-		await addToWallet(interaction.user, money);
+		const invention = inventions.randomElement();
+		const money = randomInt(50, 701);
 
-		return interaction.reply(`You invented ${invention} and earned ${money}$`);
+		await addToWallet(interaction.user, money);
+		return void interaction.reply(`You invented ${invention} and earned $${money.toLocaleString()}`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

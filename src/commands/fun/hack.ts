@@ -1,13 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
+import { randomUnitInterval } from '../../lib/helpers';
 
 const dms = ['Nice toes', 'Sheesh!', 'Chill bro', 'We are just friends?', 'Is it small?', 'Love you too mom.'];
-
 const passwords = ['Greyissilly123', 'OwOSupriseDolls69', 'BigBoi420', 'HugeToad213', 'password', 'timothyoncrack'];
-
 const emails = ['deeznuts@yahoo.com', 'joemomma@gmail.com', 'nullvoid@gmail.com', 'kekwww@gmail.com', 'thatonedude@gmail.com'];
-
 const realNames = ['Timothy Green', 'Joe Smith', 'James Madison', 'Harry Cox', 'Lipin Jection', 'Pat Myaz', "Nick O' Teen"];
 
 @ApplyOptions<CommandOptions>({
@@ -42,25 +40,25 @@ export class ReverseCommand extends Command {
 			void interaction.editReply('Getting last message sent in DMs... 39%');
 		}, 13000);
 		setTimeout(() => {
-			void interaction.editReply(`Last message sent in DMs: \`${dms[Math.floor(Math.random() * dms.length)]}\``);
+			void interaction.editReply(`Last message sent in DMs: \`${dms.randomElement()}\``);
 		}, 15000);
 		setTimeout(() => {
 			void interaction.editReply(`Getting password... 50%`);
 		}, 17000);
 		setTimeout(() => {
-			void interaction.editReply(`Password is \`${passwords[Math.floor(Math.random() * passwords.length)]}\``);
+			void interaction.editReply(`Password is \`${passwords.randomElement()}\``);
 		}, 19000);
 		setTimeout(() => {
 			void interaction.editReply('Getting email... 74%');
 		}, 21000);
 		setTimeout(() => {
-			void interaction.editReply(`Got email! \`${emails[Math.floor(Math.random() * emails.length)]}\``);
+			void interaction.editReply(`Got email! \`${emails.randomElement()}\``);
 		}, 23000);
 		setTimeout(() => {
 			void interaction.editReply('Getting real name... 89%');
 		}, 25000);
 		setTimeout(() => {
-			void interaction.editReply(`Got real name! \`${realNames[Math.floor(Math.random() * realNames.length)]}\``);
+			void interaction.editReply(`Got real name! \`${realNames.randomElement()}\``);
 		}, 27000);
 		setTimeout(() => {
 			void interaction.editReply('Selling information on black market... 96%');
@@ -71,6 +69,7 @@ export class ReverseCommand extends Command {
 		setTimeout(() => {
 			void interaction.editReply('A totally real and dangerous have complete.');
 		}, 35500);
+		return;
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -85,8 +84,8 @@ export class ReverseCommand extends Command {
 	}
 
 	private ip() {
-		return `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(
-			Math.random() * 255
-		)}`;
+		return `${Math.floor(randomUnitInterval() * 255)}.${Math.floor(randomUnitInterval() * 255)}.${Math.floor(
+			randomUnitInterval() * 255
+		)}.${Math.floor(randomUnitInterval() * 255)}`;
 	}
 }

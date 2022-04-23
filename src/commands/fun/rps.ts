@@ -11,24 +11,24 @@ export default class rpsCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const choice = interaction.options.getString('choice', true);
 
-		if (choice === '') return interaction.reply('You need to specify a choice!');
+		if (choice === '') return void interaction.reply('You need to specify a choice!');
 
 		const userChoice = ['rock', 'paper', 'scissors'];
 		const userChoiceIndex = userChoice.indexOf(choice);
-		if (userChoiceIndex === -1) return interaction.reply('You need to specify a valid choice! Valid choices are rock, paper, scissors.');
-		const botChoice = userChoice[Math.floor(Math.random() * userChoice.length)];
+		if (userChoiceIndex === -1) return void interaction.reply('You need to specify a valid choice! Valid choices are rock, paper, scissors.');
+		const botChoice = userChoice.randomElement();
 		const botChoiceIndex = userChoice.indexOf(botChoice);
 
-		if (userChoiceIndex === botChoiceIndex) return interaction.reply('You and the bot both chose the same thing! Try again!');
+		if (userChoiceIndex === botChoiceIndex) return void interaction.reply('You and the bot both chose the same thing! Tie.');
 
-		if (userChoiceIndex === 0 && botChoiceIndex === 1) return interaction.reply('You chose rock, and the bot chose paper! You lose!');
-		if (userChoiceIndex === 0 && botChoiceIndex === 2) return interaction.reply('You chose rock, and the bot chose scissors! You win!');
-		if (userChoiceIndex === 1 && botChoiceIndex === 0) return interaction.reply('You chose paper, and the bot chose rock! You win!');
-		if (userChoiceIndex === 1 && botChoiceIndex === 2) return interaction.reply('You chose paper, and the bot chose scissors! You lose!');
-		if (userChoiceIndex === 2 && botChoiceIndex === 0) return interaction.reply('You chose scissors, and the bot chose rock! You lose!');
-		if (userChoiceIndex === 2 && botChoiceIndex === 1) return interaction.reply('You chose scissors, and the bot chose paper! You win!');
+		if (userChoiceIndex === 0 && botChoiceIndex === 1) return void interaction.reply('You chose rock, and the bot chose paper! You lose!');
+		if (userChoiceIndex === 0 && botChoiceIndex === 2) return void interaction.reply('You chose rock, and the bot chose scissors! You win!');
+		if (userChoiceIndex === 1 && botChoiceIndex === 0) return void interaction.reply('You chose paper, and the bot chose rock! You win!');
+		if (userChoiceIndex === 1 && botChoiceIndex === 2) return void interaction.reply('You chose paper, and the bot chose scissors! You lose!');
+		if (userChoiceIndex === 2 && botChoiceIndex === 0) return void interaction.reply('You chose scissors, and the bot chose rock! You lose!');
+		if (userChoiceIndex === 2 && botChoiceIndex === 1) return void interaction.reply('You chose scissors, and the bot chose paper! You win!');
 
-		return interaction.reply('Something went wrong!');
+		return void interaction.reply('Something went wrong!');
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

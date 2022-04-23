@@ -22,7 +22,7 @@ export class StatsCommand extends Command {
 			• Channels   :: ${this.container.client.channels.cache.size.toLocaleString()}
 			• Discord.js :: v${version}
 			• Node       :: ${process.version}`;
-		return interaction.reply({
+		return void interaction.reply({
 			content: codeBlock('asciidoc', stripIndents(string))
 		});
 	}

@@ -2,9 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import type { ItemNames } from '@prisma/client';
-import { fetchItemMetaData, fetchUserInventory } from '../../lib/helpers/database';
-import { generateErrorEmbed } from '../../lib/helpers/embed';
-import { incrementItemCount, subtractFromWallet } from '../../lib/helpers/economy';
+import { incrementItemCount, subtractFromWallet, generateErrorEmbed, fetchItemMetaData, fetchUserInventory } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'sell',
@@ -20,8 +18,8 @@ export class SellCommand extends Command {
 		const amount = Number(interaction.options.getString('amount'));
 
 		await fetchUserInventory(interaction.user, itemData.name).then(async (inv) => {
-			if (inv.count < amount) {
-				return interaction.reply({
+			if ((inv?.count ?? 0) < amount) {
+				return void interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!', 'Invalid amount')]
 				});
 			}
@@ -29,7 +27,7 @@ export class SellCommand extends Command {
 			await incrementItemCount(interaction.user, itemData.name, amount);
 			await subtractFromWallet(interaction.user, Math.trunc(itemData.price / 2));
 
-			return interaction.reply(`Sold **${amount}** of **${item}** for **$${Math.trunc(itemData.price / 2).toLocaleString()}**.`);
+			return void interaction.reply(`Sold **${amount}** of **${item}** for **$${Math.trunc(itemData.price / 2).toLocaleString()}**.`);
 		});
 	}
 

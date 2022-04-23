@@ -2,8 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ItemNames } from '@prisma/client';
-import { generateErrorEmbed } from '../../lib/helpers/embed';
-import { fetchItemMetaData } from '../../lib/helpers/database';
+import { fetchItemMetaData, generateErrorEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'shop',
@@ -20,9 +19,9 @@ export default class ShopCommand extends Command {
 					.setTitle(item.name.toProperCase())
 					.setDescription(`> ${item.description}\nPrice: $${item.price.toLocaleString()}`)
 					.setColor('BLUE');
-				return interaction.reply({ embeds: [embed] });
+				return void interaction.reply({ embeds: [embed] });
 			}
-			return interaction.reply({
+			return void interaction.reply({
 				embeds: [generateErrorEmbed(`Could not find item with name '${specificItem}'.`, 'Invalid Item Name')],
 				ephemeral: true
 			});
@@ -35,7 +34,7 @@ export default class ShopCommand extends Command {
 			.setDescription(items.map((item) => `${item.emoji} **${item.name.toProperCase()}** - $${item.price.toLocaleString()}`).join('\n'))
 			.setColor(0x00ff00);
 
-		return interaction.reply({ embeds: [embed] });
+		return void interaction.reply({ embeds: [embed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

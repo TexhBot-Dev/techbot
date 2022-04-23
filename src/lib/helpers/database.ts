@@ -18,7 +18,7 @@ export const fetchUserInventories = async (user: DiscordUser): Promise<Inventory
 	});
 };
 
-export const fetchUserInventory = async (user: DiscordUser, itemID: ItemNames): Promise<Inventory> => {
+export const fetchUserInventory = async (user: DiscordUser, itemID: ItemNames): Promise<Inventory | null> => {
 	const inv = await container.prisma.inventory.findFirst({
 		where: {
 			userID: user.id,
@@ -27,7 +27,7 @@ export const fetchUserInventory = async (user: DiscordUser, itemID: ItemNames): 
 	});
 
 	if (inv === null) {
-		throw new Error('User does not have this item');
+		return null;
 	}
 
 	return inv;

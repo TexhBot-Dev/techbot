@@ -16,7 +16,7 @@ export default class SettingCommand extends Command {
 				{
 					const newColor = interaction.options.getString('new_color') ?? 'default';
 					await this.updatePreferredEmojiColor(interaction.user, newColor);
-					await interaction.reply({ content: `Changed your preferred emoji color to **${newColor.toProperCase()}**.`, ephemeral: true });
+					await interaction.reply({ content: `Changed your preferred emoji color to **${newColor}**.`, ephemeral: true });
 				}
 				break;
 		}
@@ -39,7 +39,7 @@ export default class SettingCommand extends Command {
 									.setChoices([
 										['Default 👋', 'default'],
 										['Pale 👋🏻', 'pale'],
-										['Cream 👋🏼', 'cream'],
+										['Cream White 👋🏼', 'cream_white'],
 										['Brown 👋🏽', 'brown'],
 										['Dark Drown 👋🏾', 'dark_brown'],
 										['Black 👋🏿', 'black']

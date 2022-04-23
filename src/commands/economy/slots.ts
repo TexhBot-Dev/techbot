@@ -1,9 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchGuild, fetchUser } from '../../lib/helpers/database';
-import { parseAmount } from '../../lib/helpers/numbers';
+import { randomUnitInterval, parseAmount, fetchGuild, fetchUser } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'slots',
@@ -23,11 +21,11 @@ export default class SlotsCommand extends Command {
 		const slotEmoji = ':money_mouth:';
 		const items = ['💵', '💍', '💯'];
 
-		const randomNumber = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+		const randomNumber = Math.floor(randomUnitInterval() * (100 - 10 + 1)) + 10;
 
-		const firstRoll = items[Math.floor(items.length * Math.random())];
-		const secondRoll = guild.slotsWinMultiplier < randomNumber ? items[Math.floor(items.length * Math.random())] : firstRoll;
-		const thirdRoll = guild.slotsWinMultiplier < randomNumber ? items[Math.floor(items.length * Math.random())] : firstRoll;
+		const firstRoll = items.randomElement();
+		const secondRoll = guild.slotsWinMultiplier < randomNumber ? items.randomElement() : firstRoll;
+		const thirdRoll = guild.slotsWinMultiplier < randomNumber ? items.randomElement() : firstRoll;
 
 		const play = new MessageEmbed()
 			.setTitle('Slot Machine')

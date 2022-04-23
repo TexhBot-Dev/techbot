@@ -1,26 +1,27 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
+import { incrementItemCount, fetchUserInventory, randomUnitInterval, randomInt } from '../../lib/helpers';
 
 import type { CommandInteraction } from 'discord.js';
-import { fetchUserInventory } from '../../lib/helpers/database';
-import { incrementItemCount } from '../../lib/helpers/economy';
 
 @ApplyOptions<CommandOptions>({
 	name: 'fish',
-	description: 'Lets you fish!',
-	detailedDescription: ''
+	description: 'Going fishing and attempt to catch something!',
+	detailedDescription: 'fish'
 })
 export class FishCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const doesUserHaveFishingPole = (await fetchUserInventory(interaction.user, 'FISHING_POLE')).count > 0;
+		const hasFishingPole = ((await fetchUserInventory(interaction.user, 'FISHING_POLE'))?.count ?? 0) > 0;
 
-		if (!doesUserHaveFishingPole) return interaction.reply('You do not have a fishing pole!');
+		if (!hasFishingPole) return void interaction.reply('You do not have a fishing pole!');
 
-		if (Math.random() > 0.5) {
-			await incrementItemCount(interaction.user, 'FISH', Math.round(Math.random() * (10 - 1) + 1));
-			return interaction.reply('You caught Fish!');
+		const fishEarned = randomInt(1, 4);
+
+		if (randomUnitInterval() > 0.5) {
+			await incrementItemCount(interaction.user, 'FISH', fishEarned);
+			return void interaction.reply(`You caught **${fishEarned}** fish!`);
 		}
-		return interaction.reply('You failed to catch anything!');
+		return void interaction.reply('You failed to catch anything!');
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

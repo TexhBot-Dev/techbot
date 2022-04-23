@@ -12,14 +12,13 @@ import { generateEmbed } from '../lib/helpers/embed';
 export default class HelpCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const specifiedCommand = interaction.options.getString('specific_command', false);
-		// List All Commands Registered In Sapphire
 		const commands = this.container.stores.get('commands');
 
 		if (specifiedCommand !== null) {
 			const command = commands.find((c) => c.name === specifiedCommand.toLowerCase() || c.name.startsWith(specifiedCommand.toLowerCase()));
-			if (command === undefined) return interaction.reply('That command does not exist!');
+			if (command === undefined) return void interaction.reply('That command does not exist!');
 
-			return interaction.reply({ embeds: [generateEmbed(command.name.toProperCase(), command.description)] });
+			return void interaction.reply({ embeds: [generateEmbed(command.name.toProperCase(), command.description)] });
 		}
 
 		const { categories } = commands;

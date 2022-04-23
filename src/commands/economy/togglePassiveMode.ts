@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 
 @ApplyOptions<CommandOptions>({
 	name: 'passiveModeToggle',
-	description: 'Lets you disable/enable the ability to be robbed',
+	description: "Toggle passive mode, when enabled you can't rob or be robbed by others.",
 	detailedDescription: 'passivemodetoggle <bool>'
 })
 export default class TogglePassiveModeCommand extends Command {
@@ -17,7 +17,7 @@ export default class TogglePassiveModeCommand extends Command {
 				WHERE "id" = ${interaction.user.id}
 			`;
 
-		return interaction.reply(`Your passive mode has been set to **${newValue ? 'enabled' : 'disabled'}**!`);
+		return interaction.reply({ content: `Your passive mode status is now **${newValue ? 'enabled' : 'disabled'}**!`, ephemeral: true });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
