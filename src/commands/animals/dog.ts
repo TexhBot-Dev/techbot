@@ -2,8 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { isNullOrUndefined } from '@sapphire/utilities';
-import { generateEmbed } from '../../lib/helpers/embed';
+import { generateEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'dog',
@@ -12,21 +11,26 @@ import { generateEmbed } from '../../lib/helpers/embed';
 })
 export default class DogCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const dog = (await fetch<Dog[]>('https://api.thedogapi.com/v1/images/search', FetchResultTypes.JSON))[0];
-		const dogEmbed = generateEmbed('Dog', '', 'BLUE', {
-			image: {
-				url: dog.url,
-				height: dog.height,
-				width: dog.width
-			}
-		});
+		const headers: HeadersInit = {
+			'X-API-Key': process.env.THE_DOG_API_KEY!
+		};
 
-		if (!isNullOrUndefined(dog.breeds) && dog.breeds.length > 0) {
-			dogEmbed.setFooter({
+		// Create query string
+		const queryParams = new URLSearchParams([
+			['limit', '1'],
+			['size', 'small'],
+			['mime_types', 'jpg,png'],
+			['has_breeds', 'true'],
+			['sub_id', interaction.user.id]
+		]).toString();
+		const dog = (await fetch<Dog[]>(`https://api.thedogapi.com/v1/images/search?${queryParams}`, { headers }, FetchResultTypes.JSON))[0];
+		const dogEmbed = generateEmbed('Dog', '', 'BLUE')
+			.setImage(dog.url)
+			.setFooter({
 				text: `Breed: ${dog.breeds[0].name} | life-span: ${dog.breeds[0].life_span} | Temperament: ${dog.breeds[0].temperament}`
 			});
-		}
-		return void interaction.reply({ embeds: [dogEmbed] });
+
+		return interaction.reply({ embeds: [dogEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -36,16 +40,17 @@ export default class DogCommand extends Command {
 	}
 }
 
-interface Dog {
-	breeds?: BreedsEntityDog[] | null;
+export interface Dog {
+	breeds: Breed[];
 	id: string;
 	url: string;
 	width: number;
 	height: number;
 }
-interface BreedsEntityDog {
-	weight: WeightOrHeightDog;
-	height: WeightOrHeightDog;
+
+export interface Breed {
+	weight: Eight;
+	height: Eight;
 	id: number;
 	name: string;
 	bred_for: string;
@@ -54,7 +59,8 @@ interface BreedsEntityDog {
 	temperament: string;
 	reference_image_id: string;
 }
-interface WeightOrHeightDog {
+
+export interface Eight {
 	imperial: string;
 	metric: string;
 }

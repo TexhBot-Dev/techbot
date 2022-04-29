@@ -2,8 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { isNullOrUndefined } from '@sapphire/utilities';
-import { generateEmbed } from '../../lib/helpers/embed';
+import { generateEmbed } from '../../lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'cat',
@@ -12,22 +11,35 @@ import { generateEmbed } from '../../lib/helpers/embed';
 })
 export default class CatCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const cat = (await fetch<Cat[]>('https://api.thecatapi.com/v1/images/search', FetchResultTypes.JSON))[0];
-		const catEmbed = generateEmbed('Cat', '', 'BLUE', {
-			image: {
-				url: cat.url,
-				height: cat.height,
-				width: cat.width
-			}
-		});
+		const headers: HeadersInit = {
+			'X-API-Key': process.env.THE_CAT_API_KEY!
+		};
 
-		if (!isNullOrUndefined(cat.breeds) && cat.breeds.length > 0) {
-			catEmbed.setFooter({
+		// Create query string
+		const queryParams = new URLSearchParams([
+			['limit', '1'],
+			['size', 'small'],
+			['mime_types', 'jpg,png'],
+			['has_breeds', 'true'],
+			['sub_id', interaction.user.id]
+		]).toString();
+
+		const cat = (
+			await fetch<Cat[]>(
+				`https://api.thecatapi.com/v1/images/search?${queryParams}`,
+				{
+					headers
+				},
+				FetchResultTypes.JSON
+			)
+		)[0];
+		const catEmbed = generateEmbed('Cat', '', 'BLUE')
+			.setImage(cat.url)
+			.setFooter({
 				text: `Breed: ${cat.breeds[0].name}\nLife Span: ${cat.breeds[0].life_span}\nTemperament: ${cat.breeds[0].temperament}`
 			});
-		}
 
-		return void interaction.reply({ embeds: [catEmbed] });
+		return interaction.reply({ embeds: [catEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -37,20 +49,18 @@ export default class CatCommand extends Command {
 	}
 }
 
-interface Cat {
-	breeds?: BreedsEntityCat[] | null;
+export interface Cat {
+	breeds: Breed[];
 	id: string;
 	url: string;
 	width: number;
 	height: number;
 }
-interface BreedsEntityCat {
-	weight: WeightCat;
+
+export interface Breed {
+	weight: Weight;
 	id: string;
 	name: string;
-	cfa_url: string;
-	vetstreet_url: string;
-	vcahospitals_url: string;
 	temperament: string;
 	origin: string;
 	country_codes: string;
@@ -58,12 +68,11 @@ interface BreedsEntityCat {
 	description: string;
 	life_span: string;
 	indoor: number;
-	lap: number;
 	alt_names: string;
 	adaptability: number;
 	affection_level: number;
 	child_friendly: number;
-	cat_friendly: number;
+	dog_friendly: number;
 	energy_level: number;
 	grooming: number;
 	health_issues: number;
@@ -83,7 +92,8 @@ interface BreedsEntityCat {
 	hypoallergenic: number;
 	reference_image_id: string;
 }
-interface WeightCat {
+
+export interface Weight {
 	imperial: string;
 	metric: string;
 }

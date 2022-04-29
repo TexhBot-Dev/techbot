@@ -1,10 +1,9 @@
-import { ColorResolvable, MessageEmbed, MessageEmbedOptions } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 
 /**
  * Generates an error embed
  * @param error The error that is being thrown
  * @param errorType The type of error that is being thrown
- * @param ExtraEmbedOptions Extra options for the embed
  * @returns MessageEmbed
  * @example
  * ```ts
@@ -12,10 +11,10 @@ import { ColorResolvable, MessageEmbed, MessageEmbedOptions } from 'discord.js';
  * return interaction.reply({ embeds: [embed] });
  * ```
  */
-export const generateErrorEmbed = (error: string, errorType: string, ExtraEmbedOptions?: MessageEmbedOptions): MessageEmbed => {
+export const generateErrorEmbed = (error: string, errorType: string): MessageEmbed => {
 	const errType = errorType === '' ? '' : `: ${errorType}`;
 
-	return generateEmbed(`Error${errType}`, error, '#ED4245', ExtraEmbedOptions);
+	return generateEmbed(`Error${errType}`, error, '#ED4245');
 };
 
 /**
@@ -23,7 +22,6 @@ export const generateErrorEmbed = (error: string, errorType: string, ExtraEmbedO
  * @param title The title of the embed
  * @param description The description for the embed
  * @param color The color of the embed
- * @param ExtraEmbedOptions? any extra options you want to add to the embed
  * @returns MessageEmbed
  * @example
  * ```ts
@@ -31,11 +29,6 @@ export const generateErrorEmbed = (error: string, errorType: string, ExtraEmbedO
  * return interaction.reply({ embeds: [embed] });
  * ```
  */
-export const generateEmbed = (
-	title: string,
-	description: string,
-	color: ColorResolvable = 'BLUE',
-	ExtraEmbedOptions?: MessageEmbedOptions
-): MessageEmbed => {
-	return new MessageEmbed(ExtraEmbedOptions).setColor(color).setTitle(title).setDescription(description).setTimestamp();
+export const generateEmbed = (title: string, description: string, color: ColorResolvable = 'BLUE'): MessageEmbed => {
+	return new MessageEmbed().setColor(color).setTitle(title).setDescription(description).setTimestamp();
 };

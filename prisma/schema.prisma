@@ -43,10 +43,29 @@ model ItemMetaData {
   collectable Boolean   @default(false)
 }
 
+model PetMetaData {
+  price       Int
+  rarity      Rarity   @default(COMMON)
+  tradeable   Boolean   @default(false)
+  collectable Boolean   @default(false)
+}
+
 model Job {
   name        JobNames @id
   description String   @default("I was forgotten about by the devs ;(")
   minimumXP   Int      @default(0)
+}
+
+enum PetTypes {
+  DOG
+  CAT
+  BIRD
+  FISH
+  HORSE
+  PIG
+  SHEEP
+  TURTLE
+  OTHER
 }
 
 enum Rarity {
