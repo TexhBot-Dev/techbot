@@ -44,10 +44,11 @@ model ItemMetaData {
 }
 
 model PetMetaData {
+  type        PetTypes @id
   price       Int
   rarity      Rarity   @default(COMMON)
-  tradeable   Boolean   @default(false)
-  collectable Boolean   @default(false)
+  tradeable   Boolean  @default(false)
+  collectable Boolean  @default(false)
 }
 
 model Job {
