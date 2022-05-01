@@ -6,7 +6,6 @@ export class InteractionListener extends Listener {
 	public async run(interaction: Interaction) {
 		if (!interaction.isAutocomplete()) return;
 		const focusedValue = interaction.options.getFocused().toString().toLowerCase();
-		console.log(interaction.commandName);
 		switch (interaction.commandName) {
 			case 'buy':
 			case 'shop':
