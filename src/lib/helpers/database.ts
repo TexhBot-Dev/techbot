@@ -1,13 +1,29 @@
-import type { Inventory, ItemNames, User, Guild, ItemMetaData } from '@prisma/client';
-import type { User as DiscordUser, Guild as DiscordGuild } from 'discord.js';
+import type { Guild, Inventory, ItemMetaData, ItemNames, PetMetaData, User, PetTypes, Pet } from '@prisma/client';
+import type { Guild as DiscordGuild, User as DiscordUser } from 'discord.js';
 import { container } from '@sapphire/framework';
+
+export const fetchPetMetaData = async (petRaceName: PetTypes): Promise<PetMetaData> => {
+	return (await container.prisma.petMetaData.findFirst({
+		where: {
+			type: petRaceName
+		}
+	})) as PetMetaData;
+};
+
+export const fetchUserPets = async (user: DiscordUser): Promise<Pet[]> => {
+	return container.prisma.pet.findMany({
+		where: {
+			userID: user.id
+		}
+	});
+};
 
 export const fetchItemMetaData = async (itemName: ItemNames): Promise<ItemMetaData> => {
 	return (await container.prisma.itemMetaData.findFirst({
 		where: {
 			name: itemName
 		}
-	})) as ItemMetaData;
+	})) as unknown as ItemMetaData;
 };
 
 export const fetchUserInventories = async (user: DiscordUser): Promise<Inventory[]> => {
