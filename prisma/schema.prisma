@@ -48,7 +48,8 @@ model Pet {
   userID  String
   petType PetTypes
   name    String
-  lastFed Int @default(0)
+  hunger Int @default(10)
+  lastFed DateTime
 
   @@unique([userID, petType])
 }

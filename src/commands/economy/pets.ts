@@ -34,7 +34,8 @@ export default class PetCommands extends Command {
 			data: {
 				name: petName,
 				petType: PetTypes[petToBuy as PetTypes],
-				userID: interaction.user.id
+				userID: interaction.user.id,
+				lastFed: new Date()
 			}
 		});
 
@@ -64,7 +65,7 @@ export default class PetCommands extends Command {
 				}
 			},
 			data: {
-				lastFed: Date.now()
+				lastFed: new Date()
 			}
 		});
 
