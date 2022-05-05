@@ -1,5 +1,5 @@
 import type { ApplicationCommandOptionChoice, Interaction } from 'discord.js';
-import { ItemNames, JobNames } from '@prisma/client';
+import { ItemNames, JobNames, PetTypes } from '@prisma/client';
 import { Listener } from '@sapphire/framework';
 
 export class InteractionListener extends Listener {
@@ -10,23 +10,44 @@ export class InteractionListener extends Listener {
 			case 'buy':
 			case 'shop':
 			case 'sell':
-				{
-					await interaction.respond(fuzzyAutocomplete(ItemNames, focusedValue));
-				}
+				await interaction.respond(fuzzyAutocomplete(ItemNames, focusedValue));
 				break;
 			case 'job':
+				await interaction.respond(fuzzyAutocomplete(JobNames, focusedValue));
+				break;
+			case 'help':
 				{
-					await interaction.respond(fuzzyAutocomplete(JobNames, focusedValue));
+					const choices = this.container.stores.get('commands').map((command) => command.name.toProperCase());
+					let filtered = choices.filter((choice) => choice.toLowerCase().startsWith(focusedValue));
+					if (filtered.length === 0)
+						filtered = choices.filter(
+							(choice) => choice.toLowerCase().includes(focusedValue) || focusedValue.includes(choice.toLowerCase())
+						);
+
+					await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })).slice(0, 25));
 				}
 				break;
-			case 'help': {
-				const choices = this.container.stores.get('commands').map((command) => command.name.toProperCase());
-				let filtered = choices.filter((choice) => choice.toLowerCase().startsWith(focusedValue));
-				if (filtered.length === 0)
-					filtered = choices.filter((choice) => choice.toLowerCase().includes(focusedValue) || focusedValue.includes(choice.toLowerCase()));
-
-				await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })).slice(0, 25));
-			}
+			case 'pets':
+				{
+					const subcommandName = interaction.options.getSubcommand(true).toLocaleLowerCase();
+					if (subcommandName === 'buy') {
+						await interaction.respond(fuzzyAutocomplete(PetTypes, focusedValue));
+					} else if (subcommandName === 'feed') {
+						const userPets = (
+							await this.container.prisma.pet.findMany({
+								where: {
+									userID: interaction.user.id
+								},
+								select: {
+									name: true
+								}
+							})
+						).map((pet) => pet.name);
+						console.log(userPets);
+						await interaction.respond(fuzzyAutocomplete(userPets, focusedValue));
+					}
+				}
+				break;
 		}
 	}
 }

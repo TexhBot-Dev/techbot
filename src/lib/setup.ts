@@ -1,5 +1,8 @@
+/* eslint-disable func-names */
+/* eslint-disable no-extend-native */
 process.env.NODE_ENV ??= 'development';
 
+import { container } from '@sapphire/framework';
 // import 'reflect-metadata';
 import '@sapphire/plugin-logger/register';
 import * as colorette from 'colorette';
@@ -7,13 +10,54 @@ import { config } from 'dotenv-cra';
 import { join } from 'path';
 import { inspect } from 'util';
 import { rootDir } from './constants';
-import { randomUnitInterval } from './helpers/random';
+import { randomInt, randomUnitInterval } from './helpers';
 
 // Read env var
 config({ path: join(rootDir, '.env') });
 
 // Set default inspection depth
 inspect.defaultOptions.depth = 1;
+
+setInterval(async () => {
+	(await container.prisma.pet.findMany()).forEach(async (pet) => {
+		if (pet.hunger < 0) {
+			await container.prisma.pet.delete({
+				where: {
+					userID_petType: {
+						petType: pet.petType,
+						userID: pet.userID
+					}
+				}
+			});
+
+			if (container.client.isReady()) {
+				void (await container.client.users.fetch(pet.userID)).send({
+					content: `Your pet ${pet.name} has died of hunger because **you** neglected to feed it.`
+				});
+			}
+		}
+		// check if pet.lastFed has been over a day
+		if (pet.lastFed.getTime() + 86400000 < Date.now()) {
+			const hunger = pet.hunger - randomInt(1, 3);
+			// If it has, subtract from pet.hunger
+			await container.prisma.pet.update({
+				where: {
+					userID_petType: {
+						petType: pet.petType,
+						userID: pet.userID
+					}
+				},
+				data: {
+					hunger
+				}
+			});
+
+			void (await container.client.users.fetch(pet.userID)).send({
+				content: `Your pet ${pet.name} has lost ${hunger} points because you forgot to feed it!.`
+			});
+		}
+	});
+}, 86_400_000);
 
 // Enable colorette
 colorette.createColors({ useColor: true });
@@ -38,13 +82,12 @@ String.prototype.toSnakeCase = function () {
 	);
 };
 
-String.prototype.remove = function (stringsToRemove) {
-	if (!Array.isArray(stringsToRemove)) return this.replaceAll(stringsToRemove, '') || '';
-	let newStr = this;
-	for (let i = 0; stringsToRemove.length !== i; i++) {
-		newStr = this.replaceAll(stringsToRemove[i], '');
+String.prototype.remove = function (str) {
+	if (!Array.isArray(str)) return this.replaceAll(str, '') || '';
+	for (let i = 0; str.length !== i; i++) {
+		str = this.replaceAll(str[i], '');
 	}
-	return String(newStr) || '';
+	return String(str) || '';
 };
 
 String.prototype.toProperCase = function () {

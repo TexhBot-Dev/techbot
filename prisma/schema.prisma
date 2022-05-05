@@ -22,6 +22,7 @@ model User {
   passiveMode         Boolean  @default(false)
   preferredEmojiColor String   @default("yellow")
   premium             Boolean  @default(false)
+  verified            Boolean  @default(false)
 }
 
 model Inventory {
@@ -43,12 +44,23 @@ model ItemMetaData {
   collectable Boolean   @default(false)
 }
 
+model Pet {
+  userID  String
+  petType PetTypes
+  name    String
+  hunger Int @default(10)
+  lastFed DateTime
+
+  @@unique([userID, petType])
+}
+
 model PetMetaData {
   type        PetTypes @id
   price       Int
   rarity      Rarity   @default(COMMON)
   tradeable   Boolean  @default(false)
   collectable Boolean  @default(false)
+  feedInterval    Int      @default(0)
 }
 
 model Job {
