@@ -7,6 +7,5 @@ export function randomUnitInterval(): number {
 	const intArr = new Uint32Array(2);
 	crypto.randomFillSync(intArr);
 	const mantissa = intArr[0] * Math.pow(2, 20) + (intArr[1] >>> 12);
-	console.log(mantissa * Math.pow(2, -52));
 	return mantissa * Math.pow(2, -52);
 }
