@@ -24,7 +24,7 @@ export const parseAmount = (value: number | string, amount: 'all' | 'half' | 'th
 		case 'quarter':
 			return Math.trunc(parsed / 4);
 		default: {
-			amount = parseInt(amount.toString().replace(/,|\s/gi, ''));
+			amount = parseInt(amount.toString().replace(/,|\s/gi, ''), 10);
 			return amount || 0;
 		}
 	}

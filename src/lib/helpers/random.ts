@@ -1,12 +1,12 @@
-//@ts-ignore-error this export does exist
-const crypto = require('crypto').webcrypto;
+import crypto from 'crypto';
 
 /**
  * Returns a cryptographically secure random number between 0 and 1.
  */
 export function randomUnitInterval(): number {
 	const intArr = new Uint32Array(2);
-	crypto.getRandomValues(intArr);
+	crypto.randomFillSync(intArr);
 	const mantissa = intArr[0] * Math.pow(2, 20) + (intArr[1] >>> 12);
+	console.log(mantissa * Math.pow(2, -52));
 	return mantissa * Math.pow(2, -52);
 }
