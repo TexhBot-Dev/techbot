@@ -15,17 +15,17 @@ export default class BuyCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const itemToBuy = interaction.options.getString('item', true);
 
-		const item = await fetchItemMetaData((itemToBuy.toConstantCase() ?? undefined) as ItemNames);
+		const item = await fetchItemMetaData(itemToBuy.toConstantCase() as ItemNames);
 		const user = await fetchUser(interaction.user);
 
 		if (!item) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed(`Invalid item '${itemToBuy}' specified!`, 'Invalid Item Name')]
 			});
 		}
 
 		if (user.wallet < item.price) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
 						`You don't have enough money to purchase \`${item.name.toProperCase()}\`.\nThe item's price of \`${item.price.toLocaleString()}\` is greater than your wallet balance of \`${user.wallet.toLocaleString()}\`.\nUsage: \`/${
@@ -40,7 +40,7 @@ export default class BuyCommand extends Command {
 
 		await subtractFromWallet(interaction.user, item.price);
 		await incrementItemCount(interaction.user, item.name);
-		return void interaction.reply(`You bought **${item.name.toProperCase()}** for **$${item.price.toLocaleString()}**`);
+		return interaction.reply(`You bought **${item.name.toProperCase()}** for **$${item.price.toLocaleString()}**`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

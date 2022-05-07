@@ -19,7 +19,7 @@ export default class DailyCommand extends Command {
 			.setDescription(`Ayyy! You earned **$${moneyEarned.toLocaleString()}**, see ya tomorrow.`)
 			.setColor('BLUE');
 
-		return void interaction.reply({ embeds: [embed] });
+		return interaction.reply({ embeds: [embed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

@@ -11,7 +11,7 @@ import { CommandInteraction, version } from 'discord.js';
 	detailedDescription: 'stats'
 })
 export class StatsCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
+	public override chatInputRun(interaction: CommandInteraction) {
 		const duration = new DurationFormatter().format(this.container.client.uptime!);
 		const string = `
 			= STATISTICS =
@@ -22,7 +22,7 @@ export class StatsCommand extends Command {
 			• Channels   :: ${this.container.client.channels.cache.size.toLocaleString()}
 			• Discord.js :: v${version}
 			• Node       :: ${process.version}`;
-		return void interaction.reply({
+		return interaction.reply({
 			content: codeBlock('asciidoc', stripIndents(string))
 		});
 	}

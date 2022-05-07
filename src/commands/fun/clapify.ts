@@ -17,7 +17,7 @@ export default class clapifyCommand extends Command {
 			replacer(
 				user.preferredEmojiColor,
 				{
-					yellow: '👏', //deprecated
+					yellow: '👏', // deprecated
 					default: '👏',
 					pale: '👏🏻',
 					cream_white: '👏🏼',

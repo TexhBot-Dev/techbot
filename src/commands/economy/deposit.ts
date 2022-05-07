@@ -15,7 +15,7 @@ export default class DepositCommand extends Command {
 		const amountToDeposit = parseAmount(userData.bank, arg);
 
 		if (!isSafeInteger(amountToDeposit)) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
 						`You don't have enough money to deposit '${arg}'.\nUsage: ${Formatters.inlineCode(this.detailedDescription as string)}`,
@@ -52,7 +52,7 @@ export default class DepositCommand extends Command {
 			.setTitle('Deposit')
 			.setColor('BLUE');
 
-		return void interaction.reply({ embeds: [response] });
+		return interaction.reply({ embeds: [response] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

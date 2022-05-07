@@ -9,9 +9,9 @@ import { randomUnitInterval } from '../../lib/helpers';
 	detailedDescription: 'coinflip'
 })
 export class CoinFlipCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
+	public override chatInputRun(interaction: CommandInteraction) {
 		if (randomUnitInterval() > 0.5) return void interaction.reply('Heads');
-		return void interaction.reply('Tails');
+		return interaction.reply('Tails');
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

@@ -23,8 +23,10 @@ export default class ImageCommand extends Command {
 					.setTitle("Here's your image")
 					.setImage(`https://picsum.photos/${imageMeta.width}/${imageMeta.height}/${imageMeta.grayscale ? '?grayscale' : ''}`)
 					.setColor('BLUE');
-				void interaction.reply({ embeds: [response], ephemeral });
+				return interaction.reply({ embeds: [response], ephemeral });
 			}
+			default:
+				break;
 		}
 	}
 

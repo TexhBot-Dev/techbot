@@ -3,12 +3,12 @@
 process.env.NODE_ENV ??= 'development';
 
 import { container } from '@sapphire/framework';
-// import 'reflect-metadata';
+import 'reflect-metadata';
 import '@sapphire/plugin-logger/register';
 import * as colorette from 'colorette';
 import { config } from 'dotenv-cra';
-import { join } from 'path';
-import { inspect } from 'util';
+import { join } from 'node:path';
+import { inspect } from 'node:util';
 import { rootDir } from './constants';
 import { randomInt, randomUnitInterval } from './helpers';
 

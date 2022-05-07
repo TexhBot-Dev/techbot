@@ -9,21 +9,21 @@ import { codeBlock } from '@sapphire/utilities';
 	description: 'Steal from other users',
 	detailedDescription: 'rob <user>',
 	preconditions: ['guildOnly'],
-	cooldownDelay: 60_000 * 150 //2.5 hours
+	cooldownDelay: 60_000 * 150 // 2.5 hours
 })
 export default class RobCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const userToRob = interaction.options.getUser('user', true);
 
 		if (interaction.user.id === userToRob.id) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed("You can't rob yourself.", 'Invalid User')],
 				ephemeral: true
 			});
 		}
 
 		if (userToRob.bot) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed("You can't rob bots!", 'Invalid User')],
 				ephemeral: true
 			});
@@ -33,14 +33,14 @@ export default class RobCommand extends Command {
 		const robber = await fetchUser(interaction.user);
 
 		if (robbedUser.passiveMode) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed(`${userToRob.toString()} is in passive mode. Leave them alone!`, 'User is in Passive Mode')],
 				ephemeral: true
 			});
 		}
 
 		if (robber.passiveMode) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed("You can't rob while in passive mode!", 'Passive Mode Enabled')],
 				ephemeral: true
 			});

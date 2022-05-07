@@ -15,26 +15,29 @@ export default class GiveItemCommand extends Command {
 		const amount = Number(interaction.options.getString('amount', true));
 
 		if (userToGiveTo.id === interaction.user.id) {
-			return void interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!', 'Invalid user')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('You cannot give money to yourself!', 'Invalid user')] });
 		}
 
 		if (userToGiveTo.bot) {
-			return void interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
 		}
 
 		if (itemToGive === null) {
-			return void interaction.reply({ embeds: [generateErrorEmbed('Invalid Item Specified!', 'Invalid item')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('Invalid Item Specified!', 'Invalid item')] });
 		}
 
 		if (amount < 0 || isSafeInteger(amount)) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw', 'Invalid amount')]
 			});
 		}
 
 		const inv = await fetchUserInventory(interaction.user, itemToGive as ItemNames);
+		if (inv === null) {
+			return interaction.reply('You do not have that item!');
+		}
 		if (inv.count < amount) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed('You do not have that much of that item!', 'Invalid amount')]
 			});
 		}
@@ -55,7 +58,7 @@ export default class GiveItemCommand extends Command {
 			.setTimestamp();
 		await webhook.send({ embeds: [embed] });
 
-		return void interaction.reply({ content: `You gave ${amount} ${itemToGive} to ${userToGiveTo.username}.`, allowedMentions: {} });
+		return interaction.reply({ content: `You gave ${amount} ${itemToGive} to ${userToGiveTo.username}.`, allowedMentions: {} });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

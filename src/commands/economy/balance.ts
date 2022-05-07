@@ -21,7 +21,7 @@ export default class BalanceCommand extends Command {
 			.addField('Bank:', dBUserData.bank.toLocaleString())
 			.addField('Total:', (dBUserData.wallet + dBUserData.bank).toLocaleString())
 			.setColor('#4EAFF6');
-		void interaction.reply({ embeds: [balanceEmbed] });
+		return interaction.reply({ embeds: [balanceEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

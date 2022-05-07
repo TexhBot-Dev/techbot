@@ -30,10 +30,10 @@ export default class InventoryCommand extends Command {
 
 		if (inventoryEmbed.fields.length === 0) {
 			inventoryEmbed.setDescription('You have no items!').setColor('RED');
-			return void interaction.reply({ embeds: [inventoryEmbed] });
+			return interaction.reply({ embeds: [inventoryEmbed] });
 		}
 
-		return void interaction.reply({ embeds: [inventoryEmbed] });
+		return interaction.reply({ embeds: [inventoryEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

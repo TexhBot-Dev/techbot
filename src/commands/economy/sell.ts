@@ -19,7 +19,7 @@ export class SellCommand extends Command {
 
 		await fetchUserInventory(interaction.user, itemData.name).then(async (inv) => {
 			if ((inv?.count ?? 0) < amount) {
-				return void interaction.reply({
+				return interaction.reply({
 					embeds: [generateErrorEmbed('You do not have that much of that item!', 'Invalid amount')]
 				});
 			}
@@ -27,7 +27,7 @@ export class SellCommand extends Command {
 			await incrementItemCount(interaction.user, itemData.name, amount);
 			await subtractFromWallet(interaction.user, Math.trunc(itemData.price / 2));
 
-			return void interaction.reply(`Sold **${amount}** of **${item}** for **$${Math.trunc(itemData.price / 2).toLocaleString()}**.`);
+			return interaction.reply(`Sold **${amount}** of **${item}** for **$${Math.trunc(itemData.price / 2).toLocaleString()}**.`);
 		});
 	}
 

@@ -42,13 +42,13 @@ export default class JobCommand extends Command {
 					const newJob = interaction.options.getString('job_name');
 
 					if (newJob === null) {
-						return void interaction.reply({ content: 'Please specify a job!', ephemeral: true });
+						return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
 					}
 
 					const job = jobs.find((a) => a.name.toLocaleLowerCase() === newJob.toLocaleLowerCase());
 
 					if (job === undefined) {
-						return void interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
+						return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
 					}
 
 					void this.container.prisma.user.update({
@@ -101,6 +101,8 @@ export default class JobCommand extends Command {
 
 					void interaction.reply({ embeds: [helpReply] });
 				}
+				break;
+			default:
 				break;
 		}
 	}

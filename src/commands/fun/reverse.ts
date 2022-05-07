@@ -8,9 +8,9 @@ import type { CommandInteraction } from 'discord.js';
 	detailedDescription: 'reverse <string>'
 })
 export class ReverseCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
+	public override chatInputRun(interaction: CommandInteraction) {
 		const text = interaction.options.getString('text') as string;
-		return void interaction.reply(
+		return interaction.reply(
 			text
 				.split('')
 				.reverse()

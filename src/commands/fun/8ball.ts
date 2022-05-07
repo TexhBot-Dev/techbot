@@ -21,8 +21,8 @@ const eightBallResponses = [
 	detailedDescription: '8ball <question>'
 })
 export class EightballCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
-		return void interaction.reply(`:8ball: ${eightBallResponses.randomElement()}`);
+	public override chatInputRun(interaction: CommandInteraction) {
+		return interaction.reply(`:8ball: ${eightBallResponses.randomElement()}`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

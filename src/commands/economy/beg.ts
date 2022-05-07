@@ -57,7 +57,7 @@ export default class BegCommand extends Command {
 
 		begEmbed.setDescription(`While begging you earned **$${moneyEarned.toLocaleString()}**!`).setColor('BLUE');
 
-		void interaction.reply({ embeds: [begEmbed] });
+		return interaction.reply({ embeds: [begEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

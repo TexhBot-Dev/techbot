@@ -8,7 +8,7 @@ import type { CommandInteraction } from 'discord.js';
 	detailedDescription: 'owo <string>'
 })
 export class OwOCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
+	public override chatInputRun(interaction: CommandInteraction) {
 		const owoifiedText = interaction.options
 			.getString('text', true)
 			.replace(/r/g, 'w')
@@ -21,7 +21,7 @@ export class OwOCommand extends Command {
 			.replace(/!/g, '！')
 			.replace(/\s+/g, ' owo ');
 
-		return void interaction.reply(owoifiedText);
+		return interaction.reply(owoifiedText);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

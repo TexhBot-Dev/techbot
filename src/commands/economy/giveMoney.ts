@@ -15,17 +15,17 @@ export default class GiveMoneyCommand extends Command {
 		const amount = parseAmount(author.wallet, interaction.options.getString('amount') as any);
 
 		if (receiver.bot || receiver.id === interaction.user.id) {
-			return void interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('Invalid User Specified!', 'Invalid user')] });
 		}
 
 		if (isSafeInteger(amount)) {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed('Please specify a valid amount of money to withdraw', 'Invalid amount')]
 			});
 		}
 
 		if (author.wallet < amount) {
-			return void interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!', 'Invalid amount')] });
+			return interaction.reply({ embeds: [generateErrorEmbed('You do not have that much money!', 'Invalid amount')] });
 		}
 
 		await subtractFromWallet(interaction.user, amount);
@@ -62,7 +62,7 @@ export default class GiveMoneyCommand extends Command {
 			)
 			.setColor('BLUE');
 
-		return void interaction.reply({ embeds: [response] });
+		return interaction.reply({ embeds: [response] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

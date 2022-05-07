@@ -58,7 +58,7 @@ export default class HighlowCommand extends Command {
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() });
 
 			await interaction.reply({ embeds: [newEmbed] });
-			return void msg.delete();
+			return msg.delete();
 		});
 	}
 

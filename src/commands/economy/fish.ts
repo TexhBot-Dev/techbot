@@ -13,15 +13,15 @@ export class FishCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const hasFishingPole = ((await fetchUserInventory(interaction.user, 'FISHING_POLE'))?.count ?? 0) > 0;
 
-		if (!hasFishingPole) return void interaction.reply('You do not have a fishing pole!');
+		if (!hasFishingPole) return interaction.reply('You do not have a fishing pole!');
 
 		const fishEarned = randomInt(1, 4);
 
 		if (randomUnitInterval() > 0.5) {
 			await incrementItemCount(interaction.user, 'FISH', fishEarned);
-			return void interaction.reply(`You caught **${fishEarned}** fish!`);
+			return interaction.reply(`You caught **${fishEarned}** fish!`);
 		}
-		return void interaction.reply('You failed to catch anything!');
+		return interaction.reply('You failed to catch anything!');
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

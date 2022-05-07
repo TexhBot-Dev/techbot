@@ -34,13 +34,13 @@ export class HuntCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.reply('Searching for an Animal...');
 
-		if (randomUnitInterval() > 0.5) return void interaction.editReply("You didn't find any animals.");
+		if (randomUnitInterval() > 0.5) return interaction.editReply("You didn't find any animals.");
 
 		const animal = animals.randomElement();
 		const money = randomInt(50, 300);
 
 		await addToWallet(interaction.user, money);
-		return void interaction.editReply(`You killed a(n) ${animal} and earned $${money.toLocaleString()} coins!`);
+		return interaction.editReply(`You killed a(n) ${animal} and earned $${money.toLocaleString()} coins!`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

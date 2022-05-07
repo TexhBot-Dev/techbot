@@ -69,7 +69,6 @@ export class ReverseCommand extends Command {
 		setTimeout(() => {
 			void interaction.editReply('A totally real and dangerous have complete.');
 		}, 35500);
-		return;
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

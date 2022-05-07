@@ -11,7 +11,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 export default class JokeCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const { joke } = await fetch<{ joke: string }>('https://api.popcat.xyz/joke', FetchResultTypes.JSON);
-		return void interaction.reply(joke);
+		return interaction.reply(joke);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

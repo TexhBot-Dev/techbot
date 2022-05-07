@@ -11,7 +11,7 @@ import { randomInt } from '../../lib/helpers';
 export class HowGayCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {
 		const user = interaction.options.getUser('user', false) ?? interaction.user;
-		return void interaction.reply(`${user.tag === interaction.user.tag ? 'You are' : `${user.tag} is`} **${randomInt(0, 105)}%** gay! 🏳️‍🌈`);
+		return interaction.reply(`${user.tag === interaction.user.tag ? 'You are' : `${user.tag} is`} **${randomInt(0, 105)}%** gay! 🏳️‍🌈`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

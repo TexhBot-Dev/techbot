@@ -30,7 +30,7 @@ const inventions = [
 	name: 'invent',
 	description: 'Lets you invent stuff and earn money',
 	detailedDescription: 'invent',
-	cooldownDelay: 60_000 * 10 //10 min
+	cooldownDelay: 60_000 * 10 // 10 min
 })
 export class InventCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -38,7 +38,7 @@ export class InventCommand extends Command {
 		const money = randomInt(50, 701);
 
 		await addToWallet(interaction.user, money);
-		return void interaction.reply(`You invented ${invention} and earned $${money.toLocaleString()}`);
+		return interaction.reply(`You invented ${invention} and earned $${money.toLocaleString()}`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

@@ -14,27 +14,26 @@ export default class BetCommand extends Command {
 		const betAmount = parseAmount(userDetails.wallet, interaction.options.getString('amount', true) as any);
 
 		if (betAmount < 10) {
-			return void interaction.reply('Please bet a valid amount above 10!');
+			return interaction.reply('Please bet a valid amount above 10!');
 		}
 
 		if (userDetails.wallet < betAmount) {
-			return void interaction.reply(`Sorry ${interaction.user.username}, you don't have enough money!`);
+			return interaction.reply(`Sorry ${interaction.user.username}, you don't have enough money!`);
 		}
 
 		if (randomUnitInterval() < 0.5) {
-			addToWallet(interaction.user, betAmount).then(() => {
-				void interaction.reply({
+			void addToWallet(interaction.user, betAmount).then(() => {
+				return interaction.reply({
 					embeds: [
 						generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')
 					]
 				});
 			});
-			return;
 		}
 
 		await subtractFromWallet(interaction.user, betAmount);
 
-		return void interaction.reply({
+		return interaction.reply({
 			embeds: [generateEmbed('Bet Lost', `${interaction.user.username}, you lost **$${betAmount.toLocaleString()}**!`, 'RED')]
 		});
 	}

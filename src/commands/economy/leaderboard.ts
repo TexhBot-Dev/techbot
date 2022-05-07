@@ -17,7 +17,7 @@ export default class LeaderboardCommand extends Command {
 		const overallMoney = flags.includes('overallMoney');
 
 		if ((overallMoney && walletOnly) || (overallMoney && bankOnly)) {
-			return void interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
+			return interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
 		}
 
 		const topTenUsers = (
@@ -60,7 +60,7 @@ export default class LeaderboardCommand extends Command {
 		if (topTenUsers.length === 0) return;
 
 		const leaderboardEmbed = new MessageEmbed().setDescription(topTenUsers).setColor('BLUE').setTimestamp();
-		return void interaction.reply({ embeds: [leaderboardEmbed] });
+		return interaction.reply({ embeds: [leaderboardEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
