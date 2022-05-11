@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { incrementItemCount, fetchUserInventory, randomUnitInterval, randomInt } from '../../lib/helpers';
+import { incrementItemCount, fetchUserInventory, randomUnitInterval, randomInt } from '../../lib/helpers/index.js';
 
 import type { CommandInteraction } from 'discord.js';
 

@@ -9,7 +9,22 @@ export class PepeClient extends SapphireClient {
 		container.prisma = new PrismaClient({
 			errorFormat: 'pretty'
 		});
-		container.client = this;
+	}
+
+	public override async login(token?: string): Promise<string> {
+		container.logger.info('Connecting to database...');
+		await container.prisma.$connect();
+
+		this.logger.info('Logging in to discord...');
+		return super.login(token);
+	}
+
+	public override async destroy() {
+		try {
+			await container.prisma.$disconnect();
+		} catch {}
+
+		return super.destroy();
 	}
 }
 

@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { replacer, fetchUser } from '../../lib/helpers';
+import { replacer, fetchUser } from '../../lib/helpers/index.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'clapify',
@@ -28,7 +28,7 @@ export default class clapifyCommand extends Command {
 				'g'
 			) || '👏';
 
-		return void interaction.reply(text.replace(/\s+/g, ` ${emoji} `));
+		return interaction.reply(text.replace(/\s+/g, ` ${emoji} `));
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

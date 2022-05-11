@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { randomUnitInterval, addToWallet, randomInt } from '../../lib/helpers';
+import { randomUnitInterval, addToWallet, randomInt } from '../../lib/helpers/index.js';
 
 const items = [
 	'Rusty Sword',
@@ -24,7 +24,7 @@ const items = [
 	description: 'Searches for items on the ground.'
 })
 export class SearchCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
+	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
 		await interaction.reply('Searching...');
 
 		if (randomUnitInterval() > 0.5) return interaction.editReply('You found nothing.');

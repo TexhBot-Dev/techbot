@@ -3,6 +3,11 @@
 	"compilerOptions": {
 		"rootDir": "src",
 		"noEmit": true,
+    "target": "ESNext",
+		"module": "NodeNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
 	},
 	"include": ["src"],
+  "exclude": ["node_modules"]
 }

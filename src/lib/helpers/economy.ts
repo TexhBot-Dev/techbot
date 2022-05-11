@@ -1,6 +1,6 @@
 import type { User } from 'discord.js';
 import { container } from '@sapphire/framework';
-import { isSafeInteger } from './numbers';
+import { isSafeInteger } from './index.js';
 import type { ItemNames } from '@prisma/client';
 
 /**

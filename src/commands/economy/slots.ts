@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { randomUnitInterval, parseAmount, fetchGuild, fetchUser } from '../../lib/helpers';
+import { randomUnitInterval, parseAmount, fetchGuild, fetchUser } from '../../lib/helpers/index.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'slots',

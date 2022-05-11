@@ -3,7 +3,7 @@ import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { PetTypes } from '@prisma/client';
 import { isNullish } from '@sapphire/utilities';
-import { fetchPetMetaData, subtractFromWallet } from '../../lib/helpers';
+import { fetchPetMetaData, subtractFromWallet } from '../../lib/helpers/index.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'pets',
@@ -20,7 +20,7 @@ export default class PetCommands extends Command {
 			case 'feed':
 				return this.feed(interaction);
 			default:
-				return interaction.reply('Invalid subcommand.');
+				return interaction.reply(`${subcommand} is not a valid subcommand.`);
 		}
 	}
 

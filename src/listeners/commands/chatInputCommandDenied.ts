@@ -1,6 +1,6 @@
 import type { ChatInputCommandDeniedPayload, Events } from '@sapphire/framework';
 import { Listener, UserError } from '@sapphire/framework';
-import { generateErrorEmbed } from '../../lib/helpers/embed';
+import { generateErrorEmbed } from '../../lib/helpers/embed.js';
 
 export class UserEvent extends Listener<typeof Events.ChatInputCommandDenied> {
 	public async run({ context, message: content, identifier }: UserError, { interaction }: ChatInputCommandDeniedPayload) {

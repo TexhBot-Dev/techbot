@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { addToWallet, subtractFromWallet, generateErrorEmbed, fetchUser, isSafeInteger, parseAmount } from '../../lib/helpers';
+import { addToWallet, subtractFromWallet, generateErrorEmbed, fetchUser, isSafeInteger, parseAmount } from '../../lib/helpers/index.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'withdraw',

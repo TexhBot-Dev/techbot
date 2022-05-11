@@ -1,6 +1,6 @@
 import { Precondition } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { fetchUser } from '../lib/helpers/database';
+import { fetchUser } from '../lib/helpers/database.js';
 
 export class PremiumPrecondition extends Precondition {
 	public override async chatInputRun(interaction: CommandInteraction) {

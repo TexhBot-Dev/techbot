@@ -26,7 +26,7 @@ export default class ImageCommand extends Command {
 				return interaction.reply({ embeds: [response], ephemeral });
 			}
 			default:
-				break;
+				return interaction.reply(`Unknown subcommand ${subcommand}`);
 		}
 	}
 

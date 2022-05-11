@@ -2,7 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { ApplyOptions } from '@sapphire/decorators';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { generateEmbed } from '../lib/helpers/embed';
+import { generateEmbed } from '../lib/helpers/index.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'help',

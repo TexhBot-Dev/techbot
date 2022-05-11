@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { randomInt, addToWallet } from '../../lib/helpers';
+import { randomInt, addToWallet } from '../../lib/helpers/index.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'daily',

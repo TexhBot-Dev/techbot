@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { randomUnitInterval, randomInt, fetchUser, addToWallet, subtractFromWallet, generateErrorEmbed } from '../../lib/helpers';
+import { randomUnitInterval, randomInt, fetchUser, addToWallet, subtractFromWallet, generateErrorEmbed } from '../../lib/helpers/index.js';
 import { codeBlock } from '@sapphire/utilities';
 
 @ApplyOptions<CommandOptions>({

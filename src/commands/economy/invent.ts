@@ -1,8 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { randomInt } from '../../lib/helpers';
-import { addToWallet } from '../../lib/helpers/economy';
+import { randomInt, addToWallet } from '../../lib/helpers/index.js';
 
 // List of inventions
 const inventions = [

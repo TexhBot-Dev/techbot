@@ -2,7 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ItemNames } from '@prisma/client';
-import { fetchItemMetaData, generateErrorEmbed } from '../../lib/helpers';
+import { fetchItemMetaData, generateErrorEmbed } from '../../lib/helpers/index.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'shop',

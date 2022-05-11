@@ -1,5 +1,5 @@
 import { container } from '@sapphire/framework';
-import { randomInt } from './helpers';
+import { randomInt } from './helpers/index.js';
 
 setInterval(async () => {
 	(await container.prisma.pet.findMany()).forEach(async (pet) => {
