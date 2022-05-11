@@ -69,7 +69,7 @@
     "clean": true,
 	  "dts": false,
 	  "entry": ["src/**/*.ts", "!src/**/*.d.ts"],
-	  "minify": false,
+	  "minify": true,
 	  "skipNodeModulesBundle": true,
 	  "target": "esnext",
 	  "tsconfig": "./src/tsconfig.json",
