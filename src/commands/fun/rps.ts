@@ -42,11 +42,7 @@ export default class rpsCommand extends Command {
 							.setName('choice')
 							.setDescription('Your RPS bet.')
 							.setRequired(true)
-							.setChoices([
-								['Rock', 'rock'],
-								['Paper', 'paper'],
-								['Scissors', 'scissors']
-							])
+							.setChoices({ name: 'Rock', value: 'rock' }, { name: 'Paper', value: 'paper' }, { name: 'Scissors', value: 'scissors' })
 					),
 			{ idHints: ['944646067243331714'] }
 		);

@@ -9,7 +9,7 @@ import type { CommandInteraction } from 'discord.js';
 })
 export class ReverseCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {
-		const text = interaction.options.getString('text') as string;
+		const text = interaction.options.getString('text', true);
 		return interaction.reply(
 			text
 				.split('')

@@ -73,12 +73,12 @@ export default class LeaderboardCommand extends Command {
 						option
 							.setName('flags')
 							.setDescription('Flags to use')
-							.setChoices([
-								['Only show guilds', '--guildOnly'],
-								['Only show wallets', '--walletOnly'],
-								['Only show banks', '--bankOnly'],
-								['Show overall money', '--overallMoney']
-							])
+							.setChoices(
+								{ name: 'Only show guilds', value: '--guildOnly' },
+								{ name: 'Only show wallets', value: '--walletOnly' },
+								{ name: 'Only show banks', value: '--bankOnly' },
+								{ name: 'Show overall money', value: '--overallMoney' }
+							)
 					),
 			{ idHints: ['944645719409713183'] }
 		);

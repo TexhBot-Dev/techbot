@@ -15,6 +15,7 @@ const eightBallResponses = [
 	'Possibly',
 	'That seems correct.'
 ];
+
 @ApplyOptions<CommandOptions>({
 	name: '8ball',
 	description: 'RNG chooses your fate.',

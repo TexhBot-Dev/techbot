@@ -36,14 +36,14 @@ export default class SettingCommand extends Command {
 								option
 									.setName('new_color')
 									.setDescription('Color for your new emoji')
-									.setChoices([
-										['Default 👋', 'default'],
-										['Pale 👋🏻', 'pale'],
-										['Cream White 👋🏼', 'cream_white'],
-										['Brown 👋🏽', 'brown'],
-										['Dark Drown 👋🏾', 'dark_brown'],
-										['Black 👋🏿', 'black']
-									])
+									.setChoices(
+										{ name: 'Default 👋', value: 'default' },
+										{ name: 'Pale 👋🏻', value: 'pale' },
+										{ name: 'Cream White 👋🏼', value: 'cream_white' },
+										{ name: 'Brown 👋🏽', value: 'brown' },
+										{ name: 'Dark Brown 👋🏾', value: 'dark_brown' },
+										{ name: 'Black 👋🏿', value: 'black' }
+									)
 									.setRequired(true)
 							)
 					),

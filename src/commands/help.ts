@@ -24,7 +24,6 @@ export default class HelpCommand extends Command {
 		const { categories } = commands;
 		const paginatedMessage = new PaginatedMessage({
 			template: new MessageEmbed().setTitle('Help').setColor('BLUE')
-			// .setFooter({ text: `This server's prefix is ${prefix}` })
 		});
 
 		for (const category of categories) {

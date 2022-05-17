@@ -12,7 +12,6 @@ export class ChooseCommand extends Command {
 		const arg = interaction.options
 			.getString('choices', true)
 			.replace(/@everyone|@here|<@&?(\d{17,19})>/gim, '<mention>')
-			.replace(/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/gim, '<link>')
 			.split(/,\s?/g);
 		if (arg.length < 2) return interaction.reply({ content: 'Please provide at least 2 options to choose from.', ephemeral: true });
 		return interaction.reply(arg.randomElement());
