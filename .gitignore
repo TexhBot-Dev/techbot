@@ -126,3 +126,5 @@ dist
 .pnp.*
 
 speed.js
+
+.env
