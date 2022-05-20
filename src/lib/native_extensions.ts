@@ -1,4 +1,4 @@
-import { randomUnitInterval } from './helpers/index.js';
+import { randomUnitInterval } from './helpers';
 
 export {};
 /* eslint-disable func-names */
