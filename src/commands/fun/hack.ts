@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { randomUnitInterval } from '../../lib/helpers/index.js';
+import { randomUnitInterval } from '#lib/helpers';
 
 const dms = ['Nice toes', 'Sheesh!', 'Chill bro', 'We are just friends?', 'Is it small?', 'Love you too mom.'];
 const passwords = ['Greyissilly123', 'OwOSupriseDolls69', 'BigBoi420', 'HugeToad213', 'password', 'timothyoncrack'];

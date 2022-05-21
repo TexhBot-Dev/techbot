@@ -2,7 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { generateEmbed } from '../../lib/helpers/index.js';
+import { generateEmbed } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'cat',

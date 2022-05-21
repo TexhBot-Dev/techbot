@@ -48,19 +48,19 @@ model Pet {
   userID  String
   petType PetTypes
   name    String
-  hunger Int @default(10)
+  hunger  Int      @default(10)
   lastFed DateTime
 
   @@unique([userID, petType])
 }
 
 model PetMetaData {
-  type        PetTypes @id
-  price       Int
-  rarity      Rarity   @default(COMMON)
-  tradeable   Boolean  @default(false)
-  collectable Boolean  @default(false)
-  feedInterval    Int      @default(0)
+  type         PetTypes @id
+  price        Int
+  rarity       Rarity   @default(COMMON)
+  tradeable    Boolean  @default(false)
+  collectable  Boolean  @default(false)
+  feedInterval Int      @default(0)
 }
 
 model Job {

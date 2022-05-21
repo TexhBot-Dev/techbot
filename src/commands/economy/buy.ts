@@ -2,7 +2,7 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ItemNames } from '@prisma/client';
-import { generateErrorEmbed, fetchItemMetaData, fetchUser, incrementItemCount, subtractFromWallet } from '../../lib/helpers/index.js';
+import { generateErrorEmbed, fetchItemMetaData, fetchUser, incrementItemCount, subtractFromWallet } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'buy',

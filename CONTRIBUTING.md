@@ -9,7 +9,10 @@
 
 ### Configuring .env
 
-TODO
+-   Rename `example.env` to `.env`.
+-   Replace `<DISCORD_TOKEN>` with your [discord token](https://discord.com/developers/applications)
+-   Put your Discord user ID temporarily into the line
+-   Fill out DB Credentials, OPTIONAL use read-only DB
 
 ### Database
 

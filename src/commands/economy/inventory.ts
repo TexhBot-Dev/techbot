@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchItemMetaData } from '../../lib/helpers/index.js';
+import { fetchItemMetaData } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'inventory',

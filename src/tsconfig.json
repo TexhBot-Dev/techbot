@@ -5,6 +5,11 @@
 		"moduleResolution": "node",
 		"esModuleInterop": true,
     "rootDir": ".",
-		"noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "#root/*": ["*"],
+      "#lib/*": ["lib/*"],
+      "#helpers": ["lib/helpers/index.js"],
+    }
   }
 }

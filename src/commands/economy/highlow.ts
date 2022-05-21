@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { addToWallet, randomInt, randomUnitInterval, subtractFromWallet } from '../../lib/helpers/index.js';
+import { addToWallet, randomInt, randomUnitInterval, subtractFromWallet } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'highlow',

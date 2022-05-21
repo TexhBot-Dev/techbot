@@ -3,7 +3,7 @@ import type { CommandInteraction } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { PetTypes } from '@prisma/client';
 import { isNullish } from '@sapphire/utilities';
-import { fetchPetMetaData, subtractFromWallet } from '../../lib/helpers/index.js';
+import { fetchPetMetaData, subtractFromWallet } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'pets',

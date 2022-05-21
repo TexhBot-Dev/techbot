@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { randomUnitInterval, addToWallet } from '../../lib/helpers/index.js';
+import { randomUnitInterval, addToWallet } from '#lib/helpers';
 
 const people = [
 	'Alistair Douglas',

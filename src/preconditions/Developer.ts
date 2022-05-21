@@ -1,14 +1,15 @@
 import { Precondition } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
 
-export class PremiumPrecondition extends Precondition {
+export class DeveloperPrecondition extends Precondition {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		return interaction.inGuild() ? this.ok() : this.error({ message: 'You need to be in a guild to use this command.' });
+		const OWNERS = process.env.OWNERS?.split(',') ?? [];
+		return OWNERS.includes(interaction.user.id) ? this.ok() : this.error({ context: { silent: true } });
 	}
 }
 
 declare module '@sapphire/framework' {
 	interface Preconditions {
-		guildOnly: never;
+		Developer: never;
 	}
 }

@@ -75,7 +75,6 @@ export default class EvalCommand extends Command {
 		let result = null;
 
 		try {
-			// eslint-disable-next-line no-eval
 			try {
 				if (OWNERS.includes(interaction.user.id)) {
 					// eslint-disable-next-line no-eval

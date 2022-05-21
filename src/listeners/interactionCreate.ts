@@ -1,4 +1,4 @@
-import type { ApplicationCommandOptionChoice, Interaction } from 'discord.js';
+import type { Interaction } from 'discord.js';
 import { ItemNames, JobNames, PetTypes } from '@prisma/client';
 import { Listener } from '@sapphire/framework';
 
@@ -52,7 +52,7 @@ export class InteractionListener extends Listener {
 	}
 }
 
-function fuzzyAutocomplete(options: string[] | object, focusedValue: string): ApplicationCommandOptionChoice[] {
+function fuzzyAutocomplete(options: string[] | object, focusedValue: string) {
 	const choices = Array.isArray(options)
 		? options.map((el: string) => el.toProperCase())
 		: Object.values(options).map((el: string) => el.toLowerCase());

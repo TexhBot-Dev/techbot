@@ -1,14 +1,14 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { randomUnitInterval, randomInt, fetchUser, addToWallet, subtractFromWallet, generateErrorEmbed } from '../../lib/helpers/index.js';
+import { randomUnitInterval, randomInt, fetchUser, addToWallet, subtractFromWallet, generateErrorEmbed } from '#lib/helpers';
 import { codeBlock } from '@sapphire/utilities';
 
 @ApplyOptions<CommandOptions>({
 	name: 'rob',
 	description: 'Steal from other users',
 	detailedDescription: 'rob <user>',
-	preconditions: ['guildOnly'],
+	runIn: ['GUILD_TEXT'],
 	cooldownDelay: 60_000 * 150 // 2.5 hours
 })
 export default class RobCommand extends Command {
