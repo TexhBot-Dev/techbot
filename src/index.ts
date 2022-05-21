@@ -8,7 +8,7 @@ const client = new PepeClient({
 	intents: [Intents.FLAGS.GUILDS],
 	loadDefaultErrorListeners: true,
 	logger: {
-		level: LogLevel.Info
+		level: process.env.NODE_ENV === 'production' ? LogLevel.Info : LogLevel.Debug
 	}
 });
 
