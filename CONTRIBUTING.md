@@ -11,12 +11,15 @@
 
 -   Rename `example.env` to `.env`.
 -   Replace `<DISCORD_TOKEN>` with your [discord token](https://discord.com/developers/applications)
--   Put your Discord user ID temporarily into the line
--   Fill out DB Credentials, OPTIONAL use read-only DB
+-   Replace `<Discord User ID>` with your [user ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)
+-   Fill out DB Credentials
 
 ### Database
 
-TODO
+-   Create a new database
+-   run `npx prisma migrate deploy`
+-   if the database wasnt seeded run `node prisma/seed.js`
+-   DB Should be setup
 
 ### Guidelines
 
