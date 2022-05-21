@@ -5,3 +5,4 @@ node_modules/
 prisma/
 .gitignore
 tsup.config.ts
+jest.config.js

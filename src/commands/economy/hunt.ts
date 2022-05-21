@@ -1,7 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import type { CommandInteraction } from 'discord.js';
 import { randomUnitInterval, randomInt, addToWallet } from '#lib/helpers';
+
+import type { CommandInteraction } from 'discord.js';
 
 const animals = [
 	'pig',

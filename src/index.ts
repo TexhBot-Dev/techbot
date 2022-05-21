@@ -1,6 +1,6 @@
 import '#lib/setup';
-
 import { PepeClient } from '#lib/structures/pepeClient';
+
 import { Intents } from 'discord.js';
 import { LogLevel } from '@sapphire/framework';
 

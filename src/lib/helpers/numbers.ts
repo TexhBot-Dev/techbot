@@ -9,23 +9,20 @@ export const isSafeInteger = (value: number): boolean => {
 	return !Number.isSafeInteger(value) || value < 0 ? false : value <= 1000000000000;
 };
 
-export const parseAmount = (value: number | string, amount: 'all' | 'half' | 'third' | 'quarter' | 'fourth' | number | string): number => {
-	const parsed = parseInt(value as string, 10);
-	if (!isSafeInteger(parsed)) throw new Error('Invalid number');
+export const parseAmount = (coins: number, amount: 'all' | 'half' | 'third' | 'quarter' | 'fourth' | number | string): number => {
+	if (!isSafeInteger(coins)) throw new Error('Invalid number');
 
 	switch (amount) {
 		case 'all':
-			return Math.trunc(parsed);
+			return Math.trunc(coins);
 		case 'half':
-			return Math.trunc(parsed / 2);
+			return Math.trunc(coins / 2);
 		case 'third':
-			return Math.trunc(parsed / 3);
+			return Math.trunc(coins / 3);
 		case 'fourth':
 		case 'quarter':
-			return Math.trunc(parsed / 4);
-		default: {
-			amount = parseInt(amount.toString().replace(/,|\s/gi, ''), 10);
-			return amount || 0;
-		}
+			return Math.trunc(coins / 4);
+		default:
+			return parseInt(amount.toString().replace(/,|\s/gi, ''), 10) || 0;
 	}
 };

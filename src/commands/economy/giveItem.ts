@@ -2,7 +2,9 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import { CommandInteraction, MessageEmbed, WebhookClient } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isSafeInteger, decrementItemCount, incrementItemCount, fetchUserInventory, generateErrorEmbed } from '#lib/helpers';
+
 import type { ItemNames } from '@prisma/client';
+
 @ApplyOptions<CommandOptions>({
 	name: 'giveItem',
 	description: 'Allows you to give items to another user.',
