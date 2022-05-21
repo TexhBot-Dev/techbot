@@ -24,7 +24,7 @@ export default class TradeCommand extends Command {
 		const meta: Meta = {
 			offer: {
 				item: offer.replace(/[0-9]/g, '').trim().toConstantCase(),
-				amount: parseInt(offer.replace(/[^0-9]/g, '').trim()) || 1,
+				amount: parseInt(offer.replace(/[^0-9]/g, '').trim(), 10) || 1,
 				from: {
 					user: interaction.user,
 					dbUser: await fetchUser(interaction.user)
@@ -32,7 +32,7 @@ export default class TradeCommand extends Command {
 			},
 			requested: {
 				item: request?.replace(/[0-9]/g, '').trim().toConstantCase() || undefined,
-				amount: parseInt(offer.replace(/[^0-9]/g, '').trim()) || 1,
+				amount: parseInt(offer.replace(/[^0-9]/g, '').trim(), 10) || 1,
 				from: {
 					user: requestedUser,
 					dbUser: await fetchUser(requestedUser)
