@@ -49,16 +49,16 @@ export default class TradeCommand extends Command {
 				});
 			return this.tradeConfirmation(interaction, meta);
 		}
-		const itemOffered = await fetchItemMetaData(meta.offer.item.toConstantCase() as ItemNames);
-		// console.log(itemOffered)
-		// if (!itemOffered.name)
-		// 	return void interaction.reply({
-		// 		embeds: [generateErrorEmbed(`No such item ${meta.offer.item.toConstantCase()} exists.`, 'Invalid Item')],
-		// 		ephemeral: true
-		// 	});
+		const itemOffered = await fetchItemMetaData(meta.offer.item.toConstantCase() as ItemNames).catch(() => undefined);
+		if (itemOffered === undefined) {
+			return interaction.reply({
+				embeds: [generateErrorEmbed(`No such item ${meta.offer.item.toConstantCase()} exists.`, 'Invalid Item')],
+				ephemeral: true
+			});
+		}
 		const offeredInventoryItem = await fetchUserInventory(interaction.user, itemOffered.name.toConstantCase() as ItemNames);
 		if ((offeredInventoryItem?.count ?? 0) < meta.offer.amount)
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
 						`You have ${offeredInventoryItem?.count?.toLocaleString() ?? 0} of ${meta.offer.item.toProperCase()} but offered ${
@@ -121,7 +121,7 @@ export default class TradeCommand extends Command {
 		const filter = (i: MessageComponentInteraction) => /yes|no/.test(i.customId) && i.user.id === interaction.user.id;
 
 		const offerConfirmation = interaction.channel ? interaction.channel.createMessageComponentCollector({ filter, time: 20_000 }) : null;
-		if (!offerConfirmation) return;
+		if (offerConfirmation === null) return;
 
 		offerConfirmation.on('collect', async (i) => {
 			switch (i.customId) {
@@ -173,6 +173,7 @@ export default class TradeCommand extends Command {
 			switch (i.customId) {
 				case 'cancel':
 					{
+						if (i.user.id !== interaction.user.id) return;
 						const canceledEmbed = new MessageEmbed()
 							.setColor('RED')
 							.setTitle('Canceled Trade')
@@ -186,6 +187,7 @@ export default class TradeCommand extends Command {
 					break;
 				case 'lock':
 					{
+						if (i.user.id !== interaction.user.id) return;
 						if (!meta.lockedIn) {
 							const lockedRow = new MessageActionRow().addComponents(
 								new MessageButton().setCustomId('edit').setLabel('Edit Trade').setStyle('SECONDARY').setDisabled(true),
