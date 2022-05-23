@@ -94,7 +94,8 @@
 		"splitting": false,
 		"format": [
 			"esm"
-		]
+		],
+		"sourcemap": true
 	},
 	"prisma": {
 		"seed": "node prisma/seed.js"
