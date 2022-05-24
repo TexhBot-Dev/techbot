@@ -1,7 +1,7 @@
 import { client } from '#root/index';
 import type { CommandOptions } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
-import type { CommandInteraction, Guild, GuildMember, Interaction, InteractionReplyOptions, TextChannel, User } from 'discord.js';
+import type { AnyChannel, CommandInteraction, Guild, GuildMember, Interaction, InteractionReplyOptions, TextChannel, User } from 'discord.js';
 import { generateEmbed } from '../helpers';
 
 /**
@@ -53,7 +53,8 @@ export class UserError {
 	public sendInternal(): UserError {
 		client.channels
 			.fetch('977947568204030042')
-			.then((channel: TextChannel) => {
+			.then((ch: AnyChannel | null) => {
+				const channel = ch as TextChannel;
 				const report = this.internalReport;
 				channel.send({
 					embeds: [
