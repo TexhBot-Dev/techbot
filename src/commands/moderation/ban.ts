@@ -6,9 +6,9 @@ import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/f
 import type { CommandInteraction, Guild, GuildMember, User } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
-	name: 'stats',
-	description: 'Shows some interesting stats about the bot.',
-	detailedDescription: 'stats'
+	name: 'ban',
+	description: 'Ban a user.',
+	detailedDescription: 'ban'
 })
 export class BanCommand extends Command {
 	private guild!: Guild;
