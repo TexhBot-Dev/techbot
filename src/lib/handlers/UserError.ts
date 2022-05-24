@@ -24,7 +24,7 @@ export class UserError {
 		return this;
 	}
 
-	public send(): UserError {
+	public sendResponse(): UserError {
 		if (!this.context || !this.context.isRepliable() || !this.response) return this;
 		if (this.response.embeds) {
 			this.response.embeds[0].footer!.text = this.id;
@@ -43,7 +43,7 @@ export class UserError {
 		return this;
 	}
 
-	public log(err: any): UserError {
+	public log(err: any = this.internalReport.rawError): UserError {
 		if (!err) return this;
 		console.error(`Error thrown by ${this.id}:`);
 		console.log(err);
