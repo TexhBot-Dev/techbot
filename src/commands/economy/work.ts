@@ -41,7 +41,7 @@ export default class WorkCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645893120983082']
+			idHints: ['977784648904106015']
 		});
 	}
 }

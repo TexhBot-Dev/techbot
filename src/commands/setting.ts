@@ -47,7 +47,7 @@ export default class SettingCommand extends Command {
 									.setRequired(true)
 							)
 					),
-			{ idHints: ['944645805313257482'] }
+			{ idHints: ['977784299296288798'] }
 		);
 	}
 

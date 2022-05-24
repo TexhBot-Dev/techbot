@@ -27,7 +27,7 @@ export default class TogglePassiveModeCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addBooleanOption((option) => option.setName('new_mode').setDescription('The new value of passive mode').setRequired(true)),
-			{ idHints: ['944645891107737730'] }
+			{ idHints: ['977784302416846940'] }
 		);
 	}
 }

@@ -50,7 +50,7 @@ export default class BuyCommand extends Command {
 					.addStringOption((option) =>
 						option.setName('item').setDescription('The item you want to buy.').setRequired(true).setAutocomplete(true)
 					),
-			{ idHints: ['944645546122051614'] }
+			{ idHints: ['977784386219044894'] }
 		);
 	}
 }

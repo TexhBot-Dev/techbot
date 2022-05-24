@@ -40,7 +40,7 @@ export class SellCommand extends Command {
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('item').setRequired(true).setDescription('The item to sell.').setAutocomplete(true))
 					.addStringOption((option) => option.setName('amount').setRequired(true).setDescription('The amount to sell.')),
-			{ idHints: ['944645804331794542'] }
+			{ idHints: ['977784560513347665'] }
 		);
 	}
 }

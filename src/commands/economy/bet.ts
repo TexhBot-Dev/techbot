@@ -45,7 +45,7 @@ export default class BetCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('amount').setDescription('The amount of money to bet.').setRequired(true)),
-			{ idHints: ['944645545480290344'] }
+			{ idHints: ['977784387494088704'] }
 		);
 	}
 }

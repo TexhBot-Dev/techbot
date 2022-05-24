@@ -63,7 +63,7 @@ export default class EvalCommand extends Command {
 						return option.setName('silent').setDescription('Wether or not to send the result');
 					}),
 			{
-				idHints: ['968265380957151236']
+				idHints: ['977784734203654145']
 			}
 		);
 	}

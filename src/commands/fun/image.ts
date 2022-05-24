@@ -57,7 +57,7 @@ export default class ImageCommand extends Command {
 									.setRequired(false)
 							)
 					),
-			{ idHints: ['967049211956830290'] }
+			{ idHints: ['977784822531510282'] }
 		);
 	}
 }

@@ -24,7 +24,7 @@ export class ChooseCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('choices').setRequired(true).setDescription('The choices separated by ", ".')),
-			{ idHints: ['944645895163633714'] }
+			{ idHints: ['977784823865303040'] }
 		);
 	}
 }

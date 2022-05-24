@@ -24,7 +24,7 @@ export default class DailyCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645546642128987']
+			idHints: ['977784559800299540']
 		});
 	}
 }

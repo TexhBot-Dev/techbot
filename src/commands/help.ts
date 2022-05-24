@@ -57,7 +57,7 @@ export default class HelpCommand extends Command {
 					.addStringOption((option) =>
 						option.setName('specific_command').setDescription('The command to get help for.').setAutocomplete(true)
 					),
-			{ idHints: ['944645456951128085'] }
+			{ idHints: ['977784995722715136'] }
 		);
 	}
 }

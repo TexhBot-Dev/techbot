@@ -44,7 +44,7 @@ export default class CatCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645460482723881']
+			idHints: ['977784735218696242']
 		});
 	}
 }

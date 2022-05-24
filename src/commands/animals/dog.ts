@@ -35,7 +35,7 @@ export default class DogCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645460860223510']
+			idHints: ['977784735872999467']
 		});
 	}
 }

@@ -63,7 +63,7 @@ export default class DepositCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('amount').setDescription('The amount of money to deposit').setRequired(true)),
-			{ idHints: ['944645630704377936'] }
+			{ idHints: ['977784476249772032'] }
 		);
 	}
 }

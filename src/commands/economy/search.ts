@@ -40,7 +40,7 @@ export class SearchCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['966753016898261074']
+			idHints: ['977784300915265597']
 		});
 	}
 }

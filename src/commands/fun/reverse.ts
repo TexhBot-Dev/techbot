@@ -26,7 +26,7 @@ export class ReverseCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((options) => options.setName('text').setDescription('The text to reverse.').setRequired(true)),
-			{ idHints: ['944646066324787270'] }
+			{ idHints: ['977784908120457287'] }
 		);
 	}
 }

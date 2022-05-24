@@ -39,7 +39,7 @@ export default class clapifyCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('text').setDescription('The text to clapify.').setRequired(true)),
-			{ idHints: ['944645978382807071'] }
+			{ idHints: ['977784821285814292'] }
 		);
 	}
 }

@@ -72,7 +72,7 @@ export default class GiveItemCommand extends Command {
 					.addUserOption((option) => option.setName('user').setDescription('The user to give the item to.').setRequired(true))
 					.addStringOption((option) => option.setName('amount').setDescription('The amount of money to transfer.').setRequired(true))
 					.addStringOption((option) => option.setName('item').setDescription('The item to transfer.').setRequired(true)),
-			{ idHints: ['944645631857799198'] }
+			{ idHints: ['977784563055087647'] }
 		);
 	}
 }

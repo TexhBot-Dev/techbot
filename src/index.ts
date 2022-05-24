@@ -4,7 +4,7 @@ import { PepeClient } from '#lib/structures/pepeClient';
 import { Intents } from 'discord.js';
 import { LogLevel } from '@sapphire/framework';
 
-const client = new PepeClient({
+export const client = new PepeClient({
 	intents: [Intents.FLAGS.GUILDS],
 	loadDefaultErrorListeners: true,
 	logger: {

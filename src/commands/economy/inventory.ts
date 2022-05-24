@@ -43,7 +43,7 @@ export default class InventoryCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addUserOption((option) => option.setName('user').setDescription('The user to check the inventory of.')),
-			{ idHints: ['944645718331752558'] }
+			{ idHints: ['977784390895665162'] }
 		);
 	}
 }

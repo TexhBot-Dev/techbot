@@ -130,7 +130,7 @@ export default class JobCommand extends Command {
 							.setDescription("Fetches a user's current job experience.")
 							.addUserOption((option) => option.setName('user').setDescription('The user to get the experience of.').setRequired(false))
 					),
-			{ idHints: ['944645718889619456'] }
+			{ idHints: ['977784650942537738'] }
 		);
 	}
 }

@@ -16,7 +16,7 @@ export default class JokeCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944646064831610900']
+			idHints: ['977784909210980402']
 		});
 	}
 }

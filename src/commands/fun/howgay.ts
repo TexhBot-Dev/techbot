@@ -24,7 +24,7 @@ export class HowGayCommand extends Command {
 					.addStringOption((options) =>
 						options.setName('user').setDescription('The user to get the gay percentage for.').setRequired(false)
 					),
-			{ idHints: ['944645980672917534'] }
+			{ idHints: ['977784825610117210'] }
 		);
 	}
 }

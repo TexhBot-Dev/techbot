@@ -1,7 +1,7 @@
-export * from './database.js';
-export * from './economy.js';
-export * from './embed.js';
-export * from './numbers.js';
-export * from './random.js';
-export * from './string.js';
+export * from './database';
+export * from './economy';
+export * from './embed';
+export * from './numbers';
+export * from './random';
+export * from './string';
 export { randomInt } from 'node:crypto';

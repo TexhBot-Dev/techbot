@@ -64,7 +64,7 @@ export default class HighlowCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645632847646762']
+			idHints: ['977784300453916672']
 		});
 	}
 }

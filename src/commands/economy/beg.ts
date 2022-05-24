@@ -62,7 +62,7 @@ export default class BegCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645544725336094']
+			idHints: ['977784561402527754']
 		});
 	}
 }

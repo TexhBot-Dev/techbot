@@ -17,7 +17,7 @@ export class CoinFlipCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645979150372874']
+			idHints: ['977784824708362241']
 		});
 	}
 }

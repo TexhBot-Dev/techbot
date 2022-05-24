@@ -80,7 +80,7 @@ export default class LeaderboardCommand extends Command {
 								{ name: 'Show overall money', value: '--overallMoney' }
 							)
 					),
-			{ idHints: ['944645719409713183'] }
+			{ idHints: ['977784302026768434'] }
 		);
 	}
 

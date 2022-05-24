@@ -95,7 +95,7 @@ export default class PetCommands extends Command {
 							});
 					}),
 			{
-				idHints: ['969793578509434890']
+				idHints: ['977784389121499205']
 			}
 		);
 	}

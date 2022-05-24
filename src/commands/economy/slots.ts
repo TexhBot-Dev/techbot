@@ -110,7 +110,7 @@ export default class SlotsCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('amount').setDescription('The amount of money you want to gamble').setRequired(true)),
-			{ idHints: ['944645806814793779'] }
+			{ idHints: ['977784472709783562'] }
 		);
 	}
 }

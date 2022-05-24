@@ -19,6 +19,10 @@ String.prototype.toConstantCase = function () {
 	return this.replace(/\s/g, '_').toLocaleUpperCase();
 };
 
+String.prototype.truncate = function (max: number, addEllipsis: boolean = true) {
+	return (this.length > max ? this.substring(0, max) + (addEllipsis ? '...' : '') : this) as string;
+};
+
 Array.prototype.randomElement = function <T>(): T {
 	return this[Math.floor(randomUnitInterval() * this.length)];
 };
@@ -28,6 +32,7 @@ declare global {
 		toProperCase(): string;
 		toSnakeCase(): string;
 		toConstantCase(): string;
+		truncate(max: number, addEllipsis?: boolean): string;
 	}
 	interface Array<T> {
 		randomElement(): T;

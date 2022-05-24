@@ -29,7 +29,7 @@ export class StatsCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645459165712454']
+			idHints: ['977784994879655976']
 		});
 	}
 }

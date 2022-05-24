@@ -64,7 +64,7 @@ export default class WithdrawCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('amount').setRequired(true).setDescription('The amount of money to withdraw')),
-			{ idHints: ['944645891850117150'] }
+			{ idHints: ['977784649969438770'] }
 		);
 	}
 }

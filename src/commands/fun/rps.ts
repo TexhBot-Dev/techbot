@@ -44,7 +44,7 @@ export default class rpsCommand extends Command {
 							.setRequired(true)
 							.setChoices({ name: 'Rock', value: 'rock' }, { name: 'Paper', value: 'paper' }, { name: 'Scissors', value: 'scissors' })
 					),
-			{ idHints: ['944646067243331714'] }
+			{ idHints: ['977784909852733450'] }
 		);
 	}
 }

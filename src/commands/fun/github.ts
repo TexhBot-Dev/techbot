@@ -42,7 +42,7 @@ export default class GitHubCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('username').setDescription('The GitHub user to fetch info about.').setRequired(true)),
-			{ idHints: ['944645979645280256'] }
+			{ idHints: ['977784911006138408'] }
 		);
 	}
 }

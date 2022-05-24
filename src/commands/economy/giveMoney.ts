@@ -75,7 +75,7 @@ export default class GiveMoneyCommand extends Command {
 					.addStringOption((option) =>
 						option.setName('amount').setDescription('The amount of money to give to the user.').setRequired(true)
 					),
-			{ idHints: ['944645632411435049'] }
+			{ idHints: ['977784473708015626'] }
 		);
 	}
 }

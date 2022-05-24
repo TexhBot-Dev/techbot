@@ -43,7 +43,7 @@ export class InventCommand extends Command {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['944645717702623332']
+			idHints: ['977784389993922580']
 		});
 	}
 }

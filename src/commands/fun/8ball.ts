@@ -33,7 +33,7 @@ export class EightballCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((option) => option.setName('question').setDescription('The question to ask.').setRequired(false)),
-			{ idHints: ['944645894249250867'] }
+			{ idHints: ['977784737429078066'] }
 		);
 	}
 }
