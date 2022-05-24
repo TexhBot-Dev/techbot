@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { container, SapphireClient } from '@sapphire/framework';
 import type { ClientOptions } from 'discord.js';
 
-export class PepeClient extends SapphireClient {
+export class TechBotClient extends SapphireClient {
 	public constructor(options: ClientOptions) {
 		super(options);
 

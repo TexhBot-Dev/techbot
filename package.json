@@ -59,9 +59,9 @@
 	"scripts": {
 		"build": "tsup",
 		"watch": "tsup --watch",
-		"start": "node dist/index.js",
-		"dev": "tsup --onSuccess  \"node ./dist/index.js\"",
-		"devw": "tsup --watch --onSuccess \"node ./dist/index.js\"",
+		"start": "node --enable-source-maps dist/index.js",
+		"dev": "tsup --onSuccess  \"node --enable-source-maps  ./dist/index.js\"",
+		"devw": "tsup --watch --onSuccess \"node --enable-source-maps  ./dist/index.js\"",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"prepare": "husky install",
 		"test": "tsup ./src/lib/native_extensions.ts --out-dir ./src/lib/tests/dist --silent --no-config && npx jest"
@@ -96,7 +96,8 @@
 		"suppress": true,
 		"format": [
 			"esm"
-		]
+		],
+		"sourcemap": true
 	},
 	"prisma": {
 		"seed": "node prisma/seed.js"

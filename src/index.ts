@@ -1,10 +1,10 @@
 import '#lib/setup';
-import { PepeClient } from '#lib/structures/pepeClient';
+import { TechBotClient } from '#lib/structures/techBotClient';
 
 import { Intents } from 'discord.js';
 import { LogLevel } from '@sapphire/framework';
 
-export const client = new PepeClient({
+const client = new TechBotClient({
 	intents: [Intents.FLAGS.GUILDS],
 	loadDefaultErrorListeners: true,
 	logger: {
