@@ -8,27 +8,24 @@ import type { CommandInteraction, Guild, GuildMember, User } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'ban',
 	description: 'Ban a user.',
-	detailedDescription: 'ban'
+	detailedDescription: 'ban',
+	runIn: ['GUILD_TEXT']
 })
 export class BanCommand extends Command {
-	private guild!: Guild;
-
 	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
-		const guild = interaction.guild;
-		if (!guild) return;
-		this.guild = guild;
+		const guild = interaction.guild!;
 
 		const requestedUser = interaction.options.getString('user', true);
 		const reason = interaction.options.getString('reason', false) ?? undefined;
 		const days = interaction.options.getInteger('days_to_delete', false) ?? 0;
 		if (requestedUser.includes(',')) {
 			interaction.reply('Banning users...');
-			const requestedUsers = [...new Set(requestedUser.split(/\s*,\s*/g).map((el) => this.parseUser(el)))];
+			const requestedUsers = [...new Set(requestedUser.split(/\s*,\s*/g).map((el) => this.parseUser(el, guild)))];
 			let invalidUsers: string[] = [];
 			let failedOperations: [user: ResolvedUser, error: any][] = [];
 
 			for (let i = 0; i < requestedUsers.length; i++) {
-				const user = (await requestedUsers[i]) as User;
+				const user = await requestedUsers[i];
 				if (!user) {
 					invalidUsers.push(user);
 					continue;
@@ -77,7 +74,7 @@ export class BanCommand extends Command {
 			return;
 		}
 
-		const user = await this.parseUser(requestedUser);
+		const user = await this.parseUser(requestedUser, guild);
 
 		guild.members
 			.ban(user, {
@@ -99,7 +96,7 @@ export class BanCommand extends Command {
 			});
 	}
 
-	private async parseUser(el: string): Promise<ResolvedUser> {
+	private async parseUser(el: string, guild: Guild): Promise<ResolvedUser> {
 		if (SnowflakeRegex.test(el)) {
 			return await this.container.client.users.fetch(el);
 		}
@@ -110,7 +107,7 @@ export class BanCommand extends Command {
 
 		const isTag = /[0-9]{4}$/.test(el) && el.includes('#');
 		if (isTag) {
-			const members = await this.guild.members.fetch();
+			const members = await guild.members.fetch();
 			return members.find((e) => e.user.tag === el) ?? el;
 		}
 
