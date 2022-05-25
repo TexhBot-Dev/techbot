@@ -12,7 +12,7 @@ import { CommandInteraction, Permissions } from 'discord.js';
 })
 export class BanCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
-		if (interaction.memberPermissions!.has(Permissions.FLAGS.BAN_MEMBERS))
+		if (!interaction.memberPermissions!.has(Permissions.FLAGS.BAN_MEMBERS))
 			new UserError(interaction)
 				.setResponse({ embeds: [generateErrorEmbed('You need the ban members permission to use that.', 'Missing Permissions')] })
 				.setType('MISSING_PERMISSIONS')
