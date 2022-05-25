@@ -43,7 +43,7 @@ export class BanCommand extends Command {
 					.sendInternal();
 			})
 			.then(() => {
-				interaction.reply({ content: `Successfully banned **${user.tag}**.` + (days > 0 ? `for ${days} days.` : '.') });
+				interaction.reply({ content: `Successfully banned **${user.tag}**` + (days > 0 ? `for ${days} days.` : '.') });
 			});
 	}
 
