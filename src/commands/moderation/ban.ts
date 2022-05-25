@@ -20,12 +20,12 @@ export class BanCommand extends Command {
 
 		const guild = interaction.guild!;
 
-		const user = interaction.options.getUser('user', true);
+		const userToBan = interaction.options.getUser('userToBan', true);
 		const reason = interaction.options.getString('reason', false) ?? undefined;
 		const days = interaction.options.getInteger('days_to_delete', false) ?? 0;
 
 		guild.members
-			.ban(user, {
+			.ban(userToBan, {
 				days,
 				reason
 			})
@@ -52,7 +52,7 @@ export class BanCommand extends Command {
 			builder
 				.setName(this.name)
 				.setDescription(this.description)
-				.addUserOption((builder) => builder.setName('user').setRequired(true).setDescription('The user to ban.'))
+				.addUserOption((builder) => builder.setName('userToBan').setRequired(true).setDescription('The user to ban.'))
 				.addStringOption((builder) => builder.setName('reason').setDescription('The reason for banning this user.').setRequired(false))
 				.addIntegerOption((builder) =>
 					builder
