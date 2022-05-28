@@ -1,8 +1,8 @@
-import { client } from '#root/index';
+import { client } from '../../';
 import type { CommandOptions } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { AnyChannel, CommandInteraction, Guild, GuildMember, Interaction, InteractionReplyOptions, TextChannel, User } from 'discord.js';
-import { generateEmbed } from '../helpers';
+import { generateEmbed } from '#lib/helpers';
 
 /**
  * User error builder.
@@ -10,9 +10,13 @@ import { generateEmbed } from '../helpers';
 export class UserError {
 	response!: InteractionReplyOptions;
 	type!: ErrorType;
-	context!: CommandInteraction | Interaction;
+	context: CommandInteraction | Interaction;
 	internalReport!: InternalReport;
 	id = crypto.randomUUID();
+
+	constructor(interaction: CommandInteraction | Interaction) {
+		this.context = interaction;
+	}
 
 	public setResponse(response: InteractionReplyOptions): UserError {
 		this.response = response;
@@ -25,6 +29,7 @@ export class UserError {
 	}
 
 	public sendResponse(): UserError {
+		console.log(this.context, this.context.isRepliable(), !!this.response, this.response);
 		if (!this.context || !this.context.isRepliable() || !this.response) return this;
 		if (this.response.embeds) {
 			this.response.embeds[0].footer!.text = this.id;
