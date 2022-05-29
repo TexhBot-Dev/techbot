@@ -12,11 +12,13 @@ export const client = new TechBotClient({
 	}
 });
 
-try {
-	await client.login();
-} catch (err) {
-	console.error(err);
-}
+(async () => {
+	try {
+		await client.login();
+	} catch (err) {
+		console.error(err);
+	}
+})();
 
 process.on('SIGINT', async () => {
 	await client.destroy();
