@@ -17,7 +17,6 @@ export async function check(target: User, guild: Guild): Promise<TrustFactor> {
 		return 3;
 
 	const sinceCreationTimestamp = Date.now() - target.createdTimestamp;
-	console.log(sinceCreationTimestamp);
 
 	const members = (await guild.members.fetch()).toJSON();
 	let usernameMatches: UsernameMatchType[] = [];
