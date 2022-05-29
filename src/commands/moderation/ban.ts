@@ -1,4 +1,4 @@
-import { UserError } from '#root/lib/handlers/UserError';
+import { UserError } from '../../lib/handlers/UserError.js';
 import { generateErrorEmbed } from '#lib/helpers';
 import { ApplyOptions } from '@sapphire/decorators';
 import { SnowflakeRegex, UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
@@ -47,7 +47,7 @@ export class BanCommand extends Command {
 			const failed = [...invalidUsers, ...failedOperations.map((el: [ResolvedUser, any]) => el[0])];
 
 			if (failed.length === requestedUsers.length) {
-				return void new UserError()
+				return void new UserError(interaction)
 					.setResponse({
 						embeds: [generateErrorEmbed('Failed To Ban Users', 'The users provided were either invalid or unbannable by the bot.')]
 					})
@@ -63,7 +63,7 @@ export class BanCommand extends Command {
 			if (failedOperations.length > 0) {
 				for (let i = 0, len = failedOperations.length; i < len; i++) {
 					const op = failedOperations[i];
-					new UserError()
+					new UserError(interaction)
 						.setInternal({
 							command: this.options,
 							guild,
@@ -85,7 +85,7 @@ export class BanCommand extends Command {
 				reason
 			})
 			.catch((err) => {
-				new UserError()
+				new UserError(interaction)
 					.setResponse({ embeds: [generateErrorEmbed('Operation Failed', 'Failed to ban user.')], ephemeral: true })
 					.setType('OPERATION_FAIL')
 					.sendResponse()
@@ -122,12 +122,7 @@ export class BanCommand extends Command {
 			builder
 				.setName(this.name)
 				.setDescription(this.description)
-				.addStringOption((builder) =>
-					builder
-						.setName('user')
-						.setRequired(true)
-						.setDescription("The user(s) to ban. If you'd like to ban multiple users, separate them using commas.")
-				)
+				.addStringOption((builder) => builder.setName('user').setRequired(true).setDescription('The user to ban.'))
 				.addIntegerOption((builder) =>
 					builder
 						.setName('days_to_delete')

@@ -1,4 +1,4 @@
-import type { TrustFactor } from '#root/commands/moderation/alts/altCheck';
+import type { TrustFactor } from '#root/commands/moderation/altCheck';
 import { Milliseconds } from '#root/types/enums/Milliseconds';
 import type { Guild, User } from 'discord.js';
 

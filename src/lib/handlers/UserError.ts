@@ -1,4 +1,4 @@
-import { client } from '../../';
+import { client } from '#root/index';
 import type { CommandOptions } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { AnyChannel, CommandInteraction, Guild, GuildMember, Interaction, InteractionReplyOptions, TextChannel, User } from 'discord.js';
