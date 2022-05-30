@@ -11,6 +11,7 @@ specifiers:
   '@sapphire/framework': ^3.0.0-next.c7c8bfd.0
   '@sapphire/pieces': ^3.3.3
   '@sapphire/plugin-logger': ^2.2.1
+  '@sapphire/plugin-subcommands': ^3.0.0-pr-271.cde343c3.0
   '@sapphire/prettier-config': ^1.4.3
   '@sapphire/stopwatch': ^1.4.1
   '@sapphire/time-utilities': ^1.7.4
@@ -19,7 +20,7 @@ specifiers:
   '@sapphire/utilities': ^3.6.2
   '@swc/core': ^1.2.189
   '@types/common-tags': ^1.8.1
-  '@types/node': ^17.0.35
+  '@types/node': ^17.0.36
   '@types/ws': ^8.5.3
   colorette: ^2.0.16
   common-tags: ^1.8.2
@@ -27,12 +28,12 @@ specifiers:
   dotenv: ^16.0.1
   dotenv-cra: ^3.0.2
   husky: ^8.0.1
-  lint-staged: ^12.4.1
+  lint-staged: ^12.4.2
   prettier: ^2.6.2
   prisma: ^3.14.0
   reflect-metadata: ^0.1.13
   tslib: ^2.4.0
-  tsup: ^5.12.8
+  tsup: ^6.0.1
   typescript: ^4.7.2
   vm2: ^3.9.9
 
@@ -46,6 +47,7 @@ dependencies:
   '@sapphire/framework': 3.0.0-next.c7c8bfd.0
   '@sapphire/pieces': 3.3.3
   '@sapphire/plugin-logger': 2.2.1
+  '@sapphire/plugin-subcommands': 3.0.0-pr-271.cde343c3.0
   '@sapphire/stopwatch': 1.4.1
   '@sapphire/time-utilities': 1.7.4
   '@sapphire/type': 2.2.4
@@ -65,13 +67,13 @@ devDependencies:
   '@sapphire/ts-config': 3.3.4
   '@swc/core': 1.2.189
   '@types/common-tags': 1.8.1
-  '@types/node': 17.0.35
+  '@types/node': 17.0.36
   '@types/ws': 8.5.3
   husky: 8.0.1
-  lint-staged: 12.4.1
+  lint-staged: 12.4.2
   prettier: 2.6.2
   prisma: 3.14.0
-  tsup: 5.12.8_typescript@4.7.2
+  tsup: 6.0.1_zivoq4gl6crplpnenahlh2kyc4
   typescript: 4.7.2
 
 packages:
@@ -270,6 +272,13 @@ packages:
     dependencies:
       '@sapphire/time-utilities': 1.7.4
       colorette: 2.0.16
+      tslib: 2.4.0
+    dev: false
+
+  /@sapphire/plugin-subcommands/3.0.0-pr-271.cde343c3.0:
+    resolution: {integrity: sha512-hoqQwnx+szdUceign3y/z0eSka3IBjcv0F9MnCBZAZwfTyWQ7WKw0KDw1jm4gXuLAn8rULMkMt22bjxuXUBODw==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dependencies:
       tslib: 2.4.0
     dev: false
 
@@ -490,17 +499,17 @@ packages:
   /@types/node-fetch/2.6.1:
     resolution: {integrity: sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==}
     dependencies:
-      '@types/node': 17.0.35
+      '@types/node': 17.0.36
       form-data: 3.0.1
     dev: false
 
-  /@types/node/17.0.35:
-    resolution: {integrity: sha512-vu1SrqBjbbZ3J6vwY17jBs8Sr/BKA+/a/WtjRG+whKg1iuLFOosq872EXS0eXWILdO36DHQQeku/ZcL6hz2fpg==}
+  /@types/node/17.0.36:
+    resolution: {integrity: sha512-V3orv+ggDsWVHP99K3JlwtH20R7J4IhI1Kksgc+64q5VxgfRkQG8Ws3MFm/FZOKDYGy9feGFlZ70/HpCNe9QaA==}
 
   /@types/ws/8.5.3:
     resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
     dependencies:
-      '@types/node': 17.0.35
+      '@types/node': 17.0.36
 
   /@typescript-eslint/eslint-plugin/5.25.0_s2zfktkcpovcmkacjael56ddti:
     resolution: {integrity: sha512-icYrFnUzvm+LhW0QeJNKkezBu6tJs9p/53dpPLFH8zoM9w1tfaKzVurkPotEpAqQ8Vf8uaFyL5jHd0Vs6Z0ZQg==}
@@ -1481,7 +1490,7 @@ packages:
     dev: false
 
   /fs.realpath/1.0.0:
-    resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
+    resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
   /fsevents/2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -1720,8 +1729,8 @@ packages:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
 
-  /lint-staged/12.4.1:
-    resolution: {integrity: sha512-PTXgzpflrQ+pODQTG116QNB+Q6uUTDg5B5HqGvNhoQSGt8Qy+MA/6zSnR8n38+sxP5TapzeQGTvoKni0KRS8Vg==}
+  /lint-staged/12.4.2:
+    resolution: {integrity: sha512-JAJGIzY/OioIUtrRePr8go6qUxij//mL+RGGoFKU3VWQRtIHgWoHizSqH0QVn2OwrbXS9Q6CICQjfj+E5qvrXg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     hasBin: true
     dependencies:
@@ -2343,15 +2352,23 @@ packages:
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
 
-  /tsup/5.12.8_typescript@4.7.2:
-    resolution: {integrity: sha512-fSBzUBtrnAQ+XKPfj1KcZ2Pl0EUlKBqpbTmRAs+2mL34fQlowrm6ccQgOYyMe9MMAcejMP6/7Rw3qKjx1lreZA==}
+  /tsup/6.0.1_zivoq4gl6crplpnenahlh2kyc4:
+    resolution: {integrity: sha512-2Pl1YkEEvzfg4aYgwUILaHV0wwZQKO7mNHMQChyzdCNlQqf11eug7gWk86XCb3CvRofCXBX87x73BTGjyS3cOQ==}
+    engines: {node: '>=14'}
     hasBin: true
     peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
       typescript: ^4.1.0
     peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
       typescript:
         optional: true
     dependencies:
+      '@swc/core': 1.2.189
       bundle-require: 3.0.4_esbuild@0.14.39
       cac: 6.7.12
       chokidar: 3.5.3
@@ -2368,7 +2385,6 @@ packages:
       tree-kill: 1.2.2
       typescript: 4.7.2
     transitivePeerDependencies:
-      - postcss
       - supports-color
       - ts-node
     dev: true

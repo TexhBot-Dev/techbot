@@ -1,110 +1,141 @@
-import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
+import type { ApplicationCommandRegistry } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchUser } from '#lib/helpers';
+import { fetchUser, generateEmbed } from '#lib/helpers';
+import { ChatInputSubcommandMappings, SubcommandMappingsArray, SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SubCommandPluginCommand.Options>({
 	name: 'job',
-	description: "Engage in Pepe Boy's job system.",
-	detailedDescription: 'job <subcomand> [...value]'
+	description: 'Engage in the job system.',
+	detailedDescription: '/job <subcommand>'
 })
-export default class JobCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
-		const subcommand = interaction.options.getSubcommand();
-		const referencedUser = interaction.options.getUser('user') ?? interaction.user;
-		const user = await fetchUser(referencedUser);
+export default class JobCommand extends SubCommandPluginCommand {
+	protected readonly subcommandMappings: SubcommandMappingsArray = [
+		new ChatInputSubcommandMappings([
+			{
+				name: 'list',
+				to: (interaction) => this.list(interaction)
+			},
+			{
+				name: 'select',
+				to: (interaction) => this.select(interaction)
+			},
+			{
+				name: 'current',
+				to: (interaction) => this.current(interaction)
+			},
+			{
+				name: 'xp',
+				to: (interaction) => this.xp(interaction)
+			},
+			{
+				name: 'info',
+				to: (interaction) => this.help(interaction)
+			}
+		])
+	];
+
+	/**
+	 * Select a new job.
+	 */
+	private async select(interaction: CommandInteraction) {
+		const user = await fetchUser(interaction.user);
 		const jobs = await this.container.prisma.job.findMany();
 
-		switch (subcommand) {
-			case 'list':
-				{
-					let i = 0;
-					const fields: { name: string; value: any }[] = [];
-					for (const job of jobs) {
-						fields.push({
-							name: `${i}: ${job.name.toProperCase()}`,
-							value: `Description: ${job.description} **MIN EXP:** ${job.minimumXP}`
-						});
-						i++;
-					}
+		const newJob = interaction.options.getString('job_name');
 
-					const listEmbed = new MessageEmbed()
-						.setTitle('Available Jobs')
-						.setDescription(fields.map((f) => `**${f.name}:** ${f.value}`).join('\n'))
-						.setFooter({ text: `To get a job run /job select!` })
-						.setColor(0x00ff00);
-
-					void interaction.reply({ embeds: [listEmbed] });
-				}
-				break;
-			case 'select':
-				{
-					const newJob = interaction.options.getString('job_name');
-
-					if (newJob === null) {
-						return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
-					}
-
-					const job = jobs.find((a) => a.name.toLocaleLowerCase() === newJob.toLocaleLowerCase());
-
-					if (job === undefined) {
-						return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
-					}
-
-					void this.container.prisma.user.update({
-						where: {
-							id: user.id
-						},
-						data: {
-							currentJob: job.name
-						}
-					});
-
-					void interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
-				}
-
-				break;
-			case 'current':
-				{
-					const jobEmbed = new MessageEmbed()
-						.setTitle('Current Job')
-						.setDescription(
-							user.currentJob === 'JOBLESS'
-								? `${referencedUser.tag} is currently **Unemployed**.`
-								: `${referencedUser.tag}'s current job is **${user.currentJob.toProperCase()}**.`
-						)
-						.setColor('BLUE');
-
-					void interaction.reply({ embeds: [jobEmbed] });
-				}
-
-				break;
-
-			case 'xp':
-				{
-					const xpEmbed = new MessageEmbed()
-						.setTitle(`XP for ${referencedUser.tag}`)
-						.setDescription(`${user.jobEXP.toLocaleString()} XP`)
-						.setColor('BLUE');
-					void interaction.reply({ embeds: [xpEmbed] });
-				}
-				break;
-
-			case 'help':
-				{
-					const helpReply = new MessageEmbed()
-						.setTitle('Jobs')
-						.setDescription(
-							`**/job list** - Returns a list of all available jobs.\n**/job select <value>** - Selects a job.\n**/job current** - Returns your current job.\n**/job xp** - Returns your current XP.`
-						)
-						.setColor('BLUE');
-
-					void interaction.reply({ embeds: [helpReply] });
-				}
-				break;
-			default:
-				break;
+		if (newJob === null) {
+			return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
 		}
+
+		const job = jobs.find((a) => a.name.toLocaleLowerCase() === newJob.toLocaleLowerCase());
+
+		if (job === undefined) {
+			return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
+		}
+
+		this.container.prisma.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				currentJob: job.name
+			}
+		});
+
+		interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
+	}
+
+	/**
+	 * Lists all available jobs.
+	 */
+	private async list(interaction: CommandInteraction) {
+		const jobs = await this.container.prisma.job.findMany();
+
+		let i = 0;
+		const fields: { name: string; value: any }[] = [];
+		for (const job of jobs) {
+			fields.push({
+				name: `${i}: ${job.name.toProperCase()}`,
+				value: `Description: ${job.description} **MIN EXP:** ${job.minimumXP}`
+			});
+			i++;
+		}
+
+		const listEmbed = new MessageEmbed()
+			.setTitle('Available Jobs')
+			.setDescription(fields.map((f) => `**${f.name}:** ${f.value}`).join('\n'))
+			.setFooter({ text: `To get a job run /job select!` })
+			.setColor(0x00ff00);
+
+		interaction.reply({ embeds: [listEmbed] });
+	}
+
+	/**
+	 * Returns the user's current job.
+	 */
+	private async current(interaction: CommandInteraction) {
+		const referencedUser = interaction.options.getUser('user') ?? interaction.user;
+		const dbUser = await fetchUser(referencedUser);
+		const jobEmbed = new MessageEmbed()
+			.setTitle('Current Job')
+			.setDescription(
+				dbUser.currentJob === 'JOBLESS'
+					? `${referencedUser.tag} is currently **Unemployed**.`
+					: `${referencedUser.tag}'s current job is **${dbUser.currentJob.toProperCase()}**.`
+			)
+			.setColor('BLUE');
+
+		interaction.reply({ embeds: [jobEmbed] });
+	}
+
+	/**
+	 * Returns the user's job experience.
+	 */
+	private async xp(interaction: CommandInteraction) {
+		const referencedUser = interaction.options.getUser('user') ?? interaction.user;
+		const dbUser = await fetchUser(referencedUser);
+		const xpEmbed = new MessageEmbed()
+			.setTitle(`XP for ${referencedUser.tag}`)
+			.setDescription(`${dbUser.jobEXP.toLocaleString()} XP`)
+			.setColor('BLUE');
+		interaction.reply({ embeds: [xpEmbed] });
+	}
+
+	/**
+	 * Help regarding the job system.
+	 */
+	private help(interaction: CommandInteraction) {
+		interaction.reply({
+			embeds: [
+				generateEmbed(
+					'Jobs',
+					`**/job list** - Returns a list of all available jobs.\n**/job select <value>** - Selects a job.\n**/job current** - Returns your current job.\n**/job xp** - Returns your current XP.`,
+					'BLUE'
+				)
+			],
+			ephemeral: true
+		});
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -123,7 +154,7 @@ export default class JobCommand extends Command {
 							)
 					)
 					.addSubcommand((subcommand) => subcommand.setName('current').setDescription('Returns information about your current job.'))
-					.addSubcommand((subcommand) => subcommand.setName('info').setDescription("Get information about Pepe Boy's job system."))
+					.addSubcommand((subcommand) => subcommand.setName('info').setDescription('Get information about the job system.'))
 					.addSubcommand((subcommand) =>
 						subcommand
 							.setName('xp')

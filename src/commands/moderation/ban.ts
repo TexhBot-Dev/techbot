@@ -1,4 +1,4 @@
-import { UserError } from '#root/lib/handlers/UserError';
+import { UserError } from '../../lib/handlers/UserError.js';
 import { generateErrorEmbed } from '#lib/helpers';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
@@ -20,7 +20,7 @@ export class BanCommand extends Command {
 
 		const guild = interaction.guild!;
 
-		const userToBan = interaction.options.getUser('userToBan', true);
+		const userToBan = interaction.options.getUser('target', true);
 		const reason = interaction.options.getString('reason', false) ?? undefined;
 		const days = interaction.options.getInteger('days_to_delete', false) ?? 0;
 
@@ -43,7 +43,9 @@ export class BanCommand extends Command {
 					.sendInternal();
 			})
 			.then(() => {
-				interaction.reply({ content: `Successfully banned **${user.tag}**` + (days > 0 ? `and deleted ${days} days of their messages.` : '.') });
+				interaction.reply({
+					content: `Successfully banned **${userToBan.tag}**` + (days > 0 ? `and deleted ${days} days of their messages.` : '.')
+				});
 			});
 	}
 
@@ -52,7 +54,7 @@ export class BanCommand extends Command {
 			builder
 				.setName(this.name)
 				.setDescription(this.description)
-				.addUserOption((builder) => builder.setName('userToBan').setRequired(true).setDescription('The user to ban.'))
+				.addUserOption((builder) => builder.setName('target').setRequired(true).setDescription('The user to ban.'))
 				.addStringOption((builder) => builder.setName('reason').setDescription('The reason for banning this user.').setRequired(false))
 				.addIntegerOption((builder) =>
 					builder
