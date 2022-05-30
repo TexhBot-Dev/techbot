@@ -2,7 +2,7 @@ import { promises } from 'fs';
 import { join, resolve } from 'path';
 import { pluralize } from "#lib/helpers";
 
-console.info("Removing console.logs...");
+console.info("Commenting out console.logs...");
 
 async function* walk(dir) {
 	for await (const d of await promises.opendir(dir)) {
