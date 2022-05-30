@@ -11,7 +11,6 @@ import { fetchUser } from '#lib/helpers';
 })
 export default class BalanceCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		console.log('ok');
 		const balanceEmbed = new MessageEmbed();
 		const user = interaction.options.getUser('user', false) ?? interaction.user;
 		const dBUserData = await fetchUser(user);

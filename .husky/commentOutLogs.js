@@ -1,5 +1,6 @@
 import { promises } from 'fs';
 import { join, resolve } from 'path';
+import { pluralize } from "#lib/helpers";
 
 console.info("Removing console.logs...");
 
@@ -21,4 +22,4 @@ for await (const p of walk(resolve('./src/commands'))) {
 }
 
 
-console.info(`Commented out ${replacedCount} console.logs. Consider removing them completely.`)
+console.info(replacedCount !== 0 ? `Commented out ${replacedCount} ${pluralize('console.log', replacedCount)}. Consider removing them completely.` : `Awesome! There were no console.logs found.`)
