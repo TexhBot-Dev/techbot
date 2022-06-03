@@ -18,15 +18,13 @@ export default class JobCommand extends Command {
 		switch (subcommand) {
 			case 'list':
 				{
-					let i = 0;
 					const fields: { name: string; value: any }[] = [];
-					for (const job of jobs) {
+					jobs.map((job, position) =>
 						fields.push({
-							name: `${i}: ${job.name.toProperCase()}`,
+							name: `${position + 1}: ${job.name.toProperCase()}`,
 							value: `Description: ${job.description} **MIN EXP:** ${job.minimumXP}`
-						});
-						i++;
-					}
+						})
+					);
 
 					const listEmbed = new MessageEmbed()
 						.setTitle('Available Jobs')
@@ -39,11 +37,7 @@ export default class JobCommand extends Command {
 				break;
 			case 'select':
 				{
-					const newJob = interaction.options.getString('job_name');
-
-					if (newJob === null) {
-						return interaction.reply({ content: 'Please specify a job!', ephemeral: true });
-					}
+					const newJob = interaction.options.getString('job_name', true);
 
 					const job = jobs.find((a) => a.name.toLocaleLowerCase() === newJob.toLocaleLowerCase());
 
@@ -51,7 +45,7 @@ export default class JobCommand extends Command {
 						return interaction.reply({ content: 'Please specify a valid job!', ephemeral: true });
 					}
 
-					void this.container.prisma.user.update({
+					await this.container.prisma.user.update({
 						where: {
 							id: user.id
 						},
@@ -60,7 +54,7 @@ export default class JobCommand extends Command {
 						}
 					});
 
-					void interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
+					await interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
 				}
 
 				break;
@@ -75,7 +69,7 @@ export default class JobCommand extends Command {
 						)
 						.setColor('BLUE');
 
-					void interaction.reply({ embeds: [jobEmbed] });
+					await interaction.reply({ embeds: [jobEmbed] });
 				}
 
 				break;
@@ -86,7 +80,7 @@ export default class JobCommand extends Command {
 						.setTitle(`XP for ${referencedUser.tag}`)
 						.setDescription(`${user.jobEXP.toLocaleString()} XP`)
 						.setColor('BLUE');
-					void interaction.reply({ embeds: [xpEmbed] });
+					await interaction.reply({ embeds: [xpEmbed] });
 				}
 				break;
 
@@ -99,7 +93,7 @@ export default class JobCommand extends Command {
 						)
 						.setColor('BLUE');
 
-					void interaction.reply({ embeds: [helpReply] });
+					await interaction.reply({ embeds: [helpReply] });
 				}
 				break;
 			default:

@@ -22,7 +22,7 @@ export default class BetCommand extends Command {
 		}
 
 		if (randomUnitInterval() < 0.5) {
-			void addToWallet(interaction.user, betAmount).then(() => {
+			await addToWallet(interaction.user, betAmount).then(() => {
 				return interaction.reply({
 					embeds: [
 						generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')

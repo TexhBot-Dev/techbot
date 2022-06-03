@@ -1,6 +1,6 @@
 import type { Guild, Inventory, ItemMetaData, ItemNames, PetMetaData, User, PetTypes, Pet } from '@prisma/client';
 import type { Guild as DiscordGuild, User as DiscordUser } from 'discord.js';
-import { container } from '@sapphire/framework';
+import { container, UserError } from '@sapphire/framework';
 
 export const fetchPetMetaData = async (petRaceName: PetTypes): Promise<PetMetaData> => {
 	return (await container.prisma.petMetaData.findFirst({
@@ -18,12 +18,24 @@ export const fetchUserPets = async (user: DiscordUser): Promise<Pet[]> => {
 	});
 };
 
-export const fetchItemMetaData = async (itemName: ItemNames): Promise<ItemMetaData> => {
-	return (await container.prisma.itemMetaData.findFirst({
+export const fetchItemMetaData = async (itemName: ItemNames) => {
+	const itemMetaData = await container.prisma.itemMetaData.findFirst({
 		where: {
 			name: itemName
 		}
-	})) as unknown as ItemMetaData;
+	});
+
+	if (itemMetaData === null) {
+		throw new UserError({
+			identifier: 'item-not-found',
+			message: `The item ${itemName} does not exist.`,
+			context: {
+				itemName
+			}
+		});
+	}
+
+	return itemMetaData;
 };
 
 export const fetchUserInventories = async (user: DiscordUser): Promise<Inventory[]> => {

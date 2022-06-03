@@ -11,7 +11,6 @@ const OWNERS = process.env.OWNERS?.split(',') ?? [];
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
 	description: 'Evals codes you provide out of the bot scope',
-	// preconditions: ['ownerOnly'],
 	flags: ['async', 'hidden', 'showHidden', 'silent', 's'],
 	options: ['depth'],
 	detailedDescription: 'eval [code]'

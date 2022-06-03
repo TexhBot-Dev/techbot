@@ -72,10 +72,10 @@ export default class RobCommand extends Command {
 					true
 				);
 
-			return void interaction.reply({ embeds: [failedResponse] });
+			return interaction.reply({ embeds: [failedResponse] });
 		}
-		void subtractFromWallet(userToRob, lossAmount);
-		void addToWallet(interaction.user, lossAmount);
+		await subtractFromWallet(userToRob, lossAmount);
+		await addToWallet(interaction.user, lossAmount);
 
 		const successResponse = new MessageEmbed()
 			.setDescription(`You successfully robbed <@${userToRob.id}>, and gained **$${winAmount}**!`)
@@ -92,7 +92,7 @@ export default class RobCommand extends Command {
 				true
 			);
 
-		return void interaction.reply({ embeds: [successResponse] });
+		return interaction.reply({ embeds: [successResponse] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

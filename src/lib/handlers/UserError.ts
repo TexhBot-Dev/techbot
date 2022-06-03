@@ -2,17 +2,17 @@ import { client } from '#root/index';
 import type { CommandOptions } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
 import type { AnyChannel, CommandInteraction, Guild, GuildMember, Interaction, InteractionReplyOptions, TextChannel, User } from 'discord.js';
-import { generateEmbed } from '../helpers';
+import { generateEmbed } from '#lib/helpers';
 
 /**
  * User error builder.
  */
 export class UserError {
-	response!: InteractionReplyOptions;
-	type!: ErrorType;
-	context!: CommandInteraction | Interaction;
-	internalReport!: InternalReport;
-	id = crypto.randomUUID();
+	public response!: InteractionReplyOptions;
+	public type!: ErrorType;
+	public context!: CommandInteraction | Interaction;
+	public internalReport!: InternalReport;
+	public id = crypto.randomUUID();
 
 	public setResponse(response: InteractionReplyOptions): UserError {
 		this.response = response;
@@ -24,7 +24,7 @@ export class UserError {
 		return this;
 	}
 
-	public sendResponse(): UserError {
+	public async sendResponse(): Promise<UserError> {
 		if (!this.context || !this.context.isRepliable() || !this.response) return this;
 		if (this.response.embeds) {
 			this.response.embeds[0].footer!.text = this.id;
@@ -34,7 +34,7 @@ export class UserError {
 		this.response.components ??= [];
 		this.response.ephemeral ??= true;
 
-		this.context.reply(this.response);
+		await this.context.reply(this.response);
 		return this;
 	}
 
@@ -53,24 +53,24 @@ export class UserError {
 	public sendInternal(): UserError {
 		client.channels
 			.fetch('977947568204030042')
-			.then((ch: AnyChannel | null) => {
+			.then(async (ch: AnyChannel | null) => {
 				const channel = ch as TextChannel;
 				const report = this.internalReport;
-				channel.send({
+				await channel.send({
 					embeds: [
 						generateEmbed(
 							report.title || (this.response.embeds ? this.response.embeds[0].description : '') || this.response.content || 'Error',
 							`\`${report.message ?? this.response.content ?? 'No message provided.'}\`\n\nThis error was thrown by ${
 								report.command?.name || 'an unknown command'
-							}.` +
-								(report.user ? `\nThe user who ran the failed command was ${report.user.id}` : '') +
-								(report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name})` : '') +
-								(report.rawError ? codeBlock('', '\n\n' + String(report.rawError).truncate(1000)) : ''),
+							}.${report.user ? `\nThe user who ran the failed command was ${report.user.id}` : ''}${
+								report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name})` : ''
+							}${report.rawError ? codeBlock('', `\n\n${String(report.rawError).truncate(1000)}`) : ''}`,
 							'RED'
 						).setFooter({ text: `ID: ${this.id} | Type: ${this.type ?? 'unknown'}` })
 					]
 				});
 			})
+			// eslint-disable-next-line @typescript-eslint/no-empty-function
 			.catch(() => {});
 		return this;
 	}

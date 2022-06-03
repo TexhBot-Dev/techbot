@@ -33,8 +33,8 @@ export default class LeaderboardCommand extends Command {
 				}
 			})
 		)
-			.map((user, position) => {
-				if (guildOnly && !interaction.guild?.members.cache.has(user.id)) return false;
+			.map(async (user, position) => {
+				if (guildOnly && !interaction.guild?.members.fetch(user.id)) return false;
 				const positionText = (() => {
 					switch (position) {
 						case 0:
@@ -47,7 +47,7 @@ export default class LeaderboardCommand extends Command {
 							return this.numToEnglish(position + 1);
 					}
 				})();
-				const discordUserData = this.container.client.users.cache.get(user.id);
+				const discordUserData = await this.container.client.users.fetch(user.id);
 				const moneyCount = (() => {
 					let money = user.wallet;
 					if (overallMoney) money += user.bank;

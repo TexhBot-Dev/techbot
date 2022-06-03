@@ -44,8 +44,7 @@ export default class BegCommand extends Command {
 
 		if (randomUnitInterval() > 0.5) {
 			begEmbed.setDescription(failedBegResponses.randomElement()).setColor('RED');
-			void interaction.reply({ embeds: [begEmbed] });
-			return;
+			return interaction.reply({ embeds: [begEmbed] });
 		}
 
 		const moneyEarned = Math.round(
