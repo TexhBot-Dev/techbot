@@ -17,7 +17,7 @@ export class InteractionListener extends Listener {
 				break;
 			case 'help':
 				{
-					const choices = this.container.stores.get('commands').map((command) => command.name.toProperCase());
+					const choices = this.container.stores.get('commands').map((command) => command.name.toTitleCase());
 					let filtered = choices.filter((choice) => choice.toLowerCase().startsWith(focusedValue));
 					if (filtered.length === 0)
 						filtered = choices.filter(
@@ -54,7 +54,7 @@ export class InteractionListener extends Listener {
 
 function fuzzyAutocomplete(options: string[] | object, focusedValue: string) {
 	const choices = Array.isArray(options)
-		? options.map((el: string) => el.toProperCase())
+		? options.map((el: string) => el.toTitleCase())
 		: Object.values(options).map((el: string) => el.toLowerCase());
 
 	let filtered = choices.filter((choice) => choice.toLowerCase().startsWith(focusedValue) || focusedValue.startsWith(choice));

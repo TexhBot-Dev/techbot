@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { randomUnitInterval, addToWallet, randomInt } from '#lib/helpers';
+import { addToWallet, randomInt } from '#lib/helpers';
 
 import type { CommandInteraction } from 'discord.js';
 
@@ -28,10 +28,9 @@ export class SearchCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
 		await interaction.reply('Searching...');
 
-		if (randomUnitInterval() > 0.5) return interaction.editReply('You found nothing.');
+		if (Math.random() > 0.5) return interaction.editReply('You found nothing.');
 
 		const item = items.randomElement();
-		// generate random amount of money no greater than 150
 		const money = randomInt(30, 150);
 
 		await addToWallet(interaction.user, money);

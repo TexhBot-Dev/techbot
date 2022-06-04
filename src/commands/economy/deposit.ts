@@ -7,7 +7,7 @@ import { addToBank, subtractFromWallet, generateErrorEmbed, isSafeInteger, parse
 @ApplyOptions<CommandOptions>({
 	name: 'deposit',
 	description: 'Deposit coins from your wallet into your bank account.',
-	detailedDescription: 'deposit <amount>'
+	detailedDescription: '/deposit <amount>'
 })
 export default class DepositCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -29,24 +29,6 @@ export default class DepositCommand extends Command {
 
 		await subtractFromWallet(interaction.user, amountToDeposit);
 		await addToBank(interaction.user, amountToDeposit);
-
-		// https://canary.discord.com/api/webhooks/927773203349246003/bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi
-		// const webhook = new WebhookClient({
-		// 	id: '927773203349246003',
-		// 	token: 'bwD-bJI-Esiylh8oXU2uY-JNNic5ngyRCMxzX2q4C5MEs-hJI7Vf-3pexABtJu3HuWbi'
-		// });
-		// await webhook.send({
-		// 	embeds: [
-		// 		{
-		// 			title: 'User Deposit',
-		// 			description: `${interaction.user.tag} (${
-		// 				interaction.user.id
-		// 			}) has deposited ${amountToDeposit.toLocaleString()} coins into their account.`,
-		// 			color: '#00ff00',
-		// 			timestamp: new Date()
-		// 		}
-		// 	]
-		// });
 
 		const response = new MessageEmbed()
 			.setDescription(`You deposited **$${amountToDeposit.toLocaleString()}** into your bank account.`)

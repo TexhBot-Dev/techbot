@@ -7,16 +7,15 @@ import { CommandInteraction, Permissions } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'ban',
 	description: 'Ban a user.',
-	detailedDescription: 'ban',
+	detailedDescription: '/ban <user> [reason] [daysToDelete]',
 	runIn: ['GUILD_TEXT']
 })
 export class BanCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
 		if (!interaction.memberPermissions!.has(Permissions.FLAGS.BAN_MEMBERS))
-			new UserError(interaction)
-				.setResponse({ embeds: [generateErrorEmbed('You need the ban members permission to use that.', 'Missing Permissions')] })
-				.setType('MISSING_PERMISSIONS')
-				.sendResponse();
+			return new UserError(interaction)
+				.sendResponse({ embeds: [generateErrorEmbed('You need the ban members permission to use that.', 'Missing Permissions')] })
+				.setType('MISSING_PERMISSIONS');
 
 		const guild = interaction.guild!;
 
@@ -29,23 +28,21 @@ export class BanCommand extends Command {
 				days,
 				reason
 			})
-			.catch((err) => {
-				new UserError(interaction)
-					.setResponse({ embeds: [generateErrorEmbed('Operation Failed', 'Failed to ban user.')], ephemeral: true })
-					.setType('OPERATION_FAIL')
-					.sendResponse()
-					.setInternal({
-						command: this.options,
-						guild,
-						rawError: err,
-						user: interaction.user
-					})
-					.sendInternal();
-			})
 			.then(() => {
 				interaction.reply({
 					content: `Successfully banned **${userToBan.tag}**` + (days > 0 ? `and deleted ${days} days of their messages.` : '.')
 				});
+			})
+			.catch((err) => {
+				new UserError(interaction)
+					.sendResponse({ embeds: [generateErrorEmbed('Operation Failed', 'Failed to ban user.')], ephemeral: true })
+					.setType('OPERATION_FAIL')
+					.sendInternalReport({
+						command: this.options,
+						guild,
+						rawError: err,
+						user: interaction.user
+					});
 			});
 	}
 

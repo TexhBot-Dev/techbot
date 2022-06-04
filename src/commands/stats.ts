@@ -8,7 +8,7 @@ import { CommandInteraction, version } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'stats',
 	description: 'Shows some interesting stats about the bot.',
-	detailedDescription: 'stats'
+	detailedDescription: '/stats'
 })
 export class StatsCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

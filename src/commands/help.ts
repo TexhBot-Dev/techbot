@@ -7,7 +7,7 @@ import { generateEmbed } from '#lib/helpers';
 @ApplyOptions<CommandOptions>({
 	name: 'help',
 	description: 'Get help with the bot or a certain command.',
-	detailedDescription: 'help [command]'
+	detailedDescription: '/help [command]'
 })
 export default class HelpCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -16,9 +16,9 @@ export default class HelpCommand extends Command {
 
 		if (specifiedCommand !== null) {
 			const command = commands.find((c) => c.name === specifiedCommand.toLowerCase() || c.name.startsWith(specifiedCommand.toLowerCase()));
-			if (command === undefined) return void interaction.reply('That command does not exist!');
+			if (command === undefined) return interaction.reply('That command does not exist!');
 
-			return void interaction.reply({ embeds: [generateEmbed(command.name.toProperCase(), command.description)] });
+			return interaction.reply({ embeds: [generateEmbed(command.name.toTitleCase(), command.description)] });
 		}
 
 		const { categories } = commands;
@@ -41,7 +41,7 @@ export default class HelpCommand extends Command {
 			}
 
 			paginatedMessage.addPageEmbed((embed) => {
-				return embed.setTitle(category.toProperCase()).setDescription(fields.map((f) => `${f.name.toProperCase()}: ${f.value}`).join('\n'));
+				return embed.setTitle(category.toTitleCase()).setDescription(fields.map((f) => `${f.name.toTitleCase()}: ${f.value}`).join('\n'));
 			});
 		}
 

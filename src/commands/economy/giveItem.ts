@@ -8,7 +8,7 @@ import type { ItemNames } from '@prisma/client';
 @ApplyOptions<CommandOptions>({
 	name: 'giveItem',
 	description: 'Allows you to give items to another user.',
-	detailedDescription: 'giveItem <user> <item> <amount>'
+	detailedDescription: '/giveItem <user> <item> <amount>'
 })
 export default class GiveItemCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

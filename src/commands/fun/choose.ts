@@ -5,7 +5,7 @@ import type { CommandInteraction } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'choose',
 	description: 'Chooses a argument from a string randomly.',
-	detailedDescription: 'choose <string>, ...'
+	detailedDescription: '/choose <string>, ...'
 })
 export class ChooseCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction): Promise<any> {

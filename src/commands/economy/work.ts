@@ -15,7 +15,7 @@ export default class WorkCommand extends Command {
 		const job = user.currentJob;
 
 		if (job === 'JOBLESS') {
-			return void interaction.reply({
+			return interaction.reply({
 				embeds: [generateErrorEmbed("You don't have a job! Do `job select janitor` to get started!", 'No Job')]
 			});
 		}
@@ -32,11 +32,11 @@ export default class WorkCommand extends Command {
 		await addToWallet(interaction.user, moneyEarned);
 
 		workEmbed
-			.setTitle(`You worked as a ${job.toProperCase()}`)
+			.setTitle(`You worked as a ${job.toTitleCase()}`)
 			.setDescription(`While working you earned **$${moneyEarned.toLocaleString()}**.`)
 			.setColor('BLUE');
 
-		return void interaction.reply({ embeds: [workEmbed] });
+		return interaction.reply({ embeds: [workEmbed] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

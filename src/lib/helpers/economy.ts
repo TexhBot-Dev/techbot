@@ -5,12 +5,12 @@ import type { ItemNames } from '@prisma/client';
 
 /**
  * Adds to a user's balance.
- * @param user
- * @param amount
- * @return number The number of rows affected
+ * @param user The user to add money to.
+ * @param amount The amount of money to add.
+ * @returns The number of rows affected.
  */
 export const addToWallet = async (user: User, amount: number) => {
-	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
+	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer.');
 	return container.prisma.user.upsert({
 		where: {
 			id: user.id
@@ -28,13 +28,12 @@ export const addToWallet = async (user: User, amount: number) => {
 };
 
 /**
- *
- * @param user
- * @param amount
- * @return number The number of rows affected
+ * @param user The user to remove money from.
+ * @param amount The amount of money to remove.
+ * @returns The number of rows affected.
  */
 export const addToBank = async (user: User, amount: number) => {
-	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
+	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer.');
 	return container.prisma.user.upsert({
 		where: {
 			id: user.id
@@ -52,7 +51,11 @@ export const addToBank = async (user: User, amount: number) => {
 };
 
 /**
- * Subtracts from the user's wallet.
+ * Subtracts money from the user's wallet.
+ * ```ts
+ *	const dbUser = await fetchUser(interaction.user);
+ *	subtractFromWallet(dbUser, 100).then(() => { interaction.reply(`You now have ${dbUser.wallet} coins in your wallet.`); }).catch(() => noop);
+ * ```
  * @param user
  * @param amount
  * @return number The number of rows affected
@@ -76,8 +79,8 @@ export const subtractFromWallet = async (user: User, amount: number) => {
 
 /**
  * Subtracts from a user's bank
- * @param user
- * @param amount
+ * @param user The user to remove money from.
+ * @param amount The amount of money to remove.
  * @return number The number of rows affected
  */
 export const subtractFromBank = async (user: User, amount: number) => {
@@ -97,6 +100,13 @@ export const subtractFromBank = async (user: User, amount: number) => {
 	});
 };
 
+/**
+ * Add a number of items to a user's inventory.
+ * @param user The user to add items to.
+ * @param name The name of the item to add.
+ * @param amount The amount of items to add.
+ * @returns The user's inventory.
+ */
 export const incrementItemCount = async (user: User, name: ItemNames, amount = 1) => {
 	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return container.prisma.inventory.upsert({
@@ -119,8 +129,15 @@ export const incrementItemCount = async (user: User, name: ItemNames, amount = 1
 	});
 };
 
+/**
+ * Remove a number of items to a user's inventory.
+ * @param user The user to remove items from.
+ * @param name The name of the item to remove.
+ * @param amount The amount of items to remove.
+ * @returns The user's inventory.
+ */
 export const decrementItemCount = async (user: User, name: ItemNames, amount = 1) => {
-	if (isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
+	if (!isSafeInteger(amount)) throw new Error('Amount must be a safe integer');
 	return container.prisma.inventory.upsert({
 		where: {
 			userID_itemID: {

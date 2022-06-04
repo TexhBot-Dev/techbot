@@ -7,14 +7,12 @@ import { ColorResolvable, MessageEmbed } from 'discord.js';
  * @returns MessageEmbed
  * @example
  * ```ts
- * const embed = embedHelpers.errorEmbed(new Error('This is an error'), 'Error');
+ * const embed = generateErrorEmbed(new Error('This is an error'), 'Error');
  * return interaction.reply({ embeds: [embed] });
  * ```
  */
-export const generateErrorEmbed = (error: string, errorType: string): MessageEmbed => {
-	const errType = errorType === '' ? '' : `: ${errorType}`;
-
-	return generateEmbed(`Error${errType}`, error, '#ED4245');
+export const generateErrorEmbed = (errorDescription: string, errorType: string): MessageEmbed => {
+	return generateEmbed(errorType ? `Error: ${errorType}` : 'Error', errorDescription, '#ED4245');
 };
 
 /**
@@ -25,7 +23,7 @@ export const generateErrorEmbed = (error: string, errorType: string): MessageEmb
  * @returns MessageEmbed
  * @example
  * ```ts
- * const embed = embedHelpers.errorEmbed(new Error('This is an error'), 'Error');
+ * const embed = generateEmbed('Title', 'Description', 'BLURPLE');
  * return interaction.reply({ embeds: [embed] });
  * ```
  */

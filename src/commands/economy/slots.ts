@@ -1,12 +1,12 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { randomUnitInterval, parseAmount, fetchGuild, fetchUser } from '#lib/helpers';
+import { parseAmount, fetchGuild, fetchUser } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'slots',
 	description: 'Lets you gamble your money in a slot machine',
-	detailedDescription: 'slots <amount>'
+	detailedDescription: '/slots <amount>'
 })
 export default class SlotsCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -21,7 +21,7 @@ export default class SlotsCommand extends Command {
 		const slotEmoji = ':money_mouth:';
 		const items = ['💵', '💍', '💯'];
 
-		const randomNumber = Math.floor(randomUnitInterval() * (100 - 10 + 1)) + 10;
+		const randomNumber = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
 
 		const firstRoll = items.randomElement();
 		const secondRoll = guild.slotsWinMultiplier < randomNumber ? items.randomElement() : firstRoll;

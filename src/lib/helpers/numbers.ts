@@ -6,7 +6,7 @@
  * isSafeNumber(-1) // false
  */
 export const isSafeInteger = (value: number): boolean => {
-	return !Number.isSafeInteger(value) || value < 0 ? false : value <= 1000000000000;
+	return !Number.isSafeInteger(value) || value < 0 ? false : value <= 1_000_000_000_000;
 };
 
 export const parseAmount = (coins: number, amount: 'all' | 'half' | 'third' | 'quarter' | 'fourth' | number | string): number => {

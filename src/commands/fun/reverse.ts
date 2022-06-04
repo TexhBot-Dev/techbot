@@ -5,7 +5,7 @@ import type { CommandInteraction } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'reverse',
 	description: 'Reverse your text.',
-	detailedDescription: 'reverse <string>'
+	detailedDescription: '/reverse <string>'
 })
 export class ReverseCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

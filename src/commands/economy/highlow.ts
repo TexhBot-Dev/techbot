@@ -1,12 +1,12 @@
 import { CommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { addToWallet, randomInt, randomUnitInterval, subtractFromWallet } from '#lib/helpers';
+import { addToWallet, randomInt, subtractFromWallet } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'highlow',
 	description: 'Bet if a number is lower/higher/precise another number.',
-	detailedDescription: 'highlow'
+	detailedDescription: '/highlow'
 })
 export default class HighlowCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -31,7 +31,7 @@ export default class HighlowCommand extends Command {
 			interaction.customId === 'higher' || interaction.customId === 'jackpot' || interaction.customId === 'lower';
 		await msg?.awaitMessageComponent({ filter, time: 30_000 }).then(async (interaction) => {
 			const bet = interaction.customId;
-			const testNum = randomInt(101);
+			const testNum = randomInt(0, 101);
 
 			let won: boolean;
 			if (bet === 'higher' && num < testNum) {
@@ -40,17 +40,14 @@ export default class HighlowCommand extends Command {
 				won = true;
 			} else won = bet === 'jackpot' && num === testNum;
 
-			const amount =
-				bet === 'jackpot' && won
-					? Math.round(randomUnitInterval() * (10000 - 2000) + 2000)
-					: Math.round(randomUnitInterval() * (800 - 75) + 75);
+			const amount = bet === 'jackpot' && won ? Math.round(Math.random() * (10000 - 2000) + 2000) : Math.round(Math.random() * (800 - 75) + 75);
 
 			won ? await addToWallet(interaction.user, amount) : await subtractFromWallet(interaction.user, amount);
 
 			const newEmbed = new MessageEmbed()
 				.setTitle('Highlow')
 				.setDescription(
-					`You bet **${bet.toProperCase()}**, the first number was **${num}** and the second was **${testNum}**. So, you ${
+					`You bet **${bet.toTitleCase()}**, the first number was **${num}** and the second was **${testNum}**. So, you ${
 						won ? 'won' : 'lost'
 					} **$${amount}**.`
 				)

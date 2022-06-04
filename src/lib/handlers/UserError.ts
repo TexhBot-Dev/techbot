@@ -1,87 +1,83 @@
-import { client } from '#root/index';
 import type { CommandOptions } from '@sapphire/framework';
 import { codeBlock } from '@sapphire/utilities';
-import type { AnyChannel, CommandInteraction, Guild, GuildMember, Interaction, InteractionReplyOptions, TextChannel, User } from 'discord.js';
-import { generateEmbed } from '#lib/helpers';
+import { CommandInteraction, Guild, GuildMember, Interaction, InteractionReplyOptions, MessageEmbed, User, WebhookClient } from 'discord.js';
+import { generateEmbed, noop } from '#lib/helpers';
+import { randomUUID } from 'node:crypto';
 
 /**
  * User error builder.
  */
 export class UserError {
-	response!: InteractionReplyOptions;
-	type!: ErrorType;
-	context: CommandInteraction | Interaction;
-	internalReport!: InternalReport;
-	id = crypto.randomUUID();
+	private responseEmbed!: MessageEmbed;
+	private type!: string;
+	private context: CommandInteraction | Interaction;
+	private readonly id = randomUUID();
 
+	/**
+	 * Construct this user error.
+	 * @param interaction The interaction to reply to.
+	 */
 	constructor(interaction: CommandInteraction | Interaction) {
 		this.context = interaction;
 	}
 
-	public setResponse(response: InteractionReplyOptions): UserError {
-		this.response = response;
+	/**
+	 * Sets the response which will be sent to the user.
+	 * @note The response will be ephemeral by default.
+	 */
+	public sendResponse(response: InteractionReplyOptions): UserError {
+		if (!this.context || !this.context.isRepliable()) return this;
+
+		const embed = response.embeds![0];
+		if (!embed || !response) return this;
+		this.responseEmbed = embed as MessageEmbed;
+
+		if (embed) {
+			embed.footer = {
+				text: `ID: ${this.id} | Type: ${this.type ?? 'UNKNOWN'}`
+			};
+		}
+
+		response.embeds ??= undefined;
+		response.components ??= [];
+		response.ephemeral ??= true;
+
+		this.context.reply(response);
 		return this;
 	}
 
-	public setType(type: ErrorType): UserError {
+	public setType(type: string): UserError {
 		this.type = type;
 		return this;
 	}
 
-	public sendResponse(): UserError {
-		console.log(this.context, this.context.isRepliable(), !!this.response, this.response);
-		if (!this.context || !this.context.isRepliable() || !this.response) return this;
-		if (this.response.embeds) {
-			this.response.embeds[0].footer!.text = this.id;
-		}
+	public sendInternalReport(report: InternalReport): UserError {
+		const webhook = new WebhookClient({
+			id: process.env.ERROR_HANDLER_WEBHOOK_ID!,
+			token: process.env.ERROR_HANDLER_WEBHOOK_TOKEN!,
+			url: process.env.ERROR_HANDLER_WEBHOOK_URL!
+		});
 
-		this.response.embeds ??= undefined;
-		this.response.components ??= [];
-		this.response.ephemeral ??= true;
-
-		this.context.reply(this.response);
-		return this;
-	}
-
-	public setInternal(report: InternalReport): UserError {
-		this.internalReport = report;
-		return this;
-	}
-
-	public log(err: any = this.internalReport.rawError): UserError {
-		if (!err) return this;
-		console.error(`Error thrown by ${this.id}:`);
-		console.log(err);
-		return this;
-	}
-
-	public sendInternal(): UserError {
-		client.channels
-			.fetch('977947568204030042')
-			.then((ch: AnyChannel | null) => {
-				const channel = ch as TextChannel;
-				const report = this.internalReport;
-				channel.send({
-					embeds: [
-						generateEmbed(
-							report.title || (this.response.embeds ? this.response.embeds[0].description : '') || this.response.content || 'Error',
-							`\`${report.message ?? this.response.content ?? 'No message provided.'}\`\n\nThis error was thrown by ${
+		webhook
+			.send({
+				embeds: [
+					generateEmbed(
+						report.title || this.responseEmbed.title || 'Error',
+						(report.rawError ? codeBlock('', '\n\n' + String(report.rawError).truncate(1000)) : '') +
+							`\`${report.message ?? this.responseEmbed.description ?? 'No message provided.'}\`\n\nThis error was thrown by ${
 								report.command?.name || 'an unknown command'
 							}.` +
-								(report.user ? `\nThe user who ran the failed command was ${report.user.id}` : '') +
-								(report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name})` : '') +
-								(report.rawError ? codeBlock('', '\n\n' + String(report.rawError).truncate(1000)) : ''),
-							'RED'
-						).setFooter({ text: `ID: ${this.id} | Type: ${this.type ?? 'unknown'}` })
-					]
-				});
+							(report.user ? `\nThe user who ran the failed command was ${report.user.id}.` : '') +
+							(report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name}).` : ''),
+						'RED'
+					).setFooter({ text: `ID: ${this.id} | Type: ${this.type ?? 'UNKNOWN'}` })
+				]
 			})
-			.catch(() => {});
+			.catch(() => noop);
+
 		return this;
 	}
 }
-
-type ErrorType = string | 'BOT_MISSING_PERMISSIONS' | 'OPERATION_FAIL';
 
 interface InternalReport {
 	message?: string;

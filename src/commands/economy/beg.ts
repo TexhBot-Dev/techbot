@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { randomUnitInterval, addToWallet } from '#lib/helpers';
+import { addToWallet } from '#lib/helpers';
 
 const people = [
 	'Alistair Douglas',
@@ -36,13 +36,13 @@ const failedBegResponses = ["You're pathetic poor person.", 'Go beg someone else
 @ApplyOptions<CommandOptions>({
 	name: 'beg',
 	description: 'Beg people for cash.',
-	detailedDescription: 'beg'
+	detailedDescription: '/beg'
 })
 export default class BegCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const begEmbed = new MessageEmbed().setAuthor({ name: people.randomElement() });
 
-		if (randomUnitInterval() > 0.5) {
+		if (Math.random() > 0.5) {
 			begEmbed.setDescription(failedBegResponses.randomElement()).setColor('RED');
 			void interaction.reply({ embeds: [begEmbed] });
 			return;
@@ -50,7 +50,7 @@ export default class BegCommand extends Command {
 
 		const moneyEarned = Math.round(
 			// people.length is the minimum amount and 600 is the maximum amount
-			randomUnitInterval() * (600 - people.length) + (people.length - 1)
+			Math.random() * (600 - people.length) + (people.length - 1)
 		);
 
 		await addToWallet(interaction.user, moneyEarned);

@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<CommandOptions>({
 	name: 'rps',
 	description: 'Lets you play RPS with the bot!',
-	detailedDescription: `rps <choice>`
+	detailedDescription: `/rps <choice>`
 })
 export default class rpsCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

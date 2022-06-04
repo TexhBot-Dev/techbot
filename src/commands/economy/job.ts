@@ -63,7 +63,7 @@ export default class JobCommand extends SubCommandPluginCommand {
 			}
 		});
 
-		interaction.reply(`You're now working as **${job.name.toProperCase()}**.`);
+		interaction.reply(`You're now working as **${job.name.toTitleCase()}**.`);
 	}
 
 	/**
@@ -76,7 +76,7 @@ export default class JobCommand extends SubCommandPluginCommand {
 		const fields: { name: string; value: any }[] = [];
 		for (const job of jobs) {
 			fields.push({
-				name: `${i}: ${job.name.toProperCase()}`,
+				name: `${i}: ${job.name.toTitleCase()}`,
 				value: `Description: ${job.description} **MIN EXP:** ${job.minimumXP}`
 			});
 			i++;
@@ -102,7 +102,7 @@ export default class JobCommand extends SubCommandPluginCommand {
 			.setDescription(
 				dbUser.currentJob === 'JOBLESS'
 					? `${referencedUser.tag} is currently **Unemployed**.`
-					: `${referencedUser.tag}'s current job is **${dbUser.currentJob.toProperCase()}**.`
+					: `${referencedUser.tag}'s current job is **${dbUser.currentJob.toTitleCase()}**.`
 			)
 			.setColor('BLUE');
 

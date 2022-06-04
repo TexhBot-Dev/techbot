@@ -6,7 +6,7 @@ import { pluralize, addToWallet, subtractFromWallet, generateErrorEmbed, isSafeI
 @ApplyOptions<CommandOptions>({
 	name: 'giveMoney',
 	description: 'Allows you give money to another user.',
-	detailedDescription: 'share <user> <amount>'
+	detailedDescription: '/share <user> <amount>'
 })
 export default class GiveMoneyCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

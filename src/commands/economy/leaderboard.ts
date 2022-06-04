@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<CommandOptions>({
 	name: 'leaderboard',
 	description: 'Shows the global economy leaderboard.',
-	detailedDescription: 'leaderboard',
+	detailedDescription: '/leaderboard',
 	flags: ['guildOnly', 'ownerOnly', 'bankOnly', 'overallMoney']
 })
 export default class LeaderboardCommand extends Command {

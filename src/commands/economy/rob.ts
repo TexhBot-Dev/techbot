@@ -1,13 +1,13 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { type CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { randomUnitInterval, randomInt, fetchUser, addToWallet, subtractFromWallet, generateErrorEmbed } from '#lib/helpers';
+import { randomInt, fetchUser, addToWallet, subtractFromWallet, generateErrorEmbed } from '#lib/helpers';
 import { codeBlock } from '@sapphire/utilities';
 
 @ApplyOptions<CommandOptions>({
 	name: 'rob',
 	description: 'Steal from other users',
-	detailedDescription: 'rob <user>',
+	detailedDescription: '/rob <user>',
 	runIn: ['GUILD_TEXT'],
 	cooldownDelay: 60_000 * 150 // 2.5 hours
 })
@@ -45,12 +45,11 @@ export default class RobCommand extends Command {
 				ephemeral: true
 			});
 		}
-		const winAmount = Math.floor(randomInt(robbedUser.wallet) * randomUnitInterval());
 
-		// const winAmount = Math.floor(robbedUser.wallet * (Math.random() / 0.75));
-		const lossAmount = Math.floor(randomInt(robber.wallet) * randomUnitInterval());
+		const winAmount = Math.floor(randomInt(0, robbedUser.wallet) * Math.random());
+		const lossAmount = Math.floor(randomInt(0, robber.wallet) * Math.random());
 
-		if (randomUnitInterval() > 0.6) {
+		if (Math.random() > 0.6) {
 			await subtractFromWallet(interaction.user, lossAmount);
 			await addToWallet(userToRob, lossAmount);
 
@@ -72,10 +71,10 @@ export default class RobCommand extends Command {
 					true
 				);
 
-			return void interaction.reply({ embeds: [failedResponse] });
+			return interaction.reply({ embeds: [failedResponse] });
 		}
-		void subtractFromWallet(userToRob, lossAmount);
-		void addToWallet(interaction.user, lossAmount);
+		subtractFromWallet(userToRob, lossAmount);
+		addToWallet(interaction.user, lossAmount);
 
 		const successResponse = new MessageEmbed()
 			.setDescription(`You successfully robbed <@${userToRob.id}>, and gained **$${winAmount}**!`)
@@ -92,7 +91,7 @@ export default class RobCommand extends Command {
 				true
 			);
 
-		return void interaction.reply({ embeds: [successResponse] });
+		return interaction.reply({ embeds: [successResponse] });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

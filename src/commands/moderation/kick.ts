@@ -14,18 +14,16 @@ export class KickCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
 		if (!interaction.memberPermissions!.has(Permissions.FLAGS.KICK_MEMBERS))
 			return new UserError(interaction)
-				.setResponse({ embeds: [generateErrorEmbed('You need the kick members permission to use that.', 'Missing Permissions')] })
-				.setType('MISSING_PERMISSIONS')
-				.sendResponse();
+				.sendResponse({ embeds: [generateErrorEmbed('You need the kick members permission to use that.', 'Missing Permissions')] })
+				.setType('MISSING_PERMISSIONS');
 
 		const guild = interaction.guild!;
 
 		const userToKick = await guild.members.fetch(interaction.options.getUser('target', true));
 		if (!userToKick)
 			return new UserError(interaction)
-				.setResponse({ embeds: [generateErrorEmbed('User is not present in this guild.', 'Invalid Member')] })
-				.setType('INVALID_MEMBER')
-				.sendResponse();
+				.sendResponse({ embeds: [generateErrorEmbed('User is not present in this guild.', 'Invalid Member')] })
+				.setType('INVALID_MEMBER');
 
 		const reason = interaction.options.getString('reason', false) ?? undefined;
 
@@ -38,16 +36,14 @@ export class KickCommand extends Command {
 			})
 			.catch((err) => {
 				new UserError(interaction)
-					.setResponse({ embeds: [generateErrorEmbed('Operation Failed', 'Failed to kick user.')], ephemeral: true })
+					.sendResponse({ embeds: [generateErrorEmbed('Operation Failed', 'Failed to kick user.')], ephemeral: true })
 					.setType('OPERATION_FAIL')
-					.sendResponse()
-					.setInternal({
+					.sendInternalReport({
 						command: this.options,
 						guild,
 						rawError: err,
 						user: interaction.user
-					})
-					.sendInternal();
+					});
 			});
 	}
 

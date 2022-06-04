@@ -7,19 +7,19 @@ import { fetchUser } from '#lib/helpers';
 	name: 'balance',
 	aliases: ['bal', 'money', 'balance', 'cash'],
 	description: "Returns a user's current balance.",
-	detailedDescription: 'balance [user]'
+	detailedDescription: '/balance [user]'
 })
 export default class BalanceCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const balanceEmbed = new MessageEmbed();
 		const user = interaction.options.getUser('user', false) ?? interaction.user;
-		const dBUserData = await fetchUser(user);
+		const dbUser = await fetchUser(user);
 
 		balanceEmbed
 			.setTitle(`${user.username}, this is your balance!`)
-			.addField('Wallet:', dBUserData.wallet.toLocaleString())
-			.addField('Bank:', dBUserData.bank.toLocaleString())
-			.addField('Total:', (dBUserData.wallet + dBUserData.bank).toLocaleString())
+			.addField('Wallet:', dbUser.wallet.toLocaleString())
+			.addField('Bank:', dbUser.bank.toLocaleString())
+			.addField('Total:', (dbUser.wallet + dbUser.bank).toLocaleString())
 			.setColor('#4EAFF6');
 		return interaction.reply({ embeds: [balanceEmbed] });
 	}

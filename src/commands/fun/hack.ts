@@ -1,6 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { randomUnitInterval } from '#lib/helpers';
 
 import type { CommandInteraction } from 'discord.js';
 
@@ -12,7 +11,7 @@ const realNames = ['Timothy Green', 'Joe Smith', 'James Madison', 'Harry Cox', '
 @ApplyOptions<CommandOptions>({
 	name: 'hack',
 	description: 'Hack a user. 100% real, totally.',
-	detailedDescription: 'hack <user>',
+	detailedDescription: '/hack <user>',
 	cooldownDelay: 200_000
 })
 export class ReverseCommand extends Command {
@@ -84,8 +83,8 @@ export class ReverseCommand extends Command {
 	}
 
 	private ip() {
-		return `${Math.floor(randomUnitInterval() * 255)}.${Math.floor(randomUnitInterval() * 255)}.${Math.floor(
-			randomUnitInterval() * 255
-		)}.${Math.floor(randomUnitInterval() * 255)}`;
+		return `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(
+			Math.random() * 255
+		)}`;
 	}
 }

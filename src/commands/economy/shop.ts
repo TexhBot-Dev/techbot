@@ -8,7 +8,7 @@ import type { ItemNames } from '@prisma/client';
 @ApplyOptions<CommandOptions>({
 	name: 'shop',
 	description: 'Gives you a list of the buyable items and their prices.',
-	detailedDescription: 'shop'
+	detailedDescription: '/shop'
 })
 export default class ShopCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -17,7 +17,7 @@ export default class ShopCommand extends Command {
 			const item = await fetchItemMetaData(specificItem.toLocaleUpperCase() as ItemNames);
 			if (item !== null) {
 				const embed = new MessageEmbed()
-					.setTitle(item.name.toProperCase())
+					.setTitle(item.name.toTitleCase())
 					.setDescription(`> ${item.description}\nPrice: $${item.price.toLocaleString()}`)
 					.setColor('BLUE');
 				return interaction.reply({ embeds: [embed] });
@@ -32,7 +32,7 @@ export default class ShopCommand extends Command {
 
 		const embed = new MessageEmbed()
 			.setTitle('Items For Sale')
-			.setDescription(items.map((item) => `${item.emoji} **${item.name.toProperCase()}** - $${item.price.toLocaleString()}`).join('\n'))
+			.setDescription(items.map((item) => `${item.emoji} **${item.name.toTitleCase()}** - $${item.price.toLocaleString()}`).join('\n'))
 			.setColor(0x00ff00);
 
 		return interaction.reply({ embeds: [embed] });

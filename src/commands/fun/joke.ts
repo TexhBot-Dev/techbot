@@ -6,7 +6,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 @ApplyOptions<CommandOptions>({
 	name: 'joke',
 	description: 'Gives you a nice joke.',
-	detailedDescription: 'joke'
+	detailedDescription: '/joke'
 })
 export default class JokeCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

@@ -19,7 +19,7 @@ const eightBallResponses = [
 @ApplyOptions<CommandOptions>({
 	name: '8ball',
 	description: 'RNG chooses your fate.',
-	detailedDescription: '8ball <question>'
+	detailedDescription: '/8ball <question>'
 })
 export class EightballCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

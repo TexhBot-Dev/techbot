@@ -1,7 +1,13 @@
 import type { TrustFactor } from '#root/commands/moderation/altCheck';
 import { Milliseconds } from '#root/types/enums/Milliseconds';
 import type { Guild, User } from 'discord.js';
+import { getCommonChars } from '#lib/helpers';
 
+/**
+ * Returns the trust factor of a user.
+ * @param target The user to check.
+ * @param guild The guild to check this user in.
+ */
 export async function check(target: User, guild: Guild): Promise<TrustFactor> {
 	//If the user has flags which signify they are legit, make them very trusted.
 	const targetFlags = target.flags!;
@@ -53,20 +59,6 @@ export async function check(target: User, guild: Guild): Promise<TrustFactor> {
 	}
 
 	return trustFactor;
-}
-
-/**
- * Returns an array of characters which both strings share at the same index.
- * ```
- * getCommonChars('huff', 'puff') //['f', 'f']
- * getCommonChars('rough', 'cough') //['o', 'u', 'g', 'h']
- * ```
- * @param str1 The string to compare to str2.
- * @param str2 The string to compare to str1.
- * @returns string[]
- */
-function getCommonChars(str1: string, str2: string): string[] {
-	return str1.split('').filter((char: string, i: number) => char === str2[i]);
 }
 
 type UsernameMatchType = 'EXACT' | 'VERY_CLOSE' | 'CLOSE' | 'NONE';

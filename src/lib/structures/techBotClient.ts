@@ -16,7 +16,10 @@ export class TechBotClient extends SapphireClient {
 		await container.prisma.$connect();
 
 		this.logger.info('Logging in to discord...');
-		return super.login(token);
+		return super.login(token).then((res) => {
+			container.logger.info('Successfully logged in to Discord.');
+			return res;
+		});
 	}
 
 	public override async destroy() {
