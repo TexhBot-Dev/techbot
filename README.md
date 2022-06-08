@@ -1,4 +1,4 @@
-# Pepeboy
+# TechBot
 
 This is a not basic setup of a Discord bot using [Sapphire Framework](https://www.sapphirejs.com/) and [Prisma](https://www.prisma.io/) written in TypeScript
 
