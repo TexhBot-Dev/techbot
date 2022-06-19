@@ -1,10 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
-import { fileURLToPath } from 'node:url';
 
 const prisma = new PrismaClient();
-const __filename = fileURLToPath(import.meta.url).replace(/seed.js$/, '');
 /*
 ('GRILLED_CHEESE',50000,'EPIC','🍕','I was forgotten about by the devs ;(',false,false,false),
 	 ('HELICOPTER',25000,'EPIC','🚁','I was forgotten about by the devs ;(',false,false,false),

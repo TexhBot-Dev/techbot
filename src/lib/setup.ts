@@ -9,6 +9,7 @@ import './native_extensions.js';
 
 // Register Plugins
 import '@sapphire/plugin-logger/register';
+import '@sapphire/plugin-api/register';
 
 // Read env var
 import { config } from 'dotenv-cra';

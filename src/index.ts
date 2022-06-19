@@ -9,14 +9,24 @@ export const client = new TechBotClient({
 	loadDefaultErrorListeners: true,
 	logger: {
 		level: process.env.NODE_ENV === 'production' ? LogLevel.Info : LogLevel.Debug
+	},
+	api: {
+		auth: {
+			id: process.env.CLIENT_ID ?? '',
+			secret: process.env.CLIENT_SECRET ?? '',
+			cookie: 'TECHBOT_AUTH',
+			redirect: process.env.REDIRECT_URI ?? 'https://greysilly7.xyz/v1/oauth/callback',
+			scopes: ['identity']
+		},
+		prefix: 'v1/',
+		origin: '*',
+		listenOptions: {
+			port: 4000
+		}
 	}
 });
 
-try {
-	await client.login();
-} catch (err) {
-	console.error(err);
-}
+client.login(process.env.DISCORD_TOKEN);
 
 process.on('SIGINT', async () => {
 	await client.destroy();
