@@ -1,7 +1,7 @@
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
-import { fetchItemMetaData, generateErrorEmbed } from '#lib/helpers';
+import { fetchItemMetaData } from '#lib/helpers';
 
 import type { ItemNames } from '@prisma/client';
 
@@ -15,13 +15,15 @@ export default class ShopCommand extends Command {
 		const specificItem = interaction.options.getString('item') ?? '';
 		if (specificItem.length > 0) {
 			const item = await fetchItemMetaData(specificItem.toLocaleUpperCase() as ItemNames);
-			if (item !== null) {
+
+      if (item !== null) {
 				const embed = new MessageEmbed()
 					.setTitle(item.name.toTitleCase())
 					.setDescription(`> ${item.description}\nPrice: $${item.price.toLocaleString()}`)
 					.setColor('BLUE');
 				return interaction.reply({ embeds: [embed] });
 			}
+      
 			return interaction.reply({
 				embeds: [generateErrorEmbed(`Could not find item with name '${specificItem}'.`, 'Invalid Item Name')],
 				ephemeral: true

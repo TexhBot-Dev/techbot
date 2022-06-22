@@ -23,6 +23,7 @@ export default class BetCommand extends Command {
 
 		if (Math.random() < 0.5) {
 			addToWallet(interaction.user, betAmount).then(() => {
+
 				return interaction.reply({
 					embeds: [
 						generateEmbed('Bet Won', `Congrats ${interaction.user.username}, you won **$${betAmount.toLocaleString()}**!`, 'DARK_GREEN')
