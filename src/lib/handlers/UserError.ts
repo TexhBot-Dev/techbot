@@ -64,11 +64,10 @@ export class UserError {
 					generateEmbed(
 						report.title || this.responseEmbed.title || 'Error',
 						(report.rawError ? codeBlock('', '\n\n' + String(report.rawError).truncate(1000)) : '') +
-							`\`${report.message ?? this.responseEmbed.description ?? 'No message provided.'}\`\n\nThis error was thrown by ${
-								report.command?.name || 'an unknown command'
-							}.` +
+							`\n\nThis error was thrown by ${report.command?.name || 'an unknown command'}.` +
 							(report.user ? `\nThe user who ran the failed command was ${report.user.id}.` : '') +
-							(report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name}).` : ''),
+							(report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name}).` : '') +
+							`\n\`${report.message ?? this.responseEmbed.description ?? 'No message provided.'}\``,
 						'RED'
 					).setFooter({ text: `ID: ${this.id} | Type: ${this.type ?? 'UNKNOWN'}` })
 				]
