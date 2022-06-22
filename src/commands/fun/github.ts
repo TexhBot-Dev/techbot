@@ -6,7 +6,7 @@ import { fetch, FetchResultTypes } from '@sapphire/fetch';
 @ApplyOptions<CommandOptions>({
 	name: 'github',
 	description: 'Get information about a GitHub user or organization.',
-	detailedDescription: 'github <username>'
+	detailedDescription: '/github <username>'
 })
 export default class GitHubCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

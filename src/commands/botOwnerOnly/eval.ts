@@ -13,7 +13,7 @@ const OWNERS = process.env.OWNERS?.split(',') ?? [];
 	description: 'Evals codes you provide out of the bot scope',
 	flags: ['async', 'hidden', 'showHidden', 'silent', 's'],
 	options: ['depth'],
-	detailedDescription: 'eval [code]'
+	detailedDescription: '/eval [code]'
 })
 export default class EvalCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

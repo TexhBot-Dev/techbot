@@ -5,9 +5,9 @@ import { randomInt, addToWallet } from '#lib/helpers';
 
 @ApplyOptions<CommandOptions>({
 	name: 'daily',
-	description: 'Get those yummy pepe coins, I know you want them.',
+	description: 'Claim your daily coins every 24 hours.',
 	cooldownDelay: 86_400_000,
-	detailedDescription: 'daily'
+	detailedDescription: '/daily'
 })
 export default class DailyCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<CommandOptions>({
 	name: 'passiveModeToggle',
 	description: "Toggle passive mode, when enabled you can't rob or be robbed by others.",
-	detailedDescription: 'passivemodetoggle <bool>'
+	detailedDescription: '/passivemodetoggle <bool>'
 })
 export default class TogglePassiveModeCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

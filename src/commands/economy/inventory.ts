@@ -7,7 +7,7 @@ import { fetchItemMetaData } from '#lib/helpers';
 	name: 'inventory',
 	description: "Shows a user's item inventory.",
 	aliases: ['inv', 'bag', 'stuff'],
-	detailedDescription: 'inventory [user]'
+	detailedDescription: '/inventory [user]'
 })
 export default class InventoryCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -23,7 +23,7 @@ export default class InventoryCommand extends Command {
 		).map(async (inv, position) => {
 			const item = await fetchItemMetaData(inv.itemID);
 			inventoryEmbed.addField(
-				`${position + 1}: ${item.name.toProperCase()}`,
+				`${position + 1}: ${item.name.toTitleCase()}`,
 				`Price: ${item.price.toLocaleString()}\nRarity: ${item.rarity}\nAmount: ${inv.count.toLocaleString()}`
 			);
 		});

@@ -128,3 +128,7 @@ dist
 speed.js
 
 .env
+
+# npm
+# We use pnpm but people can choose to use npm locally
+package-lock.json

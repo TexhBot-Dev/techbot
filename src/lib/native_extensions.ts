@@ -7,7 +7,7 @@ String.prototype.toSnakeCase = function () {
 	return this.trim().toLowerCase().replace(/\s+/g, '_');
 };
 
-String.prototype.toProperCase = function () {
+String.prototype.toTitleCase = function () {
 	return String(
 		this.replaceAll('_', ' ')
 			.toLowerCase()
@@ -24,12 +24,12 @@ String.prototype.truncate = function (max: number, addEllipsis: boolean = true) 
 };
 
 Array.prototype.randomElement = function <T>(): T {
-	return this[Math.floor(randomUnitInterval() * this.length)];
+	return this[Math.floor(Math.random() * this.length)];
 };
 
 declare global {
 	interface String {
-		toProperCase(): string;
+		toTitleCase(): string;
 		toSnakeCase(): string;
 		toConstantCase(): string;
 		truncate(max: number, addEllipsis?: boolean): string;

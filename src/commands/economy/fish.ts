@@ -1,13 +1,13 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
-import { incrementItemCount, fetchUserInventory, randomUnitInterval, randomInt } from '#lib/helpers';
+import { incrementItemCount, fetchUserInventory, randomInt } from '#lib/helpers';
 
 import type { CommandInteraction } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
 	name: 'fish',
 	description: 'Going fishing and attempt to catch something!',
-	detailedDescription: 'fish'
+	detailedDescription: '/fish'
 })
 export class FishCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -17,7 +17,7 @@ export class FishCommand extends Command {
 
 		const fishEarned = randomInt(1, 4);
 
-		if (randomUnitInterval() > 0.5) {
+		if (Math.random() > 0.5) {
 			await incrementItemCount(interaction.user, 'FISH', fishEarned);
 			return interaction.reply(`You caught **${fishEarned}** fish!`);
 		}

@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 @ApplyOptions<CommandOptions>({
 	name: 'image',
 	description: 'Image generation and manipulation.',
-	detailedDescription: 'image <subcommand> [...options]'
+	detailedDescription: '/image <subcommand> [...options]'
 })
 export default class ImageCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

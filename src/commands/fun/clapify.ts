@@ -7,9 +7,9 @@ import type { CommandInteraction } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'clapify',
 	description: 'Clapify your text.',
-	detailedDescription: 'clapify <text>'
+	detailedDescription: '/clapify <text>'
 })
-export default class clapifyCommand extends Command {
+export default class ClapifyCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const text = interaction.options.getString('text') as string;
 		const user = await fetchUser(interaction.user);
@@ -17,6 +17,7 @@ export default class clapifyCommand extends Command {
 		const emoji =
 			replacer(
 				user.preferredEmojiColor,
+				'string',
 				{
 					yellow: '👏', // deprecated
 					default: '👏',

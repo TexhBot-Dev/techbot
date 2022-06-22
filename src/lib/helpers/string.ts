@@ -19,15 +19,36 @@ export const clean = (text: string): string => {
 };
 
 /**
- * Replaces stuff in text
- * @param string
- * @param object
- * @param regexFlag
+ * Mass replaces stuff in text
+ * ```
+ * const newString = replacer("hello there", {
+ * 	"there": "world",
+ * 	"hello": "hi"
+ * })
+ * //Do something with newString....
+ * ```
+ * @param string The string to replace substrings from.
+ * @param object The object containing the replacements. The keys are the substrings or regexps to replace, and the values are the replacements.
+ * @param regexFlag The regex flag to use when replacing.
  */
-export const replacer = (string: string, object: object, regexFlag = ''): string => {
+export const replacer = (string: string, replaceType: 'regex' | 'string', object: object, regexFlag = ''): string => {
 	for (const [key, value] of Object.entries(object)) {
-		const reg = new RegExp(key, regexFlag);
-		string = string.replace(reg, value);
+		const exp = replaceType === 'string' ? key : new RegExp(key, regexFlag);
+		string = string.replace(exp, value);
 	}
 	return string;
 };
+
+/**
+ * Returns an array of characters which both strings share at the same index.
+ * ```
+ * getCommonChars('huff', 'puff') //['f', 'f']
+ * getCommonChars('rough', 'cough') //['o', 'u', 'g', 'h']
+ * ```
+ * @param str1 The string to compare to str2.
+ * @param str2 The string to compare to str1.
+ * @returns string[]
+ */
+export function getCommonChars(str1: string, str2: string): string[] {
+	return str1.split('').filter((char: string, i: number) => char === str2[i]);
+}

@@ -8,7 +8,7 @@ import type { ItemNames } from '@prisma/client';
 @ApplyOptions<CommandOptions>({
 	name: 'sell',
 	description: 'Sell an item.',
-	detailedDescription: 'sell <item> <amount>'
+	detailedDescription: '/sell <item> <amount>'
 })
 export class SellCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

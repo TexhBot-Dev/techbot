@@ -7,7 +7,7 @@ import type { CommandInteraction } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'howgay',
 	description: 'How gay are you?',
-	detailedDescription: 'howgay [user]'
+	detailedDescription: '/howgay [user]'
 })
 export class HowGayCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

@@ -5,7 +5,7 @@ import type { CommandInteraction } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'owofy',
 	description: 'Only for the true owoers.',
-	detailedDescription: 'owo <string>'
+	detailedDescription: '/owo <string>'
 })
 export class OwOCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

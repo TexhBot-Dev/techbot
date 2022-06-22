@@ -8,7 +8,7 @@ import { fetchPetMetaData, subtractFromWallet } from '#lib/helpers';
 @ApplyOptions<CommandOptions>({
 	name: 'pets',
 	description: 'Lets your manage your pets.',
-	detailedDescription: 'pet'
+	detailedDescription: '/pet'
 })
 export default class PetCommands extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -42,7 +42,7 @@ export default class PetCommands extends Command {
 		const petMetaData = await fetchPetMetaData(petToBuy as PetTypes);
 		await subtractFromWallet(interaction.user, petMetaData.price);
 
-		return interaction.reply(`You bought a ${petToBuy.toProperCase()} named ${petName} for ${petMetaData.price}.`);
+		return interaction.reply(`You bought a ${petToBuy.toTitleCase()} named ${petName} for ${petMetaData.price}.`);
 	}
 
 	public async feed(interaction: CommandInteraction) {
@@ -69,7 +69,7 @@ export default class PetCommands extends Command {
 			}
 		});
 
-		return interaction.reply(`You fed ${petToFeed.toProperCase()}.`);
+		return interaction.reply(`You fed ${petToFeed.toTitleCase()}.`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

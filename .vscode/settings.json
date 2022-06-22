@@ -1,5 +1,5 @@
 {
-	"cSpell.words": ["colorette", "Pepe"],
+	"cSpell.words": ["altchecks", "colorette", "Dentifier", "Pepe"],
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"conventionalCommits.scopes": ["trade"]
 }

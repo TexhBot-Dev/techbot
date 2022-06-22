@@ -7,7 +7,7 @@ import { addToBank, subtractFromWallet, generateErrorEmbed, isSafeInteger, parse
 @ApplyOptions<CommandOptions>({
 	name: 'deposit',
 	description: 'Deposit coins from your wallet into your bank account.',
-	detailedDescription: 'deposit <amount>'
+	detailedDescription: '/deposit <amount>'
 })
 export default class DepositCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

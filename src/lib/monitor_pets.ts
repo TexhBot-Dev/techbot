@@ -1,6 +1,9 @@
 import { container } from '@sapphire/framework';
 import { randomInt } from './helpers/index.js';
 
+/**
+ * Make sure pets aren't being neglected.
+ */
 setInterval(async () => {
 	(await container.prisma.pet.findMany()).forEach(async (pet) => {
 		if (pet.hunger < 0) {
@@ -20,7 +23,7 @@ setInterval(async () => {
 			}
 		}
 		// check if pet.lastFed has been over a day
-		if (pet.lastFed.getTime() + 86400000 < Date.now()) {
+		if (pet.lastFed.getTime() + 86_400_000 < Date.now()) {
 			const hunger = pet.hunger - randomInt(1, 3);
 			// If it has, subtract from pet.hunger
 			await container.prisma.pet.update({
@@ -35,7 +38,7 @@ setInterval(async () => {
 				}
 			});
 
-			void (await container.client.users.fetch(pet.userID)).send({
+			(await container.client.users.fetch(pet.userID)).send({
 				content: `Your pet ${pet.name} has lost ${hunger} points because you forgot to feed it!.`
 			});
 		}

@@ -1,44 +1,32 @@
-import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction } from 'discord.js';
-import { ApplyOptions } from '@sapphire/decorators';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { generateEmbed } from '#lib/helpers';
 
-@ApplyOptions<CommandOptions>({
-	name: 'dog',
-	description: 'Shows a cute dog image.',
-	detailedDescription: 'dog'
-})
-export default class DogCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction) {
-		const headers: HeadersInit = {
-			'X-API-Key': process.env.THE_DOG_API_KEY!
-		};
+/**
+ * Returns a random image of a dog.
+ */
+export const dog = async (interaction: CommandInteraction) => {
+	const headers: HeadersInit = {
+		'X-API-Key': process.env.THE_DOG_API_KEY!
+	};
 
-		// Create query string
-		const queryParams = new URLSearchParams([
-			['limit', '1'],
-			['size', 'small'],
-			['mime_types', 'jpg,png'],
-			['has_breeds', 'true'],
-			['sub_id', interaction.user.id]
-		]).toString();
-		const dog = (await fetch<Dog[]>(`https://api.thedogapi.com/v1/images/search?${queryParams}`, { headers }, FetchResultTypes.JSON))[0];
-		const dogEmbed = generateEmbed('Dog', '', 'BLUE')
-			.setImage(dog.url)
-			.setFooter({
-				text: `Breed: ${dog.breeds[0].name} | life-span: ${dog.breeds[0].life_span} | Temperament: ${dog.breeds[0].temperament}`
-			});
-
-		return interaction.reply({ embeds: [dogEmbed] });
-	}
-
-	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) => builder.setName(this.name).setDescription(this.description), {
-			idHints: ['977784735872999467']
+	// Create query string
+	const queryParams = new URLSearchParams([
+		['limit', '1'],
+		['size', 'small'],
+		['mime_types', 'jpg,png'],
+		['has_breeds', 'true'],
+		['sub_id', interaction.user.id]
+	]).toString();
+	const dog = (await fetch<Dog[]>(`https://api.thedogapi.com/v1/images/search?${queryParams}`, { headers }, FetchResultTypes.JSON))[0];
+	const dogEmbed = generateEmbed('Dog', '', 'BLUE')
+		.setImage(dog.url)
+		.setFooter({
+			text: `Breed: ${dog.breeds[0].name} | life-span: ${dog.breeds[0].life_span} | Temperament: ${dog.breeds[0].temperament}`
 		});
-	}
-}
+
+	return interaction.reply({ embeds: [dogEmbed] });
+};
 
 export interface Dog {
 	breeds: Breed[];

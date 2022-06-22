@@ -5,7 +5,7 @@ import type { CommandInteraction, User } from 'discord.js';
 @ApplyOptions<CommandOptions>({
 	name: 'setting',
 	description: 'Customize your settings.',
-	detailedDescription: 'settings <subcommand> <...values>'
+	detailedDescription: '/settings <subcommand> <...values>'
 })
 export default class SettingCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {

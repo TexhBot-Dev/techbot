@@ -29,7 +29,7 @@ const inventions = [
 @ApplyOptions<CommandOptions>({
 	name: 'invent',
 	description: 'Lets you invent stuff and earn money',
-	detailedDescription: 'invent',
+	detailedDescription: '/invent',
 	cooldownDelay: 60_000 * 10 // 10 min
 })
 export class InventCommand extends Command {

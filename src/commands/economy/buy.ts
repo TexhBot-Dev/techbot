@@ -7,7 +7,7 @@ import { generateErrorEmbed, fetchItemMetaData, fetchUser, incrementItemCount, s
 @ApplyOptions<CommandOptions>({
 	name: 'buy',
 	description: 'Gives you the ability to buy items from the store.',
-	detailedDescription: 'buy <item>'
+	detailedDescription: '/buy <item>'
 })
 export default class BuyCommand extends Command {
 	public override async chatInputRun(interaction: CommandInteraction) {
@@ -26,7 +26,7 @@ export default class BuyCommand extends Command {
 			return interaction.reply({
 				embeds: [
 					generateErrorEmbed(
-						`You don't have enough money to purchase \`${item.name.toProperCase()}\`.\nThe item's price of \`${item.price.toLocaleString()}\` is greater than your wallet balance of \`${user.wallet.toLocaleString()}\`.\nUsage: \`/${
+						`You don't have enough money to purchase \`${item.name.toTitleCase()}\`.\nThe item's price of \`${item.price.toLocaleString()}\` is greater than your wallet balance of \`${user.wallet.toLocaleString()}\`.\nUsage: \`/${
 							this.detailedDescription as string
 						}\``,
 						'Insufficient Amount'
@@ -38,7 +38,7 @@ export default class BuyCommand extends Command {
 
 		await subtractFromWallet(interaction.user, item.price);
 		await incrementItemCount(interaction.user, item.name);
-		return interaction.reply(`You bought **${item.name.toProperCase()}** for **$${item.price.toLocaleString()}**`);
+		return interaction.reply(`You bought **${item.name.toTitleCase()}** for **$${item.price.toLocaleString()}**`);
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
