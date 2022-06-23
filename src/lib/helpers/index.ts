@@ -6,3 +6,4 @@ export * from './random.js';
 export * from './string.js';
 export * from './timestamps.js';
 export * from './semantics.js';
+export * from './message.js';

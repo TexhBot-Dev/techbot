@@ -34,6 +34,7 @@ export class UserCommand extends Command {
 					stringifiedTrustFactors[trustFactor]
 				}**.\n\nTrust Factor: ${trustFactor}\nCreation Date: <t:${creationTimestamp}:f> (<t:${creationTimestamp}:R>)`
 			);
+
 		interaction.editReply({ embeds: [embed], content: null });
 	}
 
