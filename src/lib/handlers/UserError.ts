@@ -8,7 +8,7 @@ import { randomUUID } from 'node:crypto';
  * User error builder.
  */
 export class UserError {
-	private responseEmbed!: MessageEmbed;
+  private responseEmbed!: MessageEmbed;
 	private type!: string;
 	private context: CommandInteraction | Interaction;
 	private readonly id = randomUUID();
@@ -43,6 +43,7 @@ export class UserError {
 		response.ephemeral ??= true;
 
 		this.context.reply(response);
+    
 		return this;
 	}
 
@@ -73,7 +74,7 @@ export class UserError {
 				]
 			})
 			.catch(() => noop);
-
+    
 		return this;
 	}
 }

@@ -52,7 +52,7 @@ export class InteractionListener extends Listener {
 	}
 }
 
-function fuzzyAutocomplete(options: string[] | object, focusedValue: string) {
+const fuzzyAutocomplete = (options: string[] | object, focusedValue: string) => {
 	const choices = Array.isArray(options)
 		? options.map((el: string) => el.toTitleCase())
 		: Object.values(options).map((el: string) => el.toLowerCase());
@@ -61,4 +61,4 @@ function fuzzyAutocomplete(options: string[] | object, focusedValue: string) {
 	if (filtered.length === 0)
 		filtered = choices.filter((choice) => choice.toLowerCase().includes(focusedValue) || focusedValue.includes(choice.toLowerCase()));
 	return filtered.map((choice) => ({ name: choice, value: choice })).slice(0, 25);
-}
+};
