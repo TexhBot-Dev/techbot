@@ -24,7 +24,7 @@ specifiers:
   '@types/ws': ^8.5.3
   colorette: ^2.0.19
   common-tags: ^1.8.2
-  discord.js: ^13.7.0
+  discord.js: ^13.8.1
   dotenv: ^16.0.1
   dotenv-cra: ^3.0.2
   husky: ^8.0.1
@@ -51,7 +51,7 @@ dependencies:
   '@sapphire/type': 2.2.4
   '@sapphire/utilities': 3.6.2
   common-tags: 1.8.2
-  discord.js: 13.7.0
+  discord.js: 13.8.1
   dotenv: 16.0.1
   dotenv-cra: 3.0.2
   reflect-metadata: 0.1.13
@@ -78,21 +78,16 @@ devDependencies:
 
 packages:
 
-  /@discordjs/builders/0.13.0:
-    resolution: {integrity: sha512-4L9y26KRNNU8Y7J78SRUN1Uhava9D8jfit/YqEaKi8gQRc7PdqKqk2poybo6RXaiyt/BgKYPfcjxT7WvzGfYCA==}
+  /@discordjs/builders/0.14.0:
+    resolution: {integrity: sha512-+fqLIqa9wN3R+kvlld8sgG0nt04BAZxdCDP4t2qZ9TJsquLWA+xMtT8Waibb3d4li4AQS+IOfjiHAznv/dhHgQ==}
     engines: {node: '>=16.9.0'}
     dependencies:
-      '@sapphire/shapeshift': 2.2.0
+      '@sapphire/shapeshift': 3.3.1
       '@sindresorhus/is': 4.6.0
-      discord-api-types: 0.31.2
+      discord-api-types: 0.33.5
       fast-deep-equal: 3.1.3
       ts-mixer: 6.0.1
       tslib: 2.4.0
-    dev: false
-
-  /@discordjs/collection/0.6.0:
-    resolution: {integrity: sha512-Ieaetb36l0nmAS5X9Upqk4W7euAO6FdXPxn3I8vBAKEcoIzEZI1mcVcPfCfagGJZSgBKpENnAnKkP4GAn+MV8w==}
-    engines: {node: '>=16.9.0'}
     dev: false
 
   /@discordjs/collection/0.7.0:
@@ -301,9 +296,9 @@ packages:
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
-  /@sapphire/shapeshift/2.2.0:
-    resolution: {integrity: sha512-UEnKgMlQyI0yY/q+lCMX0VJft9y86IsesgbIQj6e62FBYSaMVr+IaMNpi4z45Q14VnuMACbK0yrbHISNqgUYcQ==}
-    engines: {node: '>=v15.0.0', npm: '>=7.0.0'}
+  /@sapphire/shapeshift/3.3.1:
+    resolution: {integrity: sha512-PB2e5JHWIMRz9HiN/sIWcNIzXjYvzc3OmeRHYICXreKhetDYf4Zufypr8A48Z/XZLzbMqIka6uoR+2dH58nksg==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
   /@sapphire/stopwatch/1.4.1:
@@ -931,7 +926,7 @@ packages:
     dev: true
 
   /delayed-stream/1.0.0:
-    resolution: {integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=}
+    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
     dev: false
 
@@ -952,27 +947,23 @@ packages:
       path-type: 4.0.0
     dev: true
 
-  /discord-api-types/0.30.0:
-    resolution: {integrity: sha512-wYst0jrT8EJs2tVlwUTQ2xT0oWMjUrRMpFTkNY3NMleWyQNHgWaKhqFfxdLPdC2im9IuR5EsxcEgjhf/npeftw==}
+  /discord-api-types/0.33.5:
+    resolution: {integrity: sha512-dvO5M52v7m7Dy96+XUnzXNsQ/0npsYpU6dL205kAtEDueswoz3aU3bh1UMoK4cQmcGtB1YRyLKqp+DXi05lzFg==}
     dev: false
 
-  /discord-api-types/0.31.2:
-    resolution: {integrity: sha512-gpzXTvFVg7AjKVVJFH0oJGC0q0tO34iJGSHZNz9u3aqLxlD6LfxEs9wWVVikJqn9gra940oUTaPFizCkRDcEiA==}
-    dev: false
-
-  /discord.js/13.7.0:
-    resolution: {integrity: sha512-iV/An3FEB/CiBGdjWHRtgskM4UuWPq5vjhjKsrQhdVU16dbKrBxA+eIV2HWA07B3tXUGM6eco1wkr42gxxV1BA==}
+  /discord.js/13.8.1:
+    resolution: {integrity: sha512-jOsD+4tEZWWx0RHVyH+FBcqoTrsL+d5Mm5p+ULQOdU0qSaxhLNkWYig+yDHNZoND7nlkXX3qi+BW+gO5erWylg==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     dependencies:
-      '@discordjs/builders': 0.13.0
-      '@discordjs/collection': 0.6.0
+      '@discordjs/builders': 0.14.0
+      '@discordjs/collection': 0.7.0
       '@sapphire/async-queue': 1.3.1
       '@types/node-fetch': 2.6.1
       '@types/ws': 8.5.3
-      discord-api-types: 0.30.0
+      discord-api-types: 0.33.5
       form-data: 4.0.0
       node-fetch: 2.6.7
-      ws: 8.6.0
+      ws: 8.8.0
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -2536,8 +2527,8 @@ packages:
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  /ws/8.6.0:
-    resolution: {integrity: sha512-AzmM3aH3gk0aX7/rZLYvjdvZooofDu3fFOzGqcSnQ1tOcTWwhM/o+q++E8mAyVVIyUdajrkzWUGftaVSDLn1bw==}
+  /ws/8.8.0:
+    resolution: {integrity: sha512-JDAgSYQ1ksuwqfChJusw1LSJ8BizJ2e/vVu5Lxjq3YvNJNlROv1ui4i+c/kUUrPheBvQl4c5UbERhTwKa6QBJQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
