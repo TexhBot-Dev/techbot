@@ -5,7 +5,7 @@
     <value-preview-text-wrapping value="true" />
     <value-preview-pinned value="false" />
   </component>
-  <component name="DBNavigator.Project.DataExportManager">
+  <component name="DBNavigator.Project.DataexportManager">
     <export-instructions>
       <create-header value="true" />
       <friendly-headers value="false" />
