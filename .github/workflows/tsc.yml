@@ -14,6 +14,7 @@ jobs:
       with:
         node-version: 18
         cache: 'pnpm'
+        version: 7.1.2
     - name: pnpm install --frozen-lockfile
       run: pnpm install --frozen-lockfile
     - name: tsc
