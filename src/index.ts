@@ -12,13 +12,7 @@ export const client = new TechBotClient({
 	}
 });
 
-(async () => {
-	try {
-		await client.login();
-	} catch (err) {
-		console.error(err);
-	}
-})();
+client.login(process.env.DISCORD_TOKEN).catch((err) => console.error);
 
 process.on('SIGINT', async () => {
 	await client.destroy();
