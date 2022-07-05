@@ -7,14 +7,15 @@ jobs:
     name: tsc
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
+    - uses: pnpm/action-setup@v2
     - name: install node v18
       uses: actions/setup-node@v3
       with:
         node-version: 18
         cache: 'pnpm'
-    - name: pnpm install
-      run: pnpm install
+    - name: pnpm install --frozen-lockfile
+      run: pnpm install --frozen-lockfile
     - name: tsc
       uses: icrawl/action-tsc@v1
       with:
