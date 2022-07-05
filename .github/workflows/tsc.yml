@@ -19,7 +19,7 @@ jobs:
     - name: pnpm install --frozen-lockfile
       run: pnpm install --frozen-lockfile
     - name: primsa generate
-      run: primsa generate
+      run: npx primsa generate
     - name: tsc
       uses: icrawl/action-tsc@v1
       with:
