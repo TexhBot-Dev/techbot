@@ -1,30 +1,42 @@
 import type { ApplicationCommandRegistry } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { ChatInputSubcommandMappings, SubcommandMappingsArray, SubCommandPluginCommand } from '@sapphire/plugin-subcommands';
+import { Subcommand, SubcommandMappingArray } from '@sapphire/plugin-subcommands';
 import { Milliseconds } from '#root/types/enums/Milliseconds';
 import { generateEmbed } from '#lib/helpers';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import type { CommandInteraction } from 'discord.js';
 
-@ApplyOptions<SubCommandPluginCommand.Options>({
+@ApplyOptions<Subcommand.Options>({
 	name: 'animal',
 	description: 'Shows a cute image of an animal.',
 	detailedDescription: '/animal <cat | dog>',
-	cooldownDelay: Milliseconds.Second * 10 //10 seconds
+	cooldownDelay: Milliseconds.Second * 10 // 10 seconds
 })
-export default class CatCommand extends SubCommandPluginCommand {
-	protected readonly subcommandMappings: SubcommandMappingsArray = [
-		new ChatInputSubcommandMappings([
-			{
-				name: 'dog',
-				to: (interaction) => this.dog(interaction)
-			},
-			{
-				name: 'cat',
-				to: (interaction) => this.cat(interaction)
-			}
-		])
+export default class CatCommand extends Subcommand {
+	protected readonly subcommandMappings: SubcommandMappingArray = [
+		{
+			name: 'dog',
+			chatInputRun: (interaction) => this.dog(interaction)
+		},
+		{
+			name: 'cat',
+			chatInputRun: (interaction) => this.cat(interaction)
+		}
 	];
+
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
+		registry.registerChatInputCommand(
+			(builder) =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addSubcommand((builder) => builder.setName('cat').setDescription('Shows a cute cat image.'))
+					.addSubcommand((builder) => builder.setName('dog').setDescription('Shows a cute dog image.')),
+			{
+				idHints: ['977784735218696242']
+			}
+		);
+	}
 
 	private async dog(interaction: CommandInteraction) {
 		const headers: HeadersInit = {
@@ -80,20 +92,6 @@ export default class CatCommand extends SubCommandPluginCommand {
 			});
 
 		return interaction.reply({ embeds: [catEmbed] });
-	}
-
-	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand(
-			(builder) =>
-				builder
-					.setName(this.name)
-					.setDescription(this.description)
-					.addSubcommand((builder) => builder.setName('cat').setDescription('Shows a cute cat image.'))
-					.addSubcommand((builder) => builder.setName('dog').setDescription('Shows a cute dog image.')),
-			{
-				idHints: ['977784735218696242']
-			}
-		);
 	}
 }
 

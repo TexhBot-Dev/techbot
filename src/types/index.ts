@@ -1,2 +1,2 @@
-export * from './discord/user/Discriminator';
-export * from './discord/user/Tag';
+export * from './discord/user/Discriminator.js';
+export * from './discord/user/Tag.js';

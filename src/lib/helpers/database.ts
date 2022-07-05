@@ -31,7 +31,7 @@ export const fetchUserPets = async (user: DiscordUser): Promise<Pet[]> => {
  * @param itemName The item to fetch.
  */
 export const fetchItemMetaData = async (itemName: ItemNames): Promise<ItemMetaData> => {
-	return (await container.prisma.itemMetaData.findFirst({
+	const itemMetaData = await container.prisma.itemMetaData.findFirst({
 		where: {
 			name: itemName
 		}

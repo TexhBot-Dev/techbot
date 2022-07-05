@@ -1,5 +1,3 @@
-import { randomUnitInterval } from '#lib/helpers';
-
 export {};
 /* eslint-disable func-names */
 /* eslint-disable no-extend-native */
@@ -19,7 +17,7 @@ String.prototype.toConstantCase = function () {
 	return this.replace(/\s/g, '_').toLocaleUpperCase();
 };
 
-String.prototype.truncate = function (max: number, addEllipsis: boolean = true) {
+String.prototype.truncate = function (max: number, addEllipsis = true) {
 	return (this.length > max ? this.substring(0, max) + (addEllipsis ? '...' : '') : this) as string;
 };
 
