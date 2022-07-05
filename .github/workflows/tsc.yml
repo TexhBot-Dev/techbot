@@ -12,8 +12,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 18
-    - name: yarn install
-      run: yarn install
+        cache: 'pnpm'
+    - name: pnpm install
+      run: pnpm install
     - name: tsc
       uses: icrawl/action-tsc@v1
       with:
