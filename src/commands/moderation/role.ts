@@ -1,5 +1,5 @@
 import type { ApplicationCommandRegistry } from '@sapphire/framework';
-import type { CommandInteraction, GuildMember, GuildMemberRoleManager } from 'discord.js';
+import type { CommandInteraction, CommandInteractionOption, GuildMember, GuildMemberRoleManager, Role } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { SubcommandMappingArray, Subcommand } from '@sapphire/plugin-subcommands';
 
@@ -54,16 +54,22 @@ export default class RoleCommand extends Subcommand {
 		);
 	}
 
-	private async add(interaction: CommandInteraction) {
-		const user = interaction.options.getMember('user');
-		const role = interaction.options.getRole('role');
-
+	private checkIfCommandIsAllowed(interaction: CommandInteraction, role: CommandInteractionOption['role']) {
 		const userAbleToGiveRole = (interaction.member?.roles as GuildMemberRoleManager).highest.position > (role?.position ?? 0);
 		const botAbleToGiveRole =
 			(interaction.guild?.me?.roles as GuildMemberRoleManager).highest?.position > (role?.position ?? 0) &&
 			interaction.guild?.me?.permissions.has('MANAGE_ROLES');
 
-		if (!userAbleToGiveRole || !botAbleToGiveRole) {
+		console.log(userAbleToGiveRole, botAbleToGiveRole, userAbleToGiveRole && botAbleToGiveRole);
+
+		return !userAbleToGiveRole && !botAbleToGiveRole;
+	}
+
+	private async add(interaction: CommandInteraction) {
+		const user = interaction.options.getMember('user');
+		const role = interaction.options.getRole('role');
+
+		if (this.checkIfCommandIsAllowed(interaction, role)) {
 			return interaction.reply('You (or the bot) do not have permission to give this role to this user.');
 		}
 
@@ -80,12 +86,7 @@ export default class RoleCommand extends Subcommand {
 		const user = interaction.options.getMember('user');
 		const role = interaction.options.getRole('role');
 
-		const userAbleToRemoveRole = (interaction.member?.roles as GuildMemberRoleManager).highest.position > (role?.position ?? 0);
-		const botAbleToRemoveRole =
-			(interaction.guild?.me?.roles as GuildMemberRoleManager).highest?.position > (role?.position ?? 0) &&
-			interaction.guild?.me?.permissions.has('MANAGE_ROLES');
-
-		if (!userAbleToRemoveRole || !botAbleToRemoveRole) {
+		if (this.checkIfCommandIsAllowed(interaction, role)) {
 			return interaction.reply('You (or the bot) do not have permission to remove this role to this user.');
 		}
 
