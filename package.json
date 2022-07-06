@@ -84,7 +84,7 @@
 			"src/**/*.ts",
 			"!src/**/*.d.ts"
 		],
-		"minify": true,
+		"minify": false,
 		"skipNodeModulesBundle": true,
 		"target": "esnext",
 		"tsconfig": "./src/tsconfig.json",

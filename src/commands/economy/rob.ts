@@ -74,7 +74,7 @@ export default class RobCommand extends Command {
 			return interaction.reply({ embeds: [failedResponse] });
 		}
 
-    subtractFromWallet(userToRob, lossAmount);
+		subtractFromWallet(userToRob, lossAmount);
 		addToWallet(interaction.user, lossAmount);
 
 		const successResponse = new MessageEmbed()
