@@ -1,5 +1,5 @@
 import type { ApplicationCommandRegistry } from '@sapphire/framework';
-import type { CommandInteraction, CommandInteractionOption, GuildMember, GuildMemberRoleManager, Role } from 'discord.js';
+import type { CommandInteraction, CommandInteractionOption, GuildMember, GuildMemberRoleManager } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { SubcommandMappingArray, Subcommand } from '@sapphire/plugin-subcommands';
 
@@ -60,7 +60,7 @@ export default class RoleCommand extends Subcommand {
 			(interaction.guild?.me?.roles as GuildMemberRoleManager).highest?.position > (role?.position ?? 0) &&
 			interaction.guild?.me?.permissions.has('MANAGE_ROLES');
 
-		console.log(userAbleToGiveRole, botAbleToGiveRole, userAbleToGiveRole && botAbleToGiveRole);
+		// console.log(userAbleToGiveRole, botAbleToGiveRole, userAbleToGiveRole && botAbleToGiveRole);
 
 		return !userAbleToGiveRole && !botAbleToGiveRole;
 	}
