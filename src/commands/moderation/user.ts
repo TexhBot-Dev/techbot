@@ -45,7 +45,7 @@ export class UserCommand extends Command {
 		const highestRole = member.roles.highest;
 		response.addField('Highest Role', `${highestRole.toString()} (${highestRole.id})`);
 
-		interaction.reply({
+		return interaction.reply({
 			embeds: [response]
 		});
 	}

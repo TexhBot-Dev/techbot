@@ -25,7 +25,7 @@ export class QuoteCommand extends Command {
 				embeds: [generateErrorEmbed('The message provided exists, but contains no content or description.', 'No Message Content')]
 			});
 
-		const description = content + '\n\n' + `*[Source :arrow_up:](${messageURL})*`;
+		const description = `${content}\n\n*[Source :arrow_up:](${messageURL})*`;
 
 		return interaction.reply({
 			embeds: [

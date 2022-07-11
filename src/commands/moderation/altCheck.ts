@@ -35,7 +35,7 @@ export class UserCommand extends Command {
 				}**.\n\nTrust Factor: ${trustFactor}\nCreation Date: <t:${creationTimestamp}:f> (<t:${creationTimestamp}:R>)`
 			);
 
-		interaction.editReply({ embeds: [embed], content: null });
+		return interaction.editReply({ embeds: [embed], content: null });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {

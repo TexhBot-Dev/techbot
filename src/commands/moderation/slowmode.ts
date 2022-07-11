@@ -12,7 +12,7 @@ import { Duration } from '#lib/handlers/Duration';
 	runIn: ['GUILD_TEXT']
 })
 export class BanCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
+	public override chatInputRun(interaction: CommandInteraction) {
 		const channel = (interaction.options.getChannel('channel') ?? interaction.channel) as GuildTextBasedChannel;
 
 		if (!channel.permissionsFor(interaction.user)?.has('MANAGE_CHANNELS'))
@@ -32,11 +32,11 @@ export class BanCommand extends Command {
 				]
 			});
 
-		channel
+		return channel
 			.edit({ rateLimitPerUser: Math.round(duration.seconds) })
 			.then(() => {
-				interaction.reply({
-					content: `Set ${channel.toString()}'s slowmode to **${duration.toString()}**.`
+				return interaction.reply({
+					content: `Set ${channel.name}'s slowmode to **${duration.toString()}**.`
 				});
 			})
 			.catch((err) => {

@@ -11,7 +11,7 @@ import { CommandInteraction, Permissions } from 'discord.js';
 	runIn: ['GUILD_TEXT']
 })
 export class KickCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
+	public override async chatInputRun(interaction: CommandInteraction) {
 		if (!interaction.memberPermissions!.has(Permissions.FLAGS.KICK_MEMBERS))
 			return new UserError(interaction)
 				.sendResponse({ embeds: [generateErrorEmbed('You need the kick members permission to use that.', 'Missing Permissions')] })
@@ -27,10 +27,10 @@ export class KickCommand extends Command {
 
 		const reason = interaction.options.getString('reason', false) ?? undefined;
 
-		guild.members
+		return guild.members
 			.kick(userToKick, reason)
 			.then(() => {
-				interaction.reply({
+				return interaction.reply({
 					content: `Successfully kicked **${userToKick.user.tag}**.`
 				});
 			})

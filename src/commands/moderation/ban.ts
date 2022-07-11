@@ -11,7 +11,7 @@ import { CommandInteraction, Permissions } from 'discord.js';
 	runIn: ['GUILD_TEXT']
 })
 export class BanCommand extends Command {
-	public override async chatInputRun(interaction: CommandInteraction): Promise<any> {
+	public override chatInputRun(interaction: CommandInteraction) {
 		if (!interaction.memberPermissions!.has(Permissions.FLAGS.BAN_MEMBERS))
 			return new UserError(interaction)
 				.sendResponse({ embeds: [generateErrorEmbed('You need the ban members permission to use that.', 'Missing Permissions')] })
@@ -23,14 +23,14 @@ export class BanCommand extends Command {
 		const reason = interaction.options.getString('reason', false) ?? undefined;
 		const days = interaction.options.getInteger('days_to_delete', false) ?? 0;
 
-		guild.members
+		return guild.members
 			.ban(userToBan, {
 				days,
 				reason
 			})
 			.then(() => {
-				interaction.reply({
-					content: `Successfully banned **${userToBan.tag}**` + (days > 0 ? `and deleted ${days} days of their messages.` : '.')
+				return interaction.reply({
+					content: `Successfully banned **${userToBan.tag}**${days > 0 ? `and deleted ${days} days of their messages.` : '.'}`
 				});
 			})
 			.catch((err) => {
