@@ -1,7 +1,6 @@
 # Contributing
 
 1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) or [clone](https://github.com/git-guides/git-clone) the repository.
-1. TODO: mention something about ts nightly extension / `this.container.prisma` issue
 1. Install [`pnpm`](https://pnpm.io) if you haven't already, `npm i pnpm -D -g`.
    a. Run `pnpm i` to install dependencies.
 1. Make your changes.
