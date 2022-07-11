@@ -60,7 +60,7 @@ export default class RoleCommand extends Subcommand {
 			(interaction.guild?.me?.roles as GuildMemberRoleManager).highest?.position > (role?.position ?? 0) &&
 			interaction.guild?.me?.permissions.has('MANAGE_ROLES');
 
-		// console.log(userAbleToGiveRole, botAbleToGiveRole, userAbleToGiveRole && botAbleToGiveRole);
+		// // console.log(userAbleToGiveRole, botAbleToGiveRole, userAbleToGiveRole && botAbleToGiveRole);
 
 		return !userAbleToGiveRole && !botAbleToGiveRole;
 	}
