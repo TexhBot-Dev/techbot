@@ -1,39 +1,40 @@
-# Contributing
-
-1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) or [clone](https://github.com/git-guides/git-clone) the repository.
-1. Install [`pnpm`](https://pnpm.io) if you haven't already, `npm i pnpm -D -g`.
-   a. Run `pnpm i` to install dependencies.
-1. Make your changes.
-1. Submit a pull request with a description of what your changes do.
-
-### Configuring .env
-
--   Rename `example.env` to `.env`.
--   Replace `<DISCORD_TOKEN>` with your [discord token](https://discord.com/developers/applications)
--   Replace `<Discord User ID>` with your [user ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)
--   Fill out DB Credentials
-
-### Database
-
--   Create a new database
--   run `npx prisma migrate deploy`
--   if the database wasnt seeded run `node prisma/seed.js`
--   DB Should be setup
-
-### Guidelines
-
--   Make sure the changes make sense and aren't API abuse.
--   Test your changes before contributing.
--   Be kind to reviewers, commentators, and collaborators.
--   Try to follow the [Conventional Commits standard](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages as much as possible.
-
-### Scripts
-
--   `pnpm run dev` - Test the bot in dev mode.
--   `pnpm run devw`- Test the bot in dev mode and make _tsup_ watch for changes.
-
-### Stack
-
--   This project uses [Prisma](https://npmjs.com/package/@prisma/client) for querying the database.
--   This project uses [TypeScript](https://www.typescriptlang.org/) and [`tsup`](https://www.npmjs.com/package/tsup) is our bundler.
--   This project uses the [Sapphire](https://www.sapphirejs.dev/docs/General/Welcome) framework and [discord.js](https://discord.js.org) for interacting with Discord.
+<h1 id="contributing">Contributing</h1>
+<ol>
+<li><a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">Fork</a> or <a href="https://github.com/git-guides/git-clone">clone</a> the repository.</li>
+<li>Install <a href="https://pnpm.io"><code>pnpm</code></a> if you haven&#39;t already, <code>npm i pnpm -D -g</code>.
+a. Run <code>pnpm i</code> to install dependencies.</li>
+<li>Make your changes.</li>
+<li>Submit a pull request with a description of what your changes do.</li>
+</ol>
+<h3 id="configuring-env">Configuring .env</h3>
+<ul>
+<li>Rename <code>example.env</code> to <code>.env</code>.</li>
+<li>Replace <code>&lt;DISCORD_TOKEN&gt;</code> with your <a href="https://discord.com/developers/applications">discord token</a></li>
+<li>Replace <code>&lt;Discord User ID&gt;</code> with your <a href="https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">user ID</a></li>
+<li>Fill out DB Credentials</li>
+</ul>
+<h3 id="database">Database</h3>
+<ul>
+<li>Create a new database</li>
+<li>run <code>npx prisma migrate deploy</code></li>
+<li>if the database wasnt seeded run <code>node prisma/seed.js</code></li>
+<li>DB Should be setup</li>
+</ul>
+<h3 id="guidelines">Guidelines</h3>
+<ul>
+<li>Make sure the changes make sense and aren&#39;t API abuse.</li>
+<li>Test your changes before contributing.</li>
+<li>Be kind to reviewers, commentators, and collaborators.</li>
+<li>Try to follow the <a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits standard</a> for commit messages as much as possible.</li>
+</ul>
+<h3 id="scripts">Scripts</h3>
+<ul>
+<li><code>pnpm run dev</code> - Test the bot in dev mode.</li>
+<li><code>pnpm run devw</code>- Test the bot in dev mode and make <em>tsup</em> watch for changes.</li>
+</ul>
+<h3 id="stack">Stack</h3>
+<ul>
+<li>This project uses <a href="https://npmjs.com/package/@prisma/client">Prisma</a> for querying the database.</li>
+<li>This project uses <a href="https://www.typescriptlang.org/">TypeScript</a> and <a href="https://www.npmjs.com/package/tsup"><code>tsup</code></a> is our bundler.</li>
+<li>This project uses the <a href="https://www.sapphirejs.dev/docs/General/Welcome">Sapphire</a> framework and <a href="https://discord.js.org">discord.js</a> for interacting with Discord.</li>
+</ul>
