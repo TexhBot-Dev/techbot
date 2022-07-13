@@ -1,26 +1,30 @@
 import type { ApplicationCommandRegistry } from '@sapphire/framework';
-import type { CommandInteraction, CommandInteractionOption, GuildMember, GuildMemberRoleManager } from 'discord.js';
+import { CommandInteraction, CommandInteractionOption, Guild, GuildMemberRoleManager } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { SubcommandMappingArray, Subcommand } from '@sapphire/plugin-subcommands';
+import { UserError } from '#root/lib/handlers/UserError.js';
+import { generateErrorEmbed } from '#root/lib/helpers/embed.js';
 
 @ApplyOptions<Subcommand.Options>({
 	name: 'role',
-	description: 'lets you manage roles.',
-	detailedDescription: '/job <subcommand>'
+	description: 'The base command for managing roles.',
+	detailedDescription: '/role <subcommand> [...args]',
+	preconditions: ['GuildOnly'],
+	cooldownDelay: 3000
 })
 export default class RoleCommand extends Subcommand {
 	protected readonly subcommandMappings: SubcommandMappingArray = [
 		{
 			name: 'add',
-			chatInputRun: (interaction) => this.add(interaction)
+			chatInputRun: (interaction) => this.toggleRole(interaction, RoleToggleType.Add)
 		},
 		{
 			name: 'remove',
-			chatInputRun: (interaction) => this.remove(interaction)
+			chatInputRun: (interaction) => this.toggleRole(interaction, RoleToggleType.Remove)
 		},
 		{
 			name: 'removeall',
-			chatInputRun: (interaction) => this.removeall(interaction)
+			chatInputRun: (interaction) => this.removeAll(interaction)
 		}
 	];
 
@@ -54,74 +58,102 @@ export default class RoleCommand extends Subcommand {
 		);
 	}
 
-	private checkIfCommandIsAllowed(interaction: CommandInteraction, role: CommandInteractionOption['role']) {
-		const userAbleToGiveRole = (interaction.member?.roles as GuildMemberRoleManager).highest.position > (role?.position ?? 0);
-		const botAbleToGiveRole =
-			(interaction.guild?.me?.roles as GuildMemberRoleManager).highest?.position > (role?.position ?? 0) &&
-			interaction.guild?.me?.permissions.has('MANAGE_ROLES');
+	/**
+	 * Normalizes interaction member roles to be in the form of GuildMemberRoleManager, rather than in some cases strings.
+	 */
+	private async normalizeRoles(guild: Guild, user: NonNullable<CommandInteractionOption['member']>): Promise<GuildMemberRoleManager> {
+		if (user.roles instanceof GuildMemberRoleManager) return user.roles;
 
-		// console.log(userAbleToGiveRole, botAbleToGiveRole, userAbleToGiveRole && botAbleToGiveRole);
-
-		return !userAbleToGiveRole && !botAbleToGiveRole;
+		const member = await guild.members.fetch(user.toString());
+		return member.roles;
 	}
 
-	private async add(interaction: CommandInteraction) {
-		const user = interaction.options.getMember('user');
-		const role = interaction.options.getRole('role');
+	/**
+	 * Make sure bot and the command author have the `MANAGE_ROLES` permission.
+	 */
+	private async ensureManageRolePermissions(interaction: CommandInteraction) {
+		const guild = interaction.guild!;
+		const botHasPermissions = guild.me!.permissions.has('MANAGE_ROLES');
+		const userHasPermissions = interaction.memberPermissions!.has('MANAGE_ROLES');
 
-		if (this.checkIfCommandIsAllowed(interaction, role)) {
-			return interaction.reply('You (or the bot) do not have permission to give this role to this user.');
-		}
+		if (!botHasPermissions)
+			return new UserError(interaction)
+				.setType('MISSING_PERMISSIONS')
+				.sendResponse({ embeds: [generateErrorEmbed(`I am missing the \`MANAGE_ROLES\` permission.`, 'Bot Missing Permissions')] });
+
+		if (!userHasPermissions)
+			return new UserError(interaction)
+				.setType('MISSING_PERMISSIONS')
+				.sendResponse({ embeds: [generateErrorEmbed(`You are missing the \`MANAGE_ROLES\` permission.`, 'Missing Permissions')] });
+
+		return true;
+	}
+
+	/**
+	 * Ensure the bot and the user have the prerequisites to add/remove a role.
+	 * @param interaction The command interaction
+	 * @param role The role being added/removed
+	 * @returns A UserError or true
+	 */
+	private async checkIfCommandIsAllowed(interaction: CommandInteraction, role: NonNullable<CommandInteractionOption['role']>) {
+		const member = interaction.member!;
+		const memberRoles = await this.normalizeRoles(interaction.guild!, member);
+
+		const me = interaction.guild!.me!;
+
+		const userHasApplicableRolePositioning = memberRoles.highest.position > role.position;
+		const botHasApplicableRolePositioning = me.roles.highest.position > role.position;
+
+		if (!userHasApplicableRolePositioning)
+			return new UserError(interaction).setType('INSUFFICIENT_ROLE_POSITION').sendResponse({
+				embeds: [
+					generateErrorEmbed(
+						`Your highest role (${memberRoles.highest}) is too low to add ${role.toString()}.`,
+						'Insufficient Role Position'
+					)
+				]
+			});
+
+		if (!botHasApplicableRolePositioning)
+			return new UserError(interaction).setType('INSUFFICIENT_ROLE_POSITION').sendResponse({
+				embeds: [generateErrorEmbed(`My highest role is too low to add ${role.toString()}.`, 'Insufficient Role Position')]
+			});
+
+		return await this.ensureManageRolePermissions(interaction);
+	}
+
+	private async toggleRole(interaction: CommandInteraction, type: RoleToggleType) {
+		const user = interaction.options.getMember('user', true);
+		const userRoles = await this.normalizeRoles(interaction.guild!, user);
+		const role = interaction.options.getRole('role', true);
+		const toggleType = type === RoleToggleType.Add ? 'add' : 'remove';
+
+		if ((await this.checkIfCommandIsAllowed(interaction, role)) !== true) return;
 
 		try {
-			await (user?.roles as GuildMemberRoleManager).add(role?.id ?? '');
-		} catch {
-			return interaction.reply('Failed to give the role to the user.');
+			await userRoles[toggleType](role.id);
+		} catch (rawError) {
+			return new UserError(interaction)
+				.setType('ACTION_FAILED')
+				.sendResponse({
+					embeds: [generateErrorEmbed(`Failed to remove ${role.toString()} from ${user.toString()}.`, 'Action Failed')],
+					allowedMentions: undefined
+				})
+				.sendInternalReport({ rawError, command: this.options });
 		}
 
-		return interaction.reply(`Gave the role ${role?.name ?? ''} to ${(user as GuildMember).displayName ?? ''}`);
+		return interaction.reply({
+			content: `${toggleType === 'add' ? 'Added' : 'Removed'} ${role.toString()} ${toggleType === 'add' ? 'to' : 'from'} ${user.toString()}.`,
+			allowedMentions: {}
+		});
 	}
 
-	private async remove(interaction: CommandInteraction) {
-		const user = interaction.options.getMember('user');
-		const role = interaction.options.getRole('role');
-
-		if (this.checkIfCommandIsAllowed(interaction, role)) {
-			return interaction.reply('You (or the bot) do not have permission to remove this role to this user.');
-		}
-
-		try {
-			if (role?.id !== undefined) {
-				await (user?.roles as GuildMemberRoleManager).remove(role?.id);
-			}
-		} catch {
-			return interaction.reply('Failed to remove the role from the user.');
-		}
-
-		return interaction.reply(`Removed ${role?.name ?? ''} from ${(user as GuildMember).displayName ?? ''}`);
+	private async removeAll(interaction: CommandInteraction) {
+		return interaction.reply('To do!');
 	}
+}
 
-	private async removeall(interaction: CommandInteraction) {
-		const user = interaction.options.getMember('user');
-
-		const userAbleToRemoveRole =
-			(interaction.member?.roles as GuildMemberRoleManager).highest.position > ((user?.roles as GuildMemberRoleManager).highest.position ?? 0);
-		const botAbleToRemoveRole =
-			(interaction.guild?.me?.roles as GuildMemberRoleManager).highest?.position >
-				((user?.roles as GuildMemberRoleManager).highest.position ?? 0) && interaction.guild?.me?.permissions.has('MANAGE_ROLES');
-
-		if (!userAbleToRemoveRole || !botAbleToRemoveRole) {
-			return interaction.reply('You (or the bot) do not have permission to remove this role to this user.');
-		}
-
-		try {
-			for (const [_, role] of (user?.roles as GuildMemberRoleManager).cache) {
-				await (user?.roles as GuildMemberRoleManager).remove(role.id);
-			}
-		} catch {
-			return interaction.reply('Failed to remove all roles from the user.');
-		}
-
-		return interaction.reply(`Removed all roles from ${(user as GuildMember).displayName ?? ''}`);
-	}
+enum RoleToggleType {
+	Add,
+	Remove
 }
