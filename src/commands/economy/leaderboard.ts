@@ -20,46 +20,36 @@ export default class LeaderboardCommand extends Command {
 			return interaction.reply('Please Only Specify Either Bank or Wallet or Overall');
 		}
 
-		const topTenUsers = (
-			await this.container.prisma.user.findMany({
-				take: 10,
-				orderBy: {
-					wallet: 'desc'
-				},
-				where: {
-					wallet: {
-						gt: 0
-					}
+		const allUsers = await this.container.prisma.user.findMany({
+			take: 10,
+			orderBy: {
+				wallet: 'desc'
+			},
+			where: {
+				wallet: {
+					gt: 0
 				}
-			})
-		)
-			.map(async (user, position) => {
-				if (guildOnly && !interaction.guild?.members.fetch(user.id)) return false;
-				const positionText = (() => {
-					switch (position) {
-						case 0:
-							return 'first_place';
-						case 1:
-							return 'second_place';
-						case 2:
-							return 'third_place';
-						default:
-							return this.numToEnglish(position + 1);
-					}
-				})();
-				const discordUserData = await this.container.client.users.fetch(user.id);
-				const moneyCount = (() => {
+			}
+		});
+
+		const leaderboard = allUsers
+			.map(async (user, index) => {
+				if (guildOnly && !interaction.guild?.members.cache.has(user.id)) return;
+				const userData = await this.container.client.users.fetch(user.id);
+				const prefix = numoji[index] ?? this.numToEnglish(index + 1);
+
+				const money = (() => {
 					let money = user.wallet;
 					if (overallMoney) money += user.bank;
 					return money;
 				})();
-				return `:${positionText}: ${discordUserData?.username} - ${moneyCount}`;
+
+				return `${prefix} ${userData.tag} - ${money}`;
 			})
 			.join('\n');
+		if (leaderboard.length === 0) return;
 
-		if (topTenUsers.length === 0) return;
-
-		const leaderboardEmbed = new MessageEmbed().setDescription(topTenUsers).setColor('BLUE').setTimestamp();
+		const leaderboardEmbed = new MessageEmbed().setDescription(leaderboard).setColor('BLUE').setTimestamp();
 		return interaction.reply({ embeds: [leaderboardEmbed] });
 	}
 
@@ -118,3 +108,9 @@ export default class LeaderboardCommand extends Command {
 		return `${this.numToEnglish(~~(number / 1000))} thousand ${number % 1000 === 0 ? '' : ` ${this.numToEnglish(number % 1000)}`}`;
 	}
 }
+
+const numoji: Record<number, string> = {
+	0: ':first_place:',
+	1: ':second_place:',
+	2: ':third_place:'
+};

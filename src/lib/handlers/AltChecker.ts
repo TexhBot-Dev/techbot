@@ -9,7 +9,7 @@ import { getCommonChars } from '#lib/helpers';
  * @param guild The guild to check this user in.
  */
 export async function check(target: User, guild: Guild): Promise<TrustFactor> {
-	//If the user has flags which signify they are legit, make them very trusted.
+	// If the user has flags which signify they are legit, make them very trusted.
 	const targetFlags = target.flags!;
 	if (
 		targetFlags.has('DISCORD_CERTIFIED_MODERATOR') ||
@@ -25,7 +25,7 @@ export async function check(target: User, guild: Guild): Promise<TrustFactor> {
 	const sinceCreationTimestamp = Date.now() - target.createdTimestamp;
 
 	const members = (await guild.members.fetch()).toJSON();
-	let usernameMatches: UsernameMatchType[] = [];
+	const usernameMatches: UsernameMatchType[] = [];
 
 	if (target.username.length > 3) {
 		for (let i = 0, len = members.length; i < len; i++) {

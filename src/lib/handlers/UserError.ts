@@ -8,7 +8,7 @@ import { randomUUID } from 'node:crypto';
  * User error builder.
  */
 export class UserError {
-  private responseEmbed!: MessageEmbed;
+	private responseEmbed!: MessageEmbed;
 	private type!: string;
 	private context: CommandInteraction | Interaction;
 	private readonly id = randomUUID();
@@ -17,7 +17,7 @@ export class UserError {
 	 * Construct this user error.
 	 * @param interaction The interaction to reply to.
 	 */
-	constructor(interaction: CommandInteraction | Interaction) {
+	public constructor(interaction: CommandInteraction | Interaction) {
 		this.context = interaction;
 	}
 
@@ -42,8 +42,8 @@ export class UserError {
 		response.components ??= [];
 		response.ephemeral ??= true;
 
-		this.context.reply(response);
-    
+		void this.context.reply(response);
+
 		return this;
 	}
 
@@ -64,17 +64,17 @@ export class UserError {
 				embeds: [
 					generateEmbed(
 						report.title || this.responseEmbed.title || 'Error',
-						(report.rawError ? codeBlock('', '\n\n' + String(report.rawError).truncate(1000)) : '') +
-							`\n\nThis error was thrown by ${report.command?.name || 'an unknown command'}.` +
-							(report.user ? `\nThe user who ran the failed command was ${report.user.id}.` : '') +
-							(report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name}).` : '') +
-							`\n\`${report.message ?? this.responseEmbed.description ?? 'No message provided.'}\``,
+						`${report.rawError ? codeBlock('', `\n\n${String(report.rawError).truncate(1000)}`) : ''}\n\nThis error was thrown by ${
+							report.command?.name || 'an unknown command'
+						}.${report.user ? `\nThe user who ran the failed command was ${report.user.id}.` : ''}${
+							report.guild ? `\nThis error occurred in the guild ${report.guild.id} (${report.guild.name}).` : ''
+						}\n\`${report.message ?? this.responseEmbed.description ?? 'No message provided.'}\``,
 						'RED'
 					).setFooter({ text: `ID: ${this.id} | Type: ${this.type ?? 'UNKNOWN'}` })
 				]
 			})
 			.catch(() => noop);
-    
+
 		return this;
 	}
 }

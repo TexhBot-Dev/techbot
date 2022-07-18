@@ -9,7 +9,7 @@ export class Duration {
 	public weeks: number;
 	private stringified: string;
 
-	constructor(duration: string) {
+	public constructor(duration: string) {
 		const dur = duration.includes('off')
 			? '0'
 			: duration
@@ -19,7 +19,7 @@ export class Duration {
 
 		const hasUnit = isNaN(dur as any);
 		const durationUnit = (hasUnit ? dur[dur.length - 1] : 's') as Unit;
-		const durationNumber = parseInt(hasUnit ? dur.slice(0, -1) : dur);
+		const durationNumber = parseInt(hasUnit ? dur.slice(0, -1) : dur, 10);
 
 		this.milliseconds = this.unitToMilliseconds(durationUnit) * durationNumber;
 

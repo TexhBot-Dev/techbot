@@ -74,8 +74,8 @@ export default class RobCommand extends Command {
 			return interaction.reply({ embeds: [failedResponse] });
 		}
 
-		subtractFromWallet(userToRob, lossAmount);
-		addToWallet(interaction.user, lossAmount);
+		await subtractFromWallet(userToRob, lossAmount);
+		await addToWallet(interaction.user, lossAmount);
 
 		const successResponse = new MessageEmbed()
 			.setDescription(`You successfully robbed <@${userToRob.id}>, and gained **$${winAmount}**!`)
