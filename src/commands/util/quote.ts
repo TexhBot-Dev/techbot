@@ -20,7 +20,7 @@ export class QuoteCommand extends Command {
 				.sendResponse({ embeds: [generateErrorEmbed('Invalid message URL provided for parameter `message_url`.', 'Invalid Message URL')] });
 
 		const content = getMessageContent(message);
-		if (!content)
+		if (content === null)
 			return new UserError(interaction).setType('NO_MESSAGE_CONTENT').sendResponse({
 				embeds: [generateErrorEmbed('The message provided exists, but contains no content or description.', 'No Message Content')]
 			});
